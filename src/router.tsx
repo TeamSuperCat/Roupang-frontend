@@ -9,7 +9,7 @@ interface RouterBase {
   path: string; // 페이지 경로
   label: string; // 사이드바에 표시할 페이지 이름
   element: React.ReactNode; // 페이지 엘리먼트
-  children?: RouterBase[];
+  children?: RouterElement[]; // 중첩라우팅에서 인증이 필요한 페이지가 있을경우 처리하기 위해서 RouterBase 에서 RouterElement로 바꿨습니다
 }
 
 interface UserAccessibleRouterElement extends RouterBase {
@@ -98,6 +98,11 @@ function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
 
     if (router.children && router.children.length) {
       routeObject.children = transformRoutes(router.children);
+
+      // children에 withAuth가 있는 경우(인증이 필요한 페이지가 있는경우 처리입니당)
+      if (router.children.some((child) => child.withAuth)) {
+        routeObject.element = <AuthComponents>{router.element}</AuthComponents>;
+      }
     }
 
     return routeObject;

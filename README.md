@@ -2,7 +2,7 @@
 ## 🚀프로젝트 설명
 
 ## 🚀프로젝트 요구사항
-- 기술 스택 : 
+- 기술 스택 : React, TypeScript, Redux, styled-components, tailwindcss
 
 ## 🚀 네이밍 규칙
 - 폴더명: 소문자만 사용 (ex) => hooks
@@ -11,7 +11,7 @@
 - className: snake_case
 
 ## 🚀 코드
-- api 연결: json 파일의 dummy data 사용
+- api 연결
 - css 적용: styled-components 와 tailwindcss 중 자율적으로 사용
 - 코드는 최대한 함수형으로 작성
 

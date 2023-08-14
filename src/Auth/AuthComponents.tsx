@@ -23,7 +23,7 @@ const AuthComponents: React.FC<GeneralLayoutProps> = ({
       return;
     }
 
-    setUserProfile(userProfile);
+    setUserProfile(null); // 로그인여부
   };
 
   useEffect(() => {

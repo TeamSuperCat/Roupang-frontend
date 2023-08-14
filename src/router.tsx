@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Router as RemixRouter } from "@remix-run/router/dist/router";
-import { Home } from "./pages/Home";
+import Home from "./pages/Home";
 import AuthComponents from "./Auth/AuthComponents";
 
 interface RouterBase {
@@ -8,6 +8,7 @@ interface RouterBase {
   path: string; // 페이지 경로
   label: string; // 사이드바에 표시할 페이지 이름
   element: React.ReactNode; // 페이지 엘리먼트
+  children?: RouterBase[];
 }
 
 interface UserAccessibleRouterElement extends RouterBase {

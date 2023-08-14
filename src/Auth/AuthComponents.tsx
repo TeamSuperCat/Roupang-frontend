@@ -46,7 +46,7 @@ const AuthComponents: React.FC<GeneralLayoutProps> = ({
   return (
     <div>
       {/* 전역상태를 이용해 userProfile props 대체 및 삭제 */}
-      {/* <Header userProfile={userProfile} /> 헤더 컴포넌트  */}
+      {/* <UserInfo userProfile={userProfile} /> 사용자의 정보가 필요한 컴포넌트  */}
       <div>{children}</div>
     </div>
   );

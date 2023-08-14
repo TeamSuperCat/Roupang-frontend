@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Router as RemixRouter } from "@remix-run/router/dist/router";
-import { AuthComponents } from "./Auth/AuthComponents";
 import { Home } from "./pages/Home";
+import AuthComponents from "./Auth/AuthComponents";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -29,14 +29,14 @@ const routerData: RouterElement[] = [
     element: <Home />,
     withAuth: false,
   },
-  {
-    id: 1,
-    path: "/admin",
-    label: "어드민 페이지",
-    element: <AdminPage />,
-    withAuth: true,
-    isAdminPage: true,
-  },
+  // {
+  //   id: 1,
+  //   path: "/admin",
+  //   label: "어드민 페이지",
+  //   // element: <AdminPage />,
+  //   withAuth: true,
+  //   isAdminPage: true,
+  // },
 ];
 
 export const routers: RemixRouter = createBrowserRouter(

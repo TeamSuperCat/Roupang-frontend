@@ -7,7 +7,7 @@ interface GeneralLayoutProps {
   isAdminPage?: boolean;
 }
 
-export const AuthComponents: React.FC<GeneralLayoutProps> = ({
+const AuthComponents: React.FC<GeneralLayoutProps> = ({
   children,
   isAdminPage,
 }) => {
@@ -51,3 +51,5 @@ export const AuthComponents: React.FC<GeneralLayoutProps> = ({
     </div>
   );
 };
+
+export default AuthComponents;

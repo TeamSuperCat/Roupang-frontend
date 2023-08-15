@@ -19,7 +19,7 @@ function CategoryCarousel() {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
-    arrows: true,
+    arrows: false,
     lazyLoad: "ondemand",
     afterChange: (current) => {
       console.log(current);
@@ -29,7 +29,7 @@ function CategoryCarousel() {
       console.log(direction, isLastSlide);
 
       if (isLastSlide && direction === "left") {
-        routeTo("/");
+        routeTo("/home");
       }
     },
   };
@@ -67,13 +67,13 @@ const CarouselWrapper = styled.div`
   width: 1210px;
   display: flex;
   flex-direction: column;
-  margin: 20px;
+  /* margin: 20px; */
 `;
 
 const CategoryH1 = styled.h1`
   font-size: 1.4rem;
   font-weight: bold;
-  padding-left: 10px;
+  /* padding-left: 10px; */
   font-family: "Jost", sans-serif;
   letter-spacing: -2.5px;
 `;

@@ -5,7 +5,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import SearchModal from "./SearchModal/SearchModal";
+// import SearchModal from "./SearchModal/SearchModal";
 
 const Header = () => {
   return (
@@ -95,7 +95,7 @@ const Header = () => {
           </div>
         </HeaderBottonbox>
       </HeaderWrapper>
-      <SearchModal />
+      {/* <SearchModal /> */}
     </>
   );
 };
@@ -103,7 +103,7 @@ const Header = () => {
 export default Header;
 
 const HeaderWrapper = styled.header`
-  width: 80%;
+  width: 100%;
   height: auto;
   margin: 0 auto;
 `;

@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import AuthComponents from "./Auth/AuthComponents";
 import HeaderLayout from "./layout/HeaderLayout";
 import Main from "./pages/Main";
+import Login from "./pages/Login";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -43,6 +44,12 @@ const routerData: RouterElement[] = [
         path: "main",
         label: "Main",
         element: <Main />,
+      },
+      {
+        id: 3,
+        path: "login",
+        label: "Login",
+        element: <Login />,
       },
     ],
   },

@@ -39,8 +39,8 @@ export default ProductCard;
 
 const CardWrapper = styled.li`
   display: grid;
-  width: 15vw;
-  height: 20vw;
+  width: 95%;
+  height: 95%;
   grid-template-rows: 3fr 1fr;
   margin: 14px;
   font-family: "Jost", sans-serif;

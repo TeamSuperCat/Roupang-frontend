@@ -33,7 +33,7 @@ const routerData: RouterElement[] = [
     children: [
       {
         id: 1,
-        path: "home",
+        path: "",
         label: "Home",
         element: <Home />,
       },

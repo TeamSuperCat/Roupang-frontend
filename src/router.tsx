@@ -3,6 +3,7 @@ import { Router as RemixRouter } from "@remix-run/router/dist/router";
 import Home from "./pages/Home";
 import AuthComponents from "./Auth/AuthComponents";
 import HeaderLayout from "./layout/HeaderLayout";
+import Signup from "./components/signup/Signup";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -36,6 +37,12 @@ const routerData: RouterElement[] = [
         path: "home",
         label: "Home",
         element: <Home />,
+      },
+      {
+        id: 2,
+        path: "signup",
+        label: "Signup",
+        element: <Signup />,
       },
     ],
   },

@@ -83,16 +83,18 @@ const Signup = () => {
   };
   return (
     <>
-      <div>회원 가입</div>
-      <div>정보 입력</div>
+      <Heading>회원 가입</Heading>
+      {/* <div>정보 입력</div> */}
       <SignupContainer>
-        <div>
-          <form onSubmit={submitHandler}>
-            <div>
-              <div>
-                <div>미리보기 ㄷㄷ</div>
-                <input type='file' />
-              </div>
+        <SignupForm onSubmit={submitHandler}>
+          <FormInnerDiv>
+            <Profile>
+              <PreviewDiv>
+                <img src="vite.svg" alt="temp" />
+              </PreviewDiv>
+              <input type="file" />
+            </Profile>
+            <InputDiv>
               {signupInputProps.map((elem, i) => (
                 <SignupInput
                   key={i}
@@ -103,10 +105,11 @@ const Signup = () => {
                   onChange={inputChangeHandler}
                 />
               ))}
-            </div>
-            <button>회원가입</button>
-          </form>
-        </div>
+            </InputDiv>
+          </FormInnerDiv>
+          <SignupButton>회원가입</SignupButton>
+        </SignupForm>
+
         <div></div>
       </SignupContainer>
     </>
@@ -115,10 +118,72 @@ const Signup = () => {
 
 export default Signup;
 
+const Heading = styled.h1`
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+`;
+
 const SignupContainer = styled.div`
+  width: 690px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 10px;
+  gap: 20px;
+  padding: 60px 40px 40px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  border-radius: 24px;
+`;
+
+const SignupForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const FormInnerDiv = styled.div`
+  width: 650px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+`;
+
+const Profile = styled.div`
+  background-color: pink;
+`;
+
+const PreviewDiv = styled.div`
+  background-color: greenyellow;
+  width: 75%;
+  height: 80%;
+  margin: 10% auto;
+`;
+
+const InputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const SignupButton = styled.button`
+  background-color: #605e49;
+  /* width: 200px;
+  height: 100px;
+  border-radius: 4px;
+  border-style: none; */
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  border: 1px solid transparent;
+
+  width: 460px;
+  height: 50px;
+  margin: 40px 0 15px 0;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  gap: 20px;
 `;

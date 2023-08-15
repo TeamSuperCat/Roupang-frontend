@@ -2,12 +2,12 @@
 ## 🚀프로젝트 설명
 
 ## 🚀프로젝트 요구사항
-- 기술 스택 : React, TypeScript, Redux, styled-components, tailwindcss
+- 기술 스택 : React, TypeScript, Vite, Redux, styled-components, tailwindcss
 
 ## 🚀 네이밍 규칙
 - 폴더명: 소문자만 사용 (ex) => hooks
 - 함수명, 변수명: camelCase
-- 컴포넌트, 생성자 함수, Class: PascalCase
+- 컴포넌트, 생성자 함수, 클래스: PascalCase
 - className: snake_case
 
 ## 🚀 코드

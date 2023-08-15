@@ -41,13 +41,6 @@ const routerData: RouterElement[] = [
   },
   // {
   //   id: 1,
-  //   path: "/",
-  //   label: "Home",
-  //   element: <Home />,
-  //   withAuth: false,
-  // },
-  // {
-  //   id: 1,
   //   path: "/admin",
   //   label: "어드민 페이지",
   //   // element: <AdminPage />,
@@ -55,24 +48,6 @@ const routerData: RouterElement[] = [
   //   isAdminPage: true,
   // },
 ];
-
-// export const routers: RemixRouter = createBrowserRouter(
-//   // 어드민 전용 페이지이거나 auth가 필요한 페이지는 AuthComponent으로 감싸기
-//   // 어드민 권한이 필요한 페이지는 isAdminPage 속성에 true 부여
-//   routerData.map((router) => {
-//     if (router.withAuth) {
-//       return {
-//         path: router.path,
-//         element: <AuthComponents>{router.element}</AuthComponents>,
-//       };
-//     } else {
-//       return {
-//         path: router.path,
-//         element: router.element,
-//       };
-//     }
-//   })
-// );
 
 interface RouteObject {
   path: string;

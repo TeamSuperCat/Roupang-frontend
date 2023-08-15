@@ -1,7 +1,14 @@
-import React from "react";
+import CategoryCarousel from "../components/Home/CategoryCarousel";
 
 const Home = () => {
-  return <div></div>;
+  return (
+    <div>
+      <CategoryCarousel />
+      <CategoryCarousel />
+      <CategoryCarousel />
+      <CategoryCarousel />
+    </div>
+  );
 };
 
 export default Home;

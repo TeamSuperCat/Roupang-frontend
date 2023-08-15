@@ -64,16 +64,18 @@ function CategoryCarousel() {
 export default CategoryCarousel;
 
 const CarouselWrapper = styled.div`
-  width: 1210px;
+  width: 98vw;
+  max-width: 1210px;
+  min-height: 400px;
+  padding-right: 40px;
   display: flex;
   flex-direction: column;
-  /* margin: 20px; */
 `;
 
 const CategoryH1 = styled.h1`
   font-size: 1.4rem;
   font-weight: bold;
-  /* padding-left: 10px; */
+  padding-left: 10px;
   font-family: "Jost", sans-serif;
   letter-spacing: -2.5px;
 `;

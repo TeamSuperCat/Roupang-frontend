@@ -1,29 +1,36 @@
 import { styled } from "styled-components";
-import { PiArrowFatLineRightDuotone } from "react-icons/pi";
+import { SlArrowRight } from "react-icons/sl";
 
 function ShowMore() {
   return (
     <ShowMoreBtnWrapper>
-      <ShowMoreBtn>{PiArrowFatLineRightDuotone}</ShowMoreBtn>
+      <ShowMoreBtn>
+        <SlArrowRight />
+      </ShowMoreBtn>
     </ShowMoreBtnWrapper>
   );
 }
 
 export default ShowMore;
 
-const ShowMoreBtnWrapper = styled.div`
+const ShowMoreBtnWrapper = styled.div.attrs({ className: `size` })`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 20vw;
-  width: 15vw;
+  width: 95%;
+  min-height: 350px;
 `;
 
 const ShowMoreBtn = styled.button`
-  width: 4vw;
-  height: 4vw;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background-color: none;
-  outline: none;
+  &&&&&&&&&&&&&&& {
+    color: black;
+    background: none;
+    outline: none;
+    border: none;
+  }
+  font-size: 25px;
   cursor: pointer;
 `;

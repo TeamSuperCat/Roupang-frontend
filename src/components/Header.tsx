@@ -26,17 +26,35 @@ const Header = () => {
               <div className="header_login">로그인</div>
               <div>/</div>
               <div className="header_join">회원가입</div>
-              <ul className="header_login_drop">
-                <li>123</li>
-              </ul>
+              <div className="header_login_drop">
+                <ul className="login_drop_menu">
+                  <li>내 정보 수정</li>
+                  <li>로그인</li>
+                  <li>회원가입</li>
+                </ul>
+              </div>
             </div>
             <div className="header_mypage_info">
               <img src="/img/mypage.svg" alt="mypage" />
-              <div>마이샵</div>
+              <div className="header_mypage">마이샵</div>
+              <div className="header_mypage_drop">
+                <ul className="mypage_drop_menu">
+                  <li>나의글</li>
+                  <li>좋아요</li>
+                  <li>관심상품</li>
+                </ul>
+              </div>
             </div>
             <div className="header_board_info">
               <img src="/img/bell.svg" alt="bell" />
-              <div>공지 / 게시판</div>
+              <div className="header_board">공지 / 게시판</div>
+              <div className="header_board_drop">
+                <ul className="board_drop_menu">
+                  <li>공지사항</li>
+                  <li>리뷰</li>
+                  <li>Q & A</li>
+                </ul>
+              </div>
             </div>
           </div>
         </HeaderTopbox>
@@ -78,7 +96,7 @@ const Header = () => {
               <div className="header_user_ex">마이샵</div>
             </div>
             <div className="header_clockbox">
-              <img className="icontest" src="/img/clock.svg" alt="time" />
+              <img src="/img/clock.svg" alt="time" />
               <div className="header_clock_ex">최근 본 상품</div>
             </div>
             <div className="header_cartimg_box">
@@ -118,6 +136,7 @@ const HeaderWrapper = styled.header`
   width: 80%;
   height: auto;
   margin: 0 auto;
+  z-index: -2;
 `;
 const HeaderTopbox = styled.div`
   width: 100%;
@@ -147,10 +166,6 @@ const HeaderTopbox = styled.div`
   .header_mypage_info,
   .header_board_info {
     &:hover {
-      div {
-        transition: all 0.2s;
-        color: #50d2ba;
-      }
       img {
         transition: all 0.2s;
         filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg)
@@ -162,18 +177,118 @@ const HeaderTopbox = styled.div`
   .header_login_info {
     display: flex;
     gap: 8px;
+    position: relative;
     .header_login,
     .header_join {
       cursor: pointer;
+    }
+    &:hover .header_login {
+      color: #50d2ba;
+    }
+    .header_login:hover,
+    .header_join:hover {
+      transition: all 0.2s;
+      color: #50d2ba;
+    }
+    &:hover .header_login_drop {
+      display: block;
+    }
+    .header_login_drop {
+      display: none;
+      position: absolute;
+      bottom: -135px;
+      left: 0;
+      padding-top: 20px;
+      z-index: 2;
+      .login_drop_menu {
+        border: 1px solid #efefef;
+        li {
+          cursor: pointer;
+          text-align: center;
+          line-height: 40px;
+          width: 120px;
+          height: 40px;
+          background-color: #fff;
+          &:hover {
+            transition: all 0.3s;
+            background-color: #333;
+            color: #fff;
+          }
+        }
+      }
     }
   }
   .header_mypage_info {
     display: flex;
     cursor: pointer;
+    position: relative;
+    &:hover .header_mypage {
+      transition: all 0.2s;
+      color: #50d2ba;
+    }
+    &:hover .header_mypage_drop {
+      display: block;
+    }
+    .header_mypage_drop {
+      display: none;
+      position: absolute;
+      bottom: -135px;
+      left: -7px;
+      padding-top: 20px;
+      z-index: 2;
+      .mypage_drop_menu {
+        border: 1px solid #efefef;
+        li {
+          cursor: pointer;
+          text-align: center;
+          line-height: 40px;
+          width: 90px;
+          height: 40px;
+          background-color: #fff;
+          &:hover {
+            transition: all 0.3s;
+            background-color: #333;
+            color: #fff;
+          }
+        }
+      }
+    }
   }
   .header_board_info {
     display: flex;
     cursor: pointer;
+    position: relative;
+    &:hover .header_board {
+      transition: all 0.2s;
+      color: #50d2ba;
+    }
+    &:hover .header_board_drop {
+      display: block;
+    }
+    .header_board_drop {
+      display: none;
+      position: absolute;
+      bottom: -135px;
+      left: 10px;
+      padding-top: 20px;
+      z-index: 2;
+      .board_drop_menu {
+        border: 1px solid #efefef;
+        li {
+          cursor: pointer;
+          text-align: center;
+          line-height: 40px;
+          width: 100px;
+          height: 40px;
+          background-color: #fff;
+          &:hover {
+            transition: all 0.3s;
+            background-color: #333;
+            color: #fff;
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -184,6 +299,7 @@ const HeaderMiddlebox = styled.div`
   justify-content: space-between;
   position: relative;
   align-items: center;
+  z-index: 1;
   .header_carousel {
     width: 240px;
     height: 120px;
@@ -204,6 +320,9 @@ const HeaderMiddlebox = styled.div`
           brightness(85%) contrast(92%);
       }
     }
+  }
+  .swiper-slide {
+    cursor: pointer;
   }
   .header_mainlogo {
     position: absolute;

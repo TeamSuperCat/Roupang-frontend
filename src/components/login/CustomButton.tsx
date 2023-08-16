@@ -1,12 +1,7 @@
-import React from "react";
 import { styled } from "styled-components";
 
-type ButtonProps = {
-  onClick: () => void;
-};
-
-const CustomButton = (props: ButtonProps) => {
-  return <Button onClick={props.onClick}>로그인</Button>;
+const CustomButton = () => {
+  return <Button>로그인</Button>;
 };
 
 export default CustomButton;

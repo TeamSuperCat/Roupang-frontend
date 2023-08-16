@@ -1,36 +1,20 @@
 import { styled } from "styled-components";
-import { useState, useRef } from "react";
 
 type PlaceholderInput = {
-  propsValue: {
-    type: string;
-    placeholder?: string;
+  name: string;
+  type: string;
+  placeholder?: string;
+  data: {
+    email: string;
+    password: string;
   };
-  inputHandle: (e: string, title: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const LoginInput = ({ propsValue, inputHandle }: PlaceholderInput) => {
-  const ref = useRef<HTMLInputElement>(null);
-
-  const inputValue = (input: string) => {
-    //input 요소의 value를 가져오기
-    const value = input;
-
-    // props로 전달된 함수 호출
-    if (inputHandle) {
-      inputHandle(value, propsValue.type);
-    }
-  };
-
+const LoginInput = ({ name, type, placeholder, data, onChange }: PlaceholderInput) => {
   return (
     <>
-      <Input
-        type={propsValue.type}
-        placeholder={propsValue.placeholder}
-        value=""
-        onChange={(e) => inputValue(e.target.value)}
-        ref={ref}
-      ></Input>
+      <Input name={name} type={type} placeholder={placeholder} value={data[name]} onChange={(e) => onChange(e)} />
     </>
   );
 };

@@ -6,8 +6,8 @@ import OAuthButton from "../components/login/OAuthButton";
 import { Link } from "react-router-dom";
 
 const InputPropsValue = [
-  { type: "email", placeholder: "이메일을 입력해주세요." },
-  { type: "password", placeholder: "비밀번호를 입력해주세요." },
+  { name: "email", type: "email", placeholder: "이메일을 입력해주세요." },
+  { name: "password", type: "password", placeholder: "비밀번호를 입력해주세요." },
 ];
 
 const buttonItems = [
@@ -26,26 +26,37 @@ const Login = () => {
     password: "",
   });
 
-  const inputHandle = (e: string, type: string) => {
-    setData({ ...data, [type]: e });
+  const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
   };
 
-  const loginHandler = () => {
+  const loginHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(e);
+    console.log(data);
     // const response = await axiosClient.post<Data>('/login');
   };
 
   return (
     <Container>
-      <Form>
-        {InputPropsValue.map((elem) => (
-          <LoginInput propsValue={elem} inputHandle={inputHandle} />
+      <Form onSubmit={loginHandler}>
+        {InputPropsValue.map((elem, i) => (
+          <LoginInput
+            key={i}
+            name={elem.name}
+            type={elem.type}
+            placeholder={elem.placeholder}
+            data={data}
+            onChange={inputChangeHandler}
+          />
         ))}
-        <CustomButton onClick={loginHandler} />
+        <CustomButton />
       </Form>
 
       <LinkWrap>
-        <Link to="/signup">회원가입하기</Link>
-        <Link to="/findpassword">비밀번호찾기</Link>
+        <Link to='/signup'>회원가입하기</Link>
+        <Link to='/findpassword'>비밀번호찾기</Link>
       </LinkWrap>
 
       {buttonItems

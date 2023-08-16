@@ -28,6 +28,15 @@ const DetailDescription = () => {
     setOptionValue(data);
     setIsOption((prev) => !prev);
   };
+
+  const productAmountUp = () => {
+    setProductAmount((prev) => prev + 1);
+  };
+  const productAmountDown = () => {
+    if (productAmount > 0) {
+      setProductAmount((prev) => prev - 1);
+    }
+  };
   return (
     <>
       <Container>
@@ -91,9 +100,9 @@ const DetailDescription = () => {
           <ProductCounter>
             <Amount>수량</Amount>
             <DivFlex>
-              <MinusButton>-</MinusButton>
+              <MinusButton onClick={productAmountDown}>-</MinusButton>
               <ProductAmount>{productAmount}</ProductAmount>
-              <PlusButton>+</PlusButton>
+              <PlusButton onClick={productAmountUp}>+</PlusButton>
             </DivFlex>
             <div></div>
           </ProductCounter>
@@ -314,6 +323,8 @@ const ProductCounter = styled.div`
 
 const Amount = styled.div``;
 const ProductAmount = styled.div`
+  font-size: 1.1rem;
+  font-weight: bold;
   width: 100px;
   border: 1px solid black;
   padding: 1rem;
@@ -321,6 +332,8 @@ const ProductAmount = styled.div`
 `;
 
 const PlusButton = styled.div`
+  font-size: 1.1rem;
+  font-weight: bold;
   width: 60px;
   border: 1px solid black;
   padding: 1rem;
@@ -328,6 +341,8 @@ const PlusButton = styled.div`
   cursor: pointer;
 `;
 const MinusButton = styled.div`
+  font-size: 1.1rem;
+  font-weight: bold;
   width: 60px;
   border: 1px solid black;
   padding: 1rem;

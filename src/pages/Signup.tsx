@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import SignupInput from "./SignupInput";
+import SignupInput from "../components/signup/SignupInput";
 import { styled } from "styled-components";
 
 const signupInputProps = [

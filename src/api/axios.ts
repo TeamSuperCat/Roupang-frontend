@@ -24,9 +24,10 @@ axiosClient.interceptors.request.use((config) => {
 // axiosClient.메소드('경로') 해서 사용 baseURL 은 이미 설정되어 있으므로 URI 만 붙여서 사용해야함
 
 // interface Data {
+//   기타 필요한 필드 추가
+//   ex) 밑의 키 밸류는 예시임 필요한 데이터 정의해서 사용하면 됨
 //   id: number;
 //   name: string;
-//   // 기타 필요한 필드 추가
 // }
 
 // const [data, setData] = useState<Data | null>(null);

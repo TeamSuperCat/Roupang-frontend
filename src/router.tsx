@@ -4,6 +4,10 @@ import Home from "./pages/Home";
 import AuthComponents from "./Auth/AuthComponents";
 import HeaderLayout from "./layout/HeaderLayout";
 import Signup from "./pages/Signup";
+import Main from "./pages/Main";
+import Login from "./pages/Login";
+import Test from "./pages/Test";
+import Footer from "./components/Footer";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -34,25 +38,43 @@ const routerData: RouterElement[] = [
     children: [
       {
         id: 1,
-        path: "home",
+        path: "",
         label: "Home",
         element: <Home />,
       },
       {
         id: 2,
+        path: "main",
+        label: "Main",
+        element: <Main />,
+      },
+      {
+        id: 3,
+        path: "login",
+        label: "Login",
+        element: <Login />,
+      },
+      {
+        id: 5,
+        path: "test",
+        label: "Test",
+        element: <Test />,
+      },
+      {
+        id: 6,
         path: "signup",
         label: "Signup",
         element: <Signup />,
       },
     ],
   },
-  // {
-  //   id: 1,
-  //   path: "/",
-  //   label: "Home",
-  //   element: <Home />,
-  //   withAuth: false,
-  // },
+  {
+    id: 4,
+    path: "/",
+    label: "Footer",
+    element: <Footer />,
+  },
+
   // {
   //   id: 1,
   //   path: "/admin",
@@ -62,24 +84,6 @@ const routerData: RouterElement[] = [
   //   isAdminPage: true,
   // },
 ];
-
-// export const routers: RemixRouter = createBrowserRouter(
-//   // 어드민 전용 페이지이거나 auth가 필요한 페이지는 AuthComponent으로 감싸기
-//   // 어드민 권한이 필요한 페이지는 isAdminPage 속성에 true 부여
-//   routerData.map((router) => {
-//     if (router.withAuth) {
-//       return {
-//         path: router.path,
-//         element: <AuthComponents>{router.element}</AuthComponents>,
-//       };
-//     } else {
-//       return {
-//         path: router.path,
-//         element: router.element,
-//       };
-//     }
-//   })
-// );
 
 interface RouteObject {
   path: string;

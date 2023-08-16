@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import SignupInput from "../components/signup/SignupInput";
 import { styled } from "styled-components";
+import useGetUrl from "../hooks/useGetUrls";
 
 const signupInputProps = [
   {
@@ -35,8 +36,6 @@ const signupInputProps = [
   },
 ];
 
-const defaultProfilePath = "default_profile.png";
-
 interface Data {
   email: string;
   password: string;
@@ -44,11 +43,12 @@ interface Data {
   nickname: string;
   phoneNumber: string | undefined;
   address: string;
-  // profile: string;
+  profile: string;
 }
 const Signup = () => {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [imgSrc, setImgSrc] = useState<string>(defaultProfilePath);
+  const [urls, setUrls] = useState<string[]>([]);
+  const { ref, onChange, isLoading } = useGetUrl(setUrls);
+
   const [isSamePassword, setIsSamePassword] = useState(false);
   const [data, setData] = useState<Data>({
     email: "",
@@ -57,22 +57,8 @@ const Signup = () => {
     nickname: "",
     phoneNumber: "",
     address: "",
-    // profile: "",
+    profile: "",
   });
-
-  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    //TODO: upload to storage
-    //      setProfile(url)
-
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = (e) => {
-      const result = e?.target?.result as string;
-      setImgSrc(result);
-    };
-  };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -80,7 +66,6 @@ const Signup = () => {
     //비밀번호 확인
     if (name === "passwordCheck" || name === "password") {
       data.passwordCheck !== data.password ? setIsSamePassword(false) : setIsSamePassword(true);
-      console.log(isSamePassword);
     }
 
     //전화번호 유효성 검사
@@ -108,6 +93,11 @@ const Signup = () => {
     const requestPhoneNumber = data.phoneNumber?.split("-").join("");
     setData({ ...data, ["phoneNumber"]: requestPhoneNumber });
 
+    //이미지 url 등록
+    if (urls[0]) {
+      setData({ ...data, ["profile"]: urls[0] });
+    }
+
     // 유효성 검사 모두 통과시 저장
     if (isSamePassword) {
       // const response = await axiosClient.post<Data>('/signup');
@@ -124,12 +114,14 @@ const Signup = () => {
           <FormInnerDiv>
             <Profile>
               <PreviewDiv>
-                <img src={imgSrc} alt='temp' />
+                {urls.map((url) =>
+                  isLoading ? <div>이미지 url 변환중....</div> : <img key={url} src={url} alt='url' />
+                )}
               </PreviewDiv>
-              <input type='file' accept='image/*' ref={fileRef} onChange={onFileChange} hidden />
+              <input type='file' multiple ref={ref} onChange={onChange} hidden />
               <ProfileUpload
                 onClick={() => {
-                  fileRef && fileRef.current?.click();
+                  ref && ref.current?.click();
                 }}
               >
                 이미지 업로드
@@ -203,6 +195,11 @@ const PreviewDiv = styled.div`
   overflow: hidden;
   display: flex;
   align-items: center;
+
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
   img {
     width: 100%;

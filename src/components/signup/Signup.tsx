@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import SignupInput from "./SignupInput";
 import { styled } from "styled-components";
 
@@ -30,28 +30,45 @@ const signupInputProps = [
   },
 ];
 
+const defaultProfilePath = "default_profile.png";
+
 interface Data {
   email: string;
   password: string;
   passwordCheck: string;
   phoneNumber: string | undefined;
   address: string;
+  // profile: string;
 }
 const Signup = () => {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [imgSrc, setImgSrc] = useState<string>(defaultProfilePath);
   const [data, setData] = useState<Data>({
     email: "",
     password: "",
     passwordCheck: "",
     phoneNumber: "",
     address: "",
+    // profile: "",
   });
 
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    //TODO: upload to storage
+    //      setProfile(url)
+
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = (e) => {
+      const result = e?.target?.result as string;
+      setImgSrc(result);
+    };
+  };
+
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(e);
     const { name, value } = e.target;
-    console.log(`name>>${name}, value>>${value}`);
     if (name === "phoneNumber") {
-      console.log("isPhoneNumber");
       const regex = /^[0-9\b -]{0,13}$/;
 
       const cleanValue = value
@@ -69,16 +86,13 @@ const Signup = () => {
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(e.target);
 
     const originalPhoneNumber = data.phoneNumber;
-    //전화번호 "-" 제거 후
-    console.log(`before>>${originalPhoneNumber}`);
+    //전화번호 "-" 제거 후 저장
     const requestPhoneNumber = data.phoneNumber?.split("-").join("");
-    console.log(`after>>${requestPhoneNumber}`);
-
     setData({ ...data, ["phoneNumber"]: requestPhoneNumber });
     // const response = await axiosClient.post<Data>('/signup');
+
     setData({ ...data, ["phoneNumber"]: originalPhoneNumber });
   };
   return (
@@ -90,9 +104,16 @@ const Signup = () => {
           <FormInnerDiv>
             <Profile>
               <PreviewDiv>
-                <img src="vite.svg" alt="temp" />
+                <img src={imgSrc} alt='temp' />
               </PreviewDiv>
-              <input type="file" />
+              <input type='file' accept='image/*' ref={fileRef} onChange={onFileChange} hidden />
+              <ProfileUpload
+                onClick={() => {
+                  fileRef && fileRef.current?.click();
+                }}
+              >
+                이미지 업로드
+              </ProfileUpload>
             </Profile>
             <InputDiv>
               {signupInputProps.map((elem, i) => (
@@ -122,6 +143,9 @@ const Heading = styled.h1`
   display: flex;
   justify-content: center;
   font-size: 2rem;
+  margin: 3%;
+  padding-bottom: 2%;
+  border-bottom: 1px solid #605e49;
 `;
 
 const SignupContainer = styled.div`
@@ -133,8 +157,7 @@ const SignupContainer = styled.div`
   border-radius: 10px;
   gap: 20px;
   padding: 60px 40px 40px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 24px;
 `;
 
@@ -151,15 +174,41 @@ const FormInnerDiv = styled.div`
   gap: 40px;
 `;
 
-const Profile = styled.div`
-  background-color: pink;
-`;
+const Profile = styled.div``;
 
 const PreviewDiv = styled.div`
-  background-color: greenyellow;
-  width: 75%;
-  height: 80%;
-  margin: 10% auto;
+  width: 100%;
+  height: 60%;
+  margin: 20% auto 10%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+`;
+
+const ProfileUpload = styled.div`
+  background-color: #fff;
+  width: 120px;
+  height: 30px;
+  border-radius: 4px;
+  color: #605e49;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  cursor: pointer;
 `;
 
 const InputDiv = styled.div`
@@ -170,10 +219,6 @@ const InputDiv = styled.div`
 
 const SignupButton = styled.button`
   background-color: #605e49;
-  /* width: 200px;
-  height: 100px;
-  border-radius: 4px;
-  border-style: none; */
   color: #fff;
   font-weight: 600;
   font-size: 16px;
@@ -186,4 +231,5 @@ const SignupButton = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  cursor: pointer;
 `;

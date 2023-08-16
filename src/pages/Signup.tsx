@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SignupInput from "../components/signup/SignupInput";
 import { styled } from "styled-components";
 import useGetUrl from "../hooks/useGetUrls";
@@ -87,6 +87,7 @@ const Signup = () => {
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("bfr", data);
+    // const originalPhoneNumber = data.phoneNumber;
     if (isSamePassword) {
       // const requestPhoneNumber = data.phoneNumber?.split("-").join("");
       // setData({ ...data, ["phoneNumber"]: requestPhoneNumber });
@@ -94,29 +95,6 @@ const Signup = () => {
       // const response = await axiosClient.post<Data>("/signup");
       // console.log(response);
     }
-
-    // const originalPhoneNumber = data.phoneNumber;
-    // //전화번호 "-" 제거 후 저장
-    // const requestPhoneNumber = data.phoneNumber?.split("-").join("");
-    // setData({ ...data, ["phoneNumber"]: requestPhoneNumber });
-    // console.log("전화번호 확인data", data);
-
-    // //이미지 url 등록
-    // // if (urls[0]) {
-    // //   console.log("사진있을때");
-    // //   setData((prev) => ({ ...prev, profile: urls[0] }));
-    // // } else {
-    // //   console.log("기본이미지");
-    // //   setData((prev) => ({ ...prev, profile: submitUrl.current }));
-    // // }
-    // // console.log("aft", data);
-
-    // const response = await axiosClient.post<Data>("/signup");
-    // console.log(response);
-    // // 유효성 검사 모두 통과시 저장
-    // if (isSamePassword) {
-    //   // const response = await axiosClient.post<Data>('/signup');
-    // }
 
     // setData({ ...data, ["phoneNumber"]: originalPhoneNumber });
   };

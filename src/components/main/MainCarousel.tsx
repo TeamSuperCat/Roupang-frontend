@@ -56,6 +56,7 @@ const MainCarousel: React.FC = () => {
 };
 
 const Test = styled.div`
+  margin-bottom: 60px;
   .swiper-pagination {
     text-align: right;
   }

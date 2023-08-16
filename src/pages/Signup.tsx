@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import SignupInput from "../components/signup/SignupInput";
 import { styled } from "styled-components";
 import useGetUrl from "../hooks/useGetUrls";
+import axiosClient from "../api/axios";
 
 const signupInputProps = [
   {
@@ -36,6 +37,8 @@ const signupInputProps = [
   },
 ];
 
+const defaultProfilePath = "default_profile.png";
+
 interface Data {
   email: string;
   password: string;
@@ -48,6 +51,7 @@ interface Data {
 const Signup = () => {
   const [urls, setUrls] = useState<string[]>([]);
   const { ref, onChange, isLoading } = useGetUrl(setUrls);
+  const submitUrl = useRef<string>(defaultProfilePath);
 
   const [isSamePassword, setIsSamePassword] = useState(false);
   const [data, setData] = useState<Data>({
@@ -62,11 +66,6 @@ const Signup = () => {
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    //비밀번호 확인
-    if (name === "passwordCheck" || name === "password") {
-      data.passwordCheck !== data.password ? setIsSamePassword(false) : setIsSamePassword(true);
-    }
 
     //전화번호 유효성 검사
     if (name === "phoneNumber") {
@@ -85,40 +84,82 @@ const Signup = () => {
     }
   };
 
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const originalPhoneNumber = data.phoneNumber;
-    //전화번호 "-" 제거 후 저장
-    const requestPhoneNumber = data.phoneNumber?.split("-").join("");
-    setData({ ...data, ["phoneNumber"]: requestPhoneNumber });
-
-    //이미지 url 등록
-    if (urls[0]) {
-      setData({ ...data, ["profile"]: urls[0] });
-    }
-
-    // 유효성 검사 모두 통과시 저장
+    console.log("bfr", data);
     if (isSamePassword) {
-      // const response = await axiosClient.post<Data>('/signup');
+      // const requestPhoneNumber = data.phoneNumber?.split("-").join("");
+      // setData({ ...data, ["phoneNumber"]: requestPhoneNumber });
+      console.log("일치", data);
+      // const response = await axiosClient.post<Data>("/signup");
+      // console.log(response);
     }
 
-    setData({ ...data, ["phoneNumber"]: originalPhoneNumber });
+    // const originalPhoneNumber = data.phoneNumber;
+    // //전화번호 "-" 제거 후 저장
+    // const requestPhoneNumber = data.phoneNumber?.split("-").join("");
+    // setData({ ...data, ["phoneNumber"]: requestPhoneNumber });
+    // console.log("전화번호 확인data", data);
+
+    // //이미지 url 등록
+    // // if (urls[0]) {
+    // //   console.log("사진있을때");
+    // //   setData((prev) => ({ ...prev, profile: urls[0] }));
+    // // } else {
+    // //   console.log("기본이미지");
+    // //   setData((prev) => ({ ...prev, profile: submitUrl.current }));
+    // // }
+    // // console.log("aft", data);
+
+    // const response = await axiosClient.post<Data>("/signup");
+    // console.log(response);
+    // // 유효성 검사 모두 통과시 저장
+    // if (isSamePassword) {
+    //   // const response = await axiosClient.post<Data>('/signup');
+    // }
+
+    // setData({ ...data, ["phoneNumber"]: originalPhoneNumber });
   };
+
+  useEffect(() => {
+    //비밀번호 확인
+    if (data.password === data.passwordCheck) {
+      setIsSamePassword(true);
+    } else {
+      setIsSamePassword(false);
+    }
+
+    return () => {};
+  }, [data.phoneNumber, data.password, data.passwordCheck]);
+
+  useEffect(() => {
+    if (urls[0]) {
+      setData((prev) => ({ ...prev, profile: urls[0] }));
+    } else {
+      setData((prev) => ({ ...prev, profile: submitUrl.current }));
+    }
+
+    return () => {};
+  }, [urls]);
+
   return (
     <>
       <Heading>회원 가입</Heading>
       {/* <div>정보 입력</div> */}
       <SignupContainer>
-        <SignupForm onSubmit={submitHandler}>
+        <SignupForm onSubmit={submitHandler} onChange={onChange}>
           <FormInnerDiv>
             <Profile>
               <PreviewDiv>
-                {urls.map((url) =>
-                  isLoading ? <div>이미지 url 변환중....</div> : <img key={url} src={url} alt='url' />
+                {urls[0] ? (
+                  urls.map((url) =>
+                    isLoading ? <div>이미지 url 변환중....</div> : <img key={url} src={url} alt='url' />
+                  )
+                ) : (
+                  <img src={submitUrl.current} alt='url' />
                 )}
               </PreviewDiv>
-              <input type='file' multiple ref={ref} onChange={onChange} hidden />
+              <input type='file' ref={ref} hidden />
               <ProfileUpload
                 onClick={() => {
                   ref && ref.current?.click();

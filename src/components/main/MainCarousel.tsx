@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 // Import Swiper styles
 import "swiper/css";
 
@@ -19,16 +19,17 @@ const mainimagelist: string[] = [
 const MainCarousel: React.FC = () => {
   return (
     <>
-      <StyledSwiper
-        modules={[Navigation]}
-        loop={true}
-        navigation
-        spaceBetween={50}
-        slidesPerView={1}
-        onSlideChange={() => console.log("slide change")}
-        onSwiper={(swiper) => console.log(swiper)}
-      >
-        <div className="hajinsoo">
+      <Test>
+        <StyledSwiper
+          modules={[Navigation, Pagination]}
+          loop={true}
+          pagination={{ clickable: true }}
+          navigation
+          spaceBetween={50}
+          slidesPerView={1}
+          onSlideChange={() => console.log("slide change")}
+          onSwiper={(swiper) => console.log(swiper)}
+        >
           {mainimagelist.map((item, index) => {
             return (
               <>
@@ -48,12 +49,17 @@ const MainCarousel: React.FC = () => {
               </>
             );
           })}
-        </div>
-      </StyledSwiper>
+        </StyledSwiper>
+      </Test>
     </>
   );
 };
 
+const Test = styled.div`
+  .swiper-pagination {
+    text-align: right;
+  }
+`;
 const CarouselImgDiv = styled.div`
   overflow: hidden;
   img {

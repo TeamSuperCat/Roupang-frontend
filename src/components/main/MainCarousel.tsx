@@ -56,8 +56,8 @@ const MainCarousel: React.FC = () => {
       >
         {mainimagelist.map((item, index) => {
           return (
-            <>
-              <CarouselImgDiv key={index}>
+            <div key={index}>
+              <CarouselImgDiv>
                 <img src={item} />
               </CarouselImgDiv>
               <Infomation>
@@ -68,7 +68,7 @@ const MainCarousel: React.FC = () => {
                 </InfomationLeft>
                 <InfomationRight></InfomationRight>
               </Infomation>
-            </>
+            </div>
           );
         })}
       </CustomCarousel>

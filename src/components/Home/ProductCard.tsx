@@ -46,6 +46,11 @@ const CardWrapper = styled.li`
   font-family: "Jost", sans-serif;
   min-height: 250px;
   cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.01);
+  }
 `;
 
 const CardImgWrapper = styled.div``;

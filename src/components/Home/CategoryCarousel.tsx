@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider, { Settings } from "react-slick";
 import ProductCard from "./ProductCard";
 import { useState } from "react";
-import ShowMore from "./ShowMore";
+import ShowMore from "./ShowMoreButton";
 import { useRouter } from "../../hooks/useRouter";
 
 function CategoryCarousel() {

@@ -13,7 +13,7 @@ function ShowMore() {
 
 export default ShowMore;
 
-const ShowMoreBtnWrapper = styled.div.attrs({ className: `size` })`
+const ShowMoreBtnWrapper = styled.li.attrs({ className: `size` })`
   display: flex;
   justify-content: center;
   align-items: center;

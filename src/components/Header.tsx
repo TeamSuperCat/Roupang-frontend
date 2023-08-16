@@ -5,7 +5,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-// import SearchModal from "./SearchModal/SearchModal";
+import SearchModal from "./SearchModal/SearchModal";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
@@ -182,6 +182,8 @@ const HeaderTopbox = styled.div`
     .header_login,
     .header_join {
       cursor: pointer;
+      font-family: "Jost", sans-serif;
+      font-weight: bold;
     }
     &:hover .header_login {
       color: #50d2ba;

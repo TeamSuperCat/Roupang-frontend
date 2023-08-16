@@ -42,7 +42,7 @@ const CardWrapper = styled.li`
   width: 15vw;
   height: 20vw;
   grid-template-rows: 3fr 1fr;
-  margin: 14px;
+  margin: 14px 14px 14px 0;
   font-family: "Jost", sans-serif;
   min-height: 250px;
   cursor: pointer;

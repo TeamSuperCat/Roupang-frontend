@@ -19,6 +19,11 @@ const signupInputProps = [
     text: "비밀번호 확인",
   },
   {
+    type: "text",
+    name: "nickname",
+    text: "닉네임",
+  },
+  {
     type: "phoneNumber",
     name: "phoneNumber",
     text: "전화번호",
@@ -36,6 +41,7 @@ interface Data {
   email: string;
   password: string;
   passwordCheck: string;
+  nickname: string;
   phoneNumber: string | undefined;
   address: string;
   // profile: string;
@@ -43,10 +49,12 @@ interface Data {
 const Signup = () => {
   const fileRef = useRef<HTMLInputElement>(null);
   const [imgSrc, setImgSrc] = useState<string>(defaultProfilePath);
+  const [isSamePassword, setIsSamePassword] = useState(false);
   const [data, setData] = useState<Data>({
     email: "",
     password: "",
     passwordCheck: "",
+    nickname: "",
     phoneNumber: "",
     address: "",
     // profile: "",
@@ -68,6 +76,14 @@ const Signup = () => {
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    //비밀번호 확인
+    if (name === "passwordCheck" || name === "password") {
+      data.passwordCheck !== data.password ? setIsSamePassword(false) : setIsSamePassword(true);
+      console.log(isSamePassword);
+    }
+
+    //전화번호 유효성 검사
     if (name === "phoneNumber") {
       const regex = /^[0-9\b -]{0,13}$/;
 
@@ -91,7 +107,11 @@ const Signup = () => {
     //전화번호 "-" 제거 후 저장
     const requestPhoneNumber = data.phoneNumber?.split("-").join("");
     setData({ ...data, ["phoneNumber"]: requestPhoneNumber });
-    // const response = await axiosClient.post<Data>('/signup');
+
+    // 유효성 검사 모두 통과시 저장
+    if (isSamePassword) {
+      // const response = await axiosClient.post<Data>('/signup');
+    }
 
     setData({ ...data, ["phoneNumber"]: originalPhoneNumber });
   };
@@ -168,7 +188,7 @@ const SignupForm = styled.form`
 `;
 
 const FormInnerDiv = styled.div`
-  width: 650px;
+  width: 660px;
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 40px;

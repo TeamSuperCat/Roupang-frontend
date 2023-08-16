@@ -18,35 +18,6 @@ const mainimagelist: string[] = [
 
 const MainCarousel: React.FC = () => {
   return (
-<<<<<<< HEAD
-    <CarouselContainer>
-      <CustomCarousel
-        dynamicHeight={true}
-        autoPlay={true}
-        showThumbs={false}
-        renderIndicator={renderCustomIndicator}
-        infiniteLoop={true}
-      >
-        {mainimagelist.map((item, index) => {
-          return (
-            <div key={index}>
-              <CarouselImgDiv>
-                <img src={item} />
-              </CarouselImgDiv>
-              <Infomation>
-                <InfomationLeft>
-                  <div>제목입니다.</div>
-                  <div>설명입니다.</div>
-                  <button>버튼</button>
-                </InfomationLeft>
-                <InfomationRight></InfomationRight>
-              </Infomation>
-            </div>
-          );
-        })}
-      </CustomCarousel>
-    </CarouselContainer>
-=======
     <>
       <Test>
         <StyledSwiper
@@ -81,7 +52,6 @@ const MainCarousel: React.FC = () => {
         </StyledSwiper>
       </Test>
     </>
->>>>>>> 4b9ff529f6f6c11f75b97815a5670e0f2d46b0ce
   );
 };
 

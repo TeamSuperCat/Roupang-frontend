@@ -180,6 +180,8 @@ const HeaderTopbox = styled.div`
     .header_login,
     .header_join {
       cursor: pointer;
+      font-family: "Jost", sans-serif;
+      font-weight: bold;
     }
     &:hover .header_login {
       color: #50d2ba;

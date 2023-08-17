@@ -131,7 +131,7 @@ const ShoppingCart = () => {
                 <th>가격</th>
                 <th>수량</th>
                 <th>합계</th>
-                <th>동작</th>
+                <th>선택</th>
               </tr>
             </thead>
             <tbody>

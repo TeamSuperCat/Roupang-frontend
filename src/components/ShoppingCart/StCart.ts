@@ -151,6 +151,7 @@ export const CartWrapper = styled.div`
       text-align: right;
       padding-right: 30px;
       height: 50px;
+      font-weight: bold;
     }
   }
   .cart_deletebtn_box {

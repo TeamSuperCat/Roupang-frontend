@@ -1,40 +1,22 @@
-import React, { useState } from "react";
-import { styled } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 
 const MainListControl = () => {
-  const [value, setValue] = useState<string>("");
-  const [isActive, setIsActive] = useState<boolean>(false);
-
-  const handleDropname = (text: string) => {
-    setValue(text);
-  };
-
-  const toggleDropdown = () => {
-    setIsActive(!isActive);
-  };
-
   return (
     <ControlWrapper>
-      <div>전체 0개</div>
-      <div className="main_dropdown">
-        <div
-          className={`dropdown ${isActive ? "active" : ""}`}
-          onClick={toggleDropdown}
-        >
-          <input
-            type="text"
-            className="textBox"
-            placeholder="선택순"
-            value={value}
-            readOnly
-          />
-          <div className="option">
-            <div onClick={() => handleDropname("최신순")}>최신순</div>
-            <div onClick={() => handleDropname("인기순")}>인기순</div>
-            <div onClick={() => handleDropname("가격높은순")}>가격높은순</div>
-            <div onClick={() => handleDropname("가격낮은순")}>가격낮은순</div>
-          </div>
+      <div className="item_quantity_info">
+        <img src="/img/item.svg" alt="item" />
+        <div>
+          총 <span>0</span> 개의 상품이 있습니다.
         </div>
+      </div>
+      <div>
+        <ul className="item_selected_list">
+          <li>신상품</li>
+          <li>인기순</li>
+          <li>낮은가격</li>
+          <li>높은가격</li>
+        </ul>
       </div>
     </ControlWrapper>
   );
@@ -47,74 +29,51 @@ const ControlWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 60px;
-  .main_dropdown {
-    position: relative;
-    margin-bottom: 10px;
-    .dropdown {
-      font-size: 14px;
+  margin: 100px 0 30px 0;
+  padding: 5px 0;
+  border-top: 3px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  .item_quantity_info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #a1a1a1;
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+    span {
+      color: #50d2ba;
+      font-weight: bold;
+    }
+  }
+  .item_selected_list {
+    display: flex;
+    font-size: 14px;
+    color: #a1a1a1;
+    font-weight: bold;
+    gap: 50px;
+    li {
+      cursor: pointer;
+      &:hover {
+        transition: all 0.2s;
+        color: #50d2ba;
+      }
+    }
+    li:not(:first-child) {
       position: relative;
-      width: 120px;
-      height: 10px;
+    }
+    li:not(:first-child)::before {
+      content: "";
       position: absolute;
-      right: 20px;
-      top: -10px;
-
-      &::before {
-        content: "";
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        right: 6px;
-        top: 8px;
-        z-index: 50;
-        border: 2px solid #333;
-        border-top: 2px solid #fff;
-        border-right: 2px solid #fff;
-        transform: rotate(-45deg);
-        transition: 0.5s;
-        pointer-events: none;
-      }
-      &.active::before {
-        top: 12px;
-        transform: rotate(-225deg);
-      }
-      &.active .option {
-        display: block;
-      }
-      input {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
-        background: #fff;
-        border: none;
-        outline: none;
-        box-shadow: 0 5xp 20px rgba(0, 0, 0, 0.05);
-        padding: 12px 0 12px 20px;
-        border-radius: 10px;
-      }
-      .option {
-        position: absolute;
-        top: 51px;
-        width: 100%;
-        background: #fff;
-        box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
-        overflow: hidden;
-        display: none;
-        div {
-          padding: 12px 20px;
-
-          cursor: pointer;
-          &:hover {
-            color: #fff;
-            background-color: #333;
-          }
-        }
-      }
+      left: -23px;
+      width: 1px;
+      height: 16px;
+      background-color: #a1a1a1;
+      cursor: default;
     }
   }
 `;

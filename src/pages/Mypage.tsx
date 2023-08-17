@@ -78,40 +78,66 @@ const Mypage = () => {
               <Link to='#'>asdf</Link>
             </SideMenuList>
           </SideMenu>
-          <UserProfile>
-            <UserProfileContainer>
-              <UserInfoForm onSubmit={submitHandler}>
-                <FormInnerDiv>
-                  <Profile>
-                    <PreviewDiv>
-                      <img src={imgSrc} alt='temp' />
-                    </PreviewDiv>
-                    <input type='file' accept='image/*' ref={fileRef} onChange={onFileChange} hidden />
-                    <ProfileUpload
-                      onClick={() => {
-                        fileRef && fileRef.current?.click();
-                      }}
-                    >
-                      이미지 업로드
-                    </ProfileUpload>
-                  </Profile>
-                  <InputDiv>
-                    {userProfileInfoProps.map((elem, i) => (
-                      <ProfileInput
-                        key={i}
-                        name={elem.name}
-                        type={elem.type}
-                        text={elem.text}
-                        data={data}
-                        onChange={inputChangeHandler}
-                      />
-                    ))}
-                  </InputDiv>
-                </FormInnerDiv>
-                {/* <SignupButton>회원가입</SignupButton> */}
-              </UserInfoForm>
-            </UserProfileContainer>
-          </UserProfile>
+          <ContentsContainer>
+            <UserProfile>
+              <UserProfileContainer>
+                <UserInfoForm onSubmit={submitHandler}>
+                  <FormInnerDiv>
+                    <Profile>
+                      <PreviewDiv>
+                        <img src={imgSrc} alt='temp' />
+                      </PreviewDiv>
+                      <input type='file' accept='image/*' ref={fileRef} onChange={onFileChange} hidden />
+                      <ProfileUpload
+                        onClick={() => {
+                          fileRef && fileRef.current?.click();
+                        }}
+                      >
+                        이미지 업로드
+                      </ProfileUpload>
+                    </Profile>
+                    <InputDiv>
+                      {userProfileInfoProps.map((elem, i) => (
+                        <ProfileInput
+                          key={i}
+                          name={elem.name}
+                          type={elem.type}
+                          text={elem.text}
+                          data={data}
+                          onChange={inputChangeHandler}
+                        />
+                      ))}
+                    </InputDiv>
+                    <UpdateButton>프로필 수정</UpdateButton>
+                  </FormInnerDiv>
+                </UserInfoForm>
+              </UserProfileContainer>
+            </UserProfile>
+            <CartContainer>
+              <CartListHeading>장바구니 목록</CartListHeading>
+              <GoToCartButton>자세히 보기</GoToCartButton>
+              <CartItemList>
+                <CartItem>
+                  <ItemContainer>
+                    <p>img</p>
+                    <ItemInfo>
+                      <p>상품명</p>
+                      <p>가격</p>
+                    </ItemInfo>
+                    <select name='amount' id='amount'>
+                      <option value='1'>1</option>
+                    </select>
+                    <p>수량</p>
+                    <button>주문하기</button>
+                    <button>삭제</button>
+                  </ItemContainer>
+                </CartItem>
+                <CartItem>item</CartItem>
+                <CartItem>item</CartItem>
+                <CartItem>item</CartItem>
+              </CartItemList>
+            </CartContainer>
+          </ContentsContainer>
         </MypageDiv>
       </Container>
     </>
@@ -141,6 +167,13 @@ const MypageDiv = styled.div`
   align-items: center;
 `;
 
+const ContentsContainer = styled.div`
+  background-color: tomato;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+`;
+
 const SideMenu = styled.div`
   width: 170px;
   padding: 30px;
@@ -163,17 +196,19 @@ const SideMenuList = styled.div`
   gap: 5px;
 `;
 
-const UserProfile = styled.div``;
+const UserProfile = styled.div`
+  margin-bottom: 100px;
+`;
 
 const UserProfileContainer = styled.div``;
 
 const UserInfoForm = styled.form``;
 
 const FormInnerDiv = styled.div`
-  width: 700px;
   border: 1px solid;
 
   width: 660px;
+  height: 400px;
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 40px;
@@ -201,6 +236,74 @@ const PreviewDiv = styled.div`
   }
 `;
 
-const ProfileUpload = styled.div``;
+const ProfileUpload = styled.div`
+  background-color: #fff;
+  width: 120px;
+  height: 30px;
+  border-radius: 4px;
+  color: #605e49;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 
-const InputDiv = styled.div``;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  cursor: pointer;
+`;
+
+const InputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+`;
+
+const UpdateButton = styled.button`
+  background-color: pink;
+  width: 100px;
+  height: 50px;
+`;
+
+const CartContainer = styled.div`
+  background-color: bisque;
+  padding: 30px 0;
+  position: relative;
+`;
+
+const GoToCartButton = styled.button`
+  position: absolute;
+  right: 0px;
+`;
+
+const CartListHeading = styled.h2`
+  font-size: 1.25rem;
+`;
+
+const CartItemList = styled.ul`
+  background-color: blueviolet;
+  margin: 2dvh;
+`;
+
+const CartItem = styled.li`
+  background-color: burlywood;
+`;
+
+const ItemContainer = styled.div`
+  background-color: greenyellow;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ItemInfo = styled.div`
+  background-color: #a79f9f;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;

@@ -54,8 +54,13 @@ const CartItem: React.FC<CartItemProps> = ({
       </td>
 
       <td>{formatCurrency(item.price * item.quantity)}</td>
-      <td>
-        <button onClick={() => handleDelete(item.id)}>삭제</button>
+      <td className="cart_item_btnbox">
+        <div>주문하기</div>
+        <div>위시리스트</div>
+        <div onClick={() => handleDelete(item.id)}>
+          삭제
+          <img src="/img/delete.svg" alt="삭제" />
+        </div>
       </td>
     </tr>
   );

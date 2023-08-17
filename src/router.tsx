@@ -3,15 +3,12 @@ import { Router as RemixRouter } from "@remix-run/router/dist/router";
 import Home from "./pages/Home";
 import AuthComponents from "./Auth/AuthComponents";
 import HeaderLayout from "./layout/HeaderLayout";
-<<<<<<< HEAD
 import Mypage from "./pages/Mypage";
-=======
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Footer from "./components/Footer/Footer";
 import Test from "./pages/Test";
 import Cart from "./pages/Cart";
->>>>>>> dev/home
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -48,11 +45,6 @@ const routerData: RouterElement[] = [
       },
       {
         id: 2,
-<<<<<<< HEAD
-        path: "mypage",
-        label: "Mypage",
-        element: <Mypage />,
-=======
         path: "main",
         label: "Main",
         element: <Main />,
@@ -74,7 +66,12 @@ const routerData: RouterElement[] = [
         path: "cart",
         label: "Cart",
         element: <Cart />,
->>>>>>> dev/home
+      },
+      {
+        id: 7,
+        path: "mypage",
+        label: "Mypage",
+        element: <Mypage />,
       },
     ],
   },

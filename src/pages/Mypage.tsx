@@ -36,16 +36,42 @@ interface Data {
   profile: string;
 }
 
+type Item = {
+  id: number;
+  name: string;
+  imageUrl?: string;
+  quantity: number;
+  price: number;
+};
+
 const Mypage = () => {
   const fileRef = useRef<HTMLInputElement>(null);
   const [imgSrc, setImgSrc] = useState<string>(defaultProfilePath);
   const [data, setData] = useState<Data>({
-    email: "",
-    nickname: "",
-    phoneNumber: "",
-    address: "",
-    profile: "",
+    email: "test@test.com",
+    nickname: "James",
+    phoneNumber: "010-3030-4040",
+    address: "대한민국",
+    profile: "default_profile.png",
   });
+  const [items, setItems] = useState<Item[]>([
+    // 예시 데이터를 적용할 수 있습니다.
+    {
+      id: 1,
+      name: "아이템1",
+      quantity: 1,
+      price: 15000,
+      imageUrl: "/img/cart1.jpg",
+    },
+    {
+      id: 2,
+      name: "아이템2",
+      quantity: 6,
+      price: 6000,
+      imageUrl: "/img/cart2.jpg",
+    },
+    // ...
+  ]);
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -85,7 +111,8 @@ const Mypage = () => {
                   <FormInnerDiv>
                     <Profile>
                       <PreviewDiv>
-                        <img src={imgSrc} alt='temp' />
+                        <img src={data.profile} alt='temp' />
+                        {/* <img src={imgSrc} alt='temp' /> */}
                       </PreviewDiv>
                       <input type='file' accept='image/*' ref={fileRef} onChange={onFileChange} hidden />
                       <ProfileUpload
@@ -114,28 +141,47 @@ const Mypage = () => {
               </UserProfileContainer>
             </UserProfile>
             <CartContainer>
-              <CartListHeading>장바구니 목록</CartListHeading>
-              <GoToCartButton>자세히 보기</GoToCartButton>
-              <CartItemList>
-                <CartItem>
-                  <ItemContainer>
-                    <p>img</p>
-                    <ItemInfo>
-                      <p>상품명</p>
-                      <p>가격</p>
-                    </ItemInfo>
-                    <select name='amount' id='amount'>
-                      <option value='1'>1</option>
-                    </select>
-                    <p>수량</p>
-                    <button>주문하기</button>
-                    <button>삭제</button>
-                  </ItemContainer>
-                </CartItem>
-                <CartItem>item</CartItem>
-                <CartItem>item</CartItem>
-                <CartItem>item</CartItem>
-              </CartItemList>
+              <div>
+                <div>
+                  <div className='cart_length_view'>
+                    <span>상품 0 개</span>
+                    <span>
+                      <Link to='/cart'>자세히 보기</Link>
+                    </span>
+                  </div>
+                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                    <colgroup>
+                      <col style={{ width: "15%" }} />
+                      <col style={{ width: "40%" }} />
+                      <col style={{ width: "10%" }} />
+                      <col style={{ width: "10%" }} />
+                      <col style={{ width: "10%" }} />
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>사진</th>
+                        <th>상품정보</th>
+                        <th>수량</th>
+                        <th>가격</th>
+                        <th>합계</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {items.map((item) => (
+                        <tr key={item.id}>
+                          <td>
+                            <img src={item.imageUrl} alt='상품이미지' />
+                          </td>
+                          <td>{item.name}</td>
+                          <td>{item.quantity}</td>
+                          <td>{item.price}</td>
+                          <td>{item.price * item.quantity}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </CartContainer>
           </ContentsContainer>
         </MypageDiv>
@@ -168,7 +214,6 @@ const MypageDiv = styled.div`
 `;
 
 const ContentsContainer = styled.div`
-  background-color: tomato;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -196,9 +241,7 @@ const SideMenuList = styled.div`
   gap: 5px;
 `;
 
-const UserProfile = styled.div`
-  margin-bottom: 100px;
-`;
+const UserProfile = styled.div``;
 
 const UserProfileContainer = styled.div``;
 
@@ -264,46 +307,40 @@ const InputDiv = styled.div`
 `;
 
 const UpdateButton = styled.button`
-  background-color: pink;
   width: 100px;
   height: 50px;
 `;
 
 const CartContainer = styled.div`
-  background-color: bisque;
-  padding: 30px 0;
+  margin-top: 100px;
+  width: 100%;
+  .cart_length_view {
+    width: 100%;
+    font-size: 15px;
+    background-color: #f6f6f6;
+    border: 1px solid #d7d5d5;
+    display: flex;
+    justify-content: space-between;
+    span {
+      display: inline-block;
+      padding: 10px 20px;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+  table {
+    th,
+    td {
+      text-align: center;
+      vertical-align: middle;
+    }
+    th {
+      padding: 10px 0;
+    }
+    td {
+      height: 100px;
+    }
+  }
   position: relative;
-`;
-
-const GoToCartButton = styled.button`
-  position: absolute;
-  right: 0px;
-`;
-
-const CartListHeading = styled.h2`
-  font-size: 1.25rem;
-`;
-
-const CartItemList = styled.ul`
-  background-color: blueviolet;
-  margin: 2dvh;
-`;
-
-const CartItem = styled.li`
-  background-color: burlywood;
-`;
-
-const ItemContainer = styled.div`
-  background-color: greenyellow;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ItemInfo = styled.div`
-  background-color: #a79f9f;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;

@@ -31,7 +31,7 @@ function Portal({ children }: IChildrenProps) {
   return ReactDOM.createPortal(
     <>
       {isOpen && (
-        <ModalWrapper onClick={() => toggleModal()}>
+        <ModalWrapper onClick={toggleModal}>
           {/* {modifiedChildren} */}
         </ModalWrapper>
       )}

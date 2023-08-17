@@ -4,36 +4,38 @@ import { CgProfile } from "react-icons/cg";
 import { AiOutlineHeart } from "react-icons/ai";
 import MenuBtn from "./MenuBtn";
 import useToggleModal from "../../hooks/useToggleModal";
-import { useState } from "react";
 
 function ModalMenu() {
-  const { toggleModal } = useToggleModal();
-  const [rotateState, setRotateState] = useState(false);
+  const { isOpen, toggleModal } = useToggleModal();
 
   const handleClick = () => {
     toggleModal();
-    setRotateState(!rotateState);
   };
 
   return (
     <ModalMenuLayOut>
       <BtnWrapper>
-        <MenuBtn primary={true} rotateState={rotateState} onClick={handleClick}>
+        <MenuBtn
+          primary={true}
+          rotateState={isOpen}
+          onClick={handleClick}
+          text={isOpen ? "닫기" : "열기"}
+        >
           <BsThreeDotsVertical />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn text="고객센터">
           <BsBell />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn text="마이샵">
           <CgProfile />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn text="최근 본 상품">
           <BsClock />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn text="관심 상품">
           <AiOutlineHeart />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn text="좋아요">
           <BsStar />
         </MenuBtn>
       </BtnWrapper>
@@ -48,8 +50,8 @@ const ModalMenuLayOut = styled.div`
   top: 50%;
   height: 290px;
   width: 70px;
-  transform: translate3d(-70px, -50%, 0);
-  background-color: #fff;
+  transform: translate3d(-100px, -50%, 0);
+  background-color: white;
   border-top-left-radius: 14px;
   border-bottom-left-radius: 14px;
   display: grid;

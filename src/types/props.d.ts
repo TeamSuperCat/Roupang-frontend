@@ -6,6 +6,7 @@ interface IChildrenProps {
 interface IButtonProps extends IChildrenProps {
   primary?: boolean;
   rotateState?: boolean;
+  text: string;
 }
 
 interface INoneEventFunc {

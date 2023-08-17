@@ -5,7 +5,6 @@ import AuthComponents from "./Auth/AuthComponents";
 import HeaderLayout from "./layout/HeaderLayout";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
-import Footer from "./components/Footer/Footer";
 import Test from "./pages/Test";
 import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
@@ -75,13 +74,6 @@ const routerData: RouterElement[] = [
       },
     ],
   },
-  {
-    id: 4,
-    path: "/",
-    label: "Footer",
-    element: <Footer />,
-  },
-
   // {
   //   id: 1,
   //   path: "/admin",

@@ -16,7 +16,7 @@ let responseProductData = {
   price: 10000,
   stock: 5,
   description: "A 물품 상세 설명",
-  description_img: "A 물품 상세 이미지",
+  description_img: descriptionImage,
   category_name: "간식",
   product_img: image,
   sales_end_date: "2023-08-15",
@@ -50,7 +50,9 @@ const DetailDescription = () => {
   };
 
   const productAmountUp = () => {
-    setProductAmount((prev) => prev + 1);
+    if (productAmount < responseProductData.stock) {
+      setProductAmount((prev) => prev + 1);
+    }
   };
   const productAmountDown = () => {
     if (productAmount > 1) {
@@ -62,6 +64,50 @@ const DetailDescription = () => {
     setIsMoreView((prev) => !prev);
   };
   console.log(isMoreView);
+
+  //장바구니에 넣기
+  //장바구니 api로 보낸다
+  //데이터는 제품아이디, 수량, 가격
+  const shopingCartButton = () => {
+    let token = localStorage.getItem("userinfo");
+    const request = fetch("http://localhost:8080/api/v1/cart/items", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        product_idx: productid,
+        amount: productAmount,
+      }),
+    })
+      .then()
+      .catch(() => {
+        console.log("장바구니 응안돼");
+      });
+  };
+
+  //구매하기
+  //구매하기 api로 보낸다
+  //데이터는 제품아이디, 수량, 가격
+  const buyButton = () => {
+    let token = localStorage.getItem("userinfo");
+    const request = fetch("http://localhost:8080/api/v1/cart/items", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        product_idx: productid,
+        amount: productAmount,
+      }),
+    })
+      .then()
+      .catch(() => {
+        console.log("구매하기 응안돼");
+      });
+  };
 
   return (
     <>
@@ -95,7 +141,13 @@ const DetailDescription = () => {
             <div></div>
             <HoverContainer>
               <CouponeButton>
-                <Content>쿠폰발급</Content>
+                <Content
+                  onClick={() => {
+                    alert("ㅋㅋ없쥬?");
+                  }}
+                >
+                  쿠폰발급
+                </Content>
                 <ButtonFill />
               </CouponeButton>
             </HoverContainer>
@@ -131,20 +183,20 @@ const DetailDescription = () => {
               <ProductAmount>{productAmount}</ProductAmount>
               <PlusButton onClick={productAmountUp}>+</PlusButton>
             </DivFlex>
-            <div></div>
+            <Amount>재고 : {responseProductData.stock}</Amount>
           </ProductCounter>
 
           {/* 장바구니 구매하기버튼 시작 */}
           <div style={{ display: "flex", justifyContent: "space-around" }}>
             <ShopingCartContainer>
-              <ShopingCartButton>
+              <ShopingCartButton onClick={shopingCartButton}>
                 <Content>장바구니</Content>
                 <ShopingCartFill />
               </ShopingCartButton>
             </ShopingCartContainer>
 
             <BuyContainer>
-              <BuyButton>
+              <BuyButton onClick={buyButton}>
                 <Content>구매하기</Content>
                 <BuyFill />
               </BuyButton>
@@ -153,25 +205,24 @@ const DetailDescription = () => {
         </DescriptionBox>
       </Container>
       <DetailDescriptionBox isMoreView={isMoreView}>
-        <DescriptionImage src={descriptionImage} alt="" />
+        <DescriptionImage src={responseProductData.description_img} alt="" />
       </DetailDescriptionBox>
-      <MoreViewButtonBox >
-        {isMoreView?
-        
-        <BuyContainer>
-          <BuyButton  onClick={ProductInformationMoreViewHandler}>
-            <Content>상품정보 더보기△</Content>
-            <BuyFill />
-          </BuyButton>
-        </BuyContainer> : 
-
-<BuyContainer>
-<BuyButton  onClick={ProductInformationMoreViewHandler}>
-  <Content>상품정보 더보기▽</Content>
-  <BuyFill />
-</BuyButton>
-</BuyContainer>
-        }
+      <MoreViewButtonBox>
+        {isMoreView ? (
+          <BuyContainer>
+            <BuyButton onClick={ProductInformationMoreViewHandler}>
+              <Content>상품정보 더보기 △</Content>
+              <BuyFill />
+            </BuyButton>
+          </BuyContainer>
+        ) : (
+          <BuyContainer>
+            <BuyButton onClick={ProductInformationMoreViewHandler}>
+              <Content>상품정보 더보기 ▽</Content>
+              <BuyFill />
+            </BuyButton>
+          </BuyContainer>
+        )}
       </MoreViewButtonBox>
     </>
   );
@@ -402,9 +453,8 @@ const DetailDescriptionBox = styled.div<DetailDescriptionBoxProps>`
   display: block;
   position: relative;
   width: 100%;
-  height: ${({ isMoreView }) => isMoreView ? "auto" : "1500px"};
-  overflow: ${({ isMoreView }) => isMoreView ? "visible" : "hidden"};
-
+  height: ${({ isMoreView }) => (isMoreView ? "auto" : "1500px")};
+  overflow: ${({ isMoreView }) => (isMoreView ? "visible" : "hidden")};
 `;
 
 const DescriptionImage = styled.img`

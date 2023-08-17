@@ -5,8 +5,9 @@ import AuthComponents from "./Auth/AuthComponents";
 import HeaderLayout from "./layout/HeaderLayout";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
-import Footer from "./components/Footer";
+import Footer from "./components/Footer/Footer";
 import Test from "./pages/Test";
+import Cart from "./pages/Cart";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -58,6 +59,12 @@ const routerData: RouterElement[] = [
         path: "test",
         label: "Test",
         element: <Test />,
+      },
+      {
+        id: 6,
+        path: "cart",
+        label: "Cart",
+        element: <Cart />,
       },
     ],
   },

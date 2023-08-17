@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
 import styled from "styled-components";
 import icons from "../../assets/test/icons.png";
@@ -11,10 +12,12 @@ let optionData = [
 ];
 
 const DetailDescription = () => {
+  const { productid } = useParams();
+  console.log("제품ID", productid);
   const [isOption, setIsOption] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [OptionValue, setOptionValue] = useState("옵션선택");
-  const [productAmount, setProductAmount] = useState(0);
+  const [productAmount, setProductAmount] = useState(1);
 
   const optionClcikHandler = () => {
     console.log(isOption);
@@ -33,10 +36,12 @@ const DetailDescription = () => {
     setProductAmount((prev) => prev + 1);
   };
   const productAmountDown = () => {
-    if (productAmount > 0) {
+    if (productAmount > 1) {
       setProductAmount((prev) => prev - 1);
     }
   };
+
+  fetch();
   return (
     <>
       <Container>
@@ -230,6 +235,7 @@ const OptionSelect = styled.div`
 const OptionList = styled.div`
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid gray;
   margin-bottom: 0.2rem;
   padding: 0.5rem;
 `;

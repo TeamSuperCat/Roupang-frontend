@@ -54,7 +54,7 @@ const routerData: RouterElement[] = [
       },
       {
         id: 4,
-        path: "detail",
+        path: "detail/:productid",
         label: "Detail",
         element: <Detail />,
       },

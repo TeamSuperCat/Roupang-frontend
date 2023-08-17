@@ -52,6 +52,7 @@ const Signup = () => {
   const [urls, setUrls] = useState<string[]>([]);
   const { ref, onChange, isLoading } = useGetUrl(setUrls);
   const submitUrl = useRef<string>(defaultProfilePath);
+  const [tempImg, setTempImg] = useState("");
 
   const [isSamePassword, setIsSamePassword] = useState(false);
   const [data, setData] = useState<Data>({
@@ -63,6 +64,24 @@ const Signup = () => {
     address: "",
     profile: "",
   });
+
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    // Blob 객체로 변환
+    const blob = new Blob([file], { type: file.type });
+
+    // 임시 URL 생성
+    const tempURL = URL.createObjectURL(blob);
+    console.log(tempURL);
+
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = (e) => {
+      const result = e?.target?.result as string;
+      setTempImg(result);
+    };
+  };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -90,14 +109,19 @@ const Signup = () => {
     // const originalPhoneNumber = data.phoneNumber;
     if (isSamePassword) {
       // const requestPhoneNumber = data.phoneNumber?.split("-").join("");
-      // setData({ ...data, ["phoneNumber"]: requestPhoneNumber });
+      // setData((prev) => ({ ...prev, phoneNumber: requestPhoneNumber }));
       console.log("일치", data);
+      onChange();
       // const response = await axiosClient.post<Data>("/signup");
       // console.log(response);
     }
 
     // setData({ ...data, ["phoneNumber"]: originalPhoneNumber });
   };
+
+  // useEffect(() => {
+  //   return () => {};
+  // }, [data.phoneNumber]);
 
   useEffect(() => {
     //비밀번호 확인
@@ -108,7 +132,7 @@ const Signup = () => {
     }
 
     return () => {};
-  }, [data.phoneNumber, data.password, data.passwordCheck]);
+  }, [data.password, data.passwordCheck]);
 
   useEffect(() => {
     if (urls[0]) {
@@ -120,12 +144,16 @@ const Signup = () => {
     return () => {};
   }, [urls]);
 
+  // useEffect(() => {
+  //   return () => {};
+  // }, [submitUrl]);
+
   return (
     <>
       <Heading>회원 가입</Heading>
       {/* <div>정보 입력</div> */}
       <SignupContainer>
-        <SignupForm onSubmit={submitHandler} onChange={onChange}>
+        <SignupForm onSubmit={submitHandler}>
           <FormInnerDiv>
             <Profile>
               <PreviewDiv>
@@ -134,10 +162,10 @@ const Signup = () => {
                     isLoading ? <div>이미지 url 변환중....</div> : <img key={url} src={url} alt='url' />
                   )
                 ) : (
-                  <img src={submitUrl.current} alt='url' />
+                  <img src={tempImg ? tempImg : submitUrl.current} alt='url' />
                 )}
               </PreviewDiv>
-              <input type='file' ref={ref} hidden />
+              <input type='file' ref={ref} onChange={onFileChange} hidden />
               <ProfileUpload
                 onClick={() => {
                   ref && ref.current?.click();

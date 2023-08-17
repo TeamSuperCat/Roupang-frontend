@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import ProfileInput from "../components/mypage/ProfileInput";
 import { Link } from "react-router-dom";
-import axiosClient from "../api/axios";
 
 const userProfileInfoProps = [
   {

@@ -3,11 +3,12 @@ import { Router as RemixRouter } from "@remix-run/router/dist/router";
 import Home from "./pages/Home";
 import AuthComponents from "./Auth/AuthComponents";
 import HeaderLayout from "./layout/HeaderLayout";
-import Mypage from "./pages/Mypage";
+import Signup from "./pages/Signup";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
-import Footer from "./components/Footer/Footer";
 import Test from "./pages/Test";
+import Footer from "./components/Footer/Footer";
+import Mypage from "./pages/Mypage";
 import Cart from "./pages/Cart";
 
 interface RouterBase {
@@ -63,15 +64,21 @@ const routerData: RouterElement[] = [
       },
       {
         id: 6,
-        path: "cart",
-        label: "Cart",
-        element: <Cart />,
+        path: "signup",
+        label: "Signup",
+        element: <Signup />,
       },
       {
         id: 7,
         path: "mypage",
         label: "Mypage",
         element: <Mypage />,
+      },
+      {
+        id: 8,
+        path: "cart",
+        label: "Cart",
+        element: <Cart />,
       },
     ],
   },

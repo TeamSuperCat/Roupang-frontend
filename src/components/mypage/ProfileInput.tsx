@@ -10,12 +10,13 @@ type inputProps = {
     address: string;
   };
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isUpdate: boolean;
 };
 
-const ProfileInput = ({ name, type, text, data, onChange }: inputProps) => {
+const ProfileInput = ({ name, type, text, data, onChange, isUpdate }: inputProps) => {
   return (
     <InputWrap>
-      <Input name={name} type={type} value={data[name]} onChange={(e) => onChange(e)} />
+      <Input name={name} type={type} value={data[name]} onChange={(e) => onChange(e)} readOnly={!isUpdate} />
       <label htmlFor='email'>{text}</label>
     </InputWrap>
   );

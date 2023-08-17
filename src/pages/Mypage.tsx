@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import ProfileInput from "../components/mypage/ProfileInput";
 import { Link } from "react-router-dom";
+import axiosClient from "../api/axios";
 
 const userProfileInfoProps = [
   {
@@ -45,6 +46,8 @@ type Item = {
 };
 
 const Mypage = () => {
+  const [isSeller, setIsSeller] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const [imgSrc, setImgSrc] = useState<string>(defaultProfilePath);
   const [data, setData] = useState<Data>({
@@ -73,6 +76,21 @@ const Mypage = () => {
     // ...
   ]);
 
+  const updateProfile = () => {
+    setIsUpdate((prev) => !prev);
+  };
+
+  const submitProfile = async () => {
+    if (isUpdate) {
+      console.log("지금 트루다");
+      // nickname, email, phoneNumber, address, profile
+      // const response = await axiosClient.patch<Data>("/mypage");
+      // console.log(response);
+      //response 이상 없으면 user정보 다시 불러올 필요가 없구나?
+      setIsUpdate((prev) => !prev);
+    }
+  };
+
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     const fileReader = new FileReader();
@@ -84,10 +102,19 @@ const Mypage = () => {
   };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
   };
 
-  const submitHandler = () => {};
+  const submitHandler = (e) => {
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    //get user & get cart
+
+    return () => {};
+  }, []);
 
   return (
     <>
@@ -97,10 +124,16 @@ const Mypage = () => {
           <SideMenu>
             <SideHeading>MENU</SideHeading>
             <SideMenuList>
-              <Link to='#'>asdf</Link>
-              <Link to='#'>asdf</Link>
-              <Link to='#'>asdf</Link>
-              <Link to='#'>asdf</Link>
+              <Link to='#'>내 정보 보기</Link>
+              {isSeller ? (
+                <>
+                  <Link to='seller/products'>판매 물품 목록</Link>
+                  <Link to='seller'>물품 등록</Link>
+                </>
+              ) : (
+                <Link to='seller/signup'>판매자 등록</Link>
+              )}
+
               <Link to='#'>asdf</Link>
             </SideMenuList>
           </SideMenu>
@@ -115,13 +148,15 @@ const Mypage = () => {
                         {/* <img src={imgSrc} alt='temp' /> */}
                       </PreviewDiv>
                       <input type='file' accept='image/*' ref={fileRef} onChange={onFileChange} hidden />
-                      <ProfileUpload
-                        onClick={() => {
-                          fileRef && fileRef.current?.click();
-                        }}
-                      >
-                        이미지 업로드
-                      </ProfileUpload>
+                      {isUpdate ? (
+                        <ProfileUpload
+                          onClick={() => {
+                            fileRef && fileRef.current?.click();
+                          }}
+                        >
+                          이미지 업로드
+                        </ProfileUpload>
+                      ) : null}
                     </Profile>
                     <InputDiv>
                       {userProfileInfoProps.map((elem, i) => (
@@ -132,10 +167,15 @@ const Mypage = () => {
                           text={elem.text}
                           data={data}
                           onChange={inputChangeHandler}
+                          isUpdate={isUpdate}
                         />
                       ))}
                     </InputDiv>
-                    <UpdateButton>프로필 수정</UpdateButton>
+                    {isUpdate ? (
+                      <UpdateButton onClick={submitProfile}>수정하기</UpdateButton>
+                    ) : (
+                      <UpdateButton onClick={updateProfile}>프로필 수정</UpdateButton>
+                    )}
                   </FormInnerDiv>
                 </UserInfoForm>
               </UserProfileContainer>

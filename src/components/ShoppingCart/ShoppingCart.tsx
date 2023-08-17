@@ -1,5 +1,18 @@
-import React, { useState, ChangeEvent } from "react";
-import styled from "styled-components";
+import React, { ChangeEvent } from "react";
+import CartItem from "./CartItem";
+import { CartWrapper } from "./StCart";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeItem,
+  selectItem,
+  deselectItem,
+  removeAll,
+  removeSelected,
+  incrementQuantity,
+  decrementQuantity,
+  selectAllItems,
+  deselectAllItems,
+} from "../../slice/cartSlice";
 
 type Item = {
   id: number;
@@ -7,103 +20,71 @@ type Item = {
   imageUrl?: string;
   quantity: number;
   price: number;
+  stock: number;
 };
 
-const ShoppingCart = () => {
-  const [items, setItems] = useState<Item[]>([
-    {
-      id: 1,
-      name: "아이템1",
-      quantity: 1,
-      price: 15000,
-      imageUrl: "/img/cart1.jpg",
-    },
-    {
-      id: 2,
-      name: "아이템2",
-      quantity: 6,
-      price: 6000,
-      imageUrl: "/img/cart2.jpg",
-    },
-    // ...
-  ]);
+interface CartState {
+  items: Item[];
+  selectedItems: Item[];
+}
+interface RootState {
+  cart: CartState;
+}
 
-  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
+const ShoppingCart = () => {
+  const dispatch = useDispatch();
+
+  const items = useSelector((state: RootState) => state.cart.items);
+  const selectedItems = useSelector(
+    (state: RootState) => state.cart.selectedItems
+  );
 
   const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      setSelectedItems(items);
+      dispatch(selectAllItems());
     } else {
-      setSelectedItems([]);
+      dispatch(deselectAllItems());
     }
   };
 
-  console.log(selectedItems);
-
   const handleItemSelect = (itemToSelect: Item) => {
     if (selectedItems.some((item) => item.id === itemToSelect.id)) {
-      setSelectedItems((prev) =>
-        prev.filter((item) => item.id !== itemToSelect.id)
-      );
+      dispatch(deselectItem(itemToSelect.id));
     } else {
-      const newItem: Item = {
-        id: itemToSelect.id,
-        name: itemToSelect.name,
-        quantity: 1,
-        price: 15000,
-      };
-      setSelectedItems((prev) => [...prev, newItem]);
+      dispatch(selectItem(itemToSelect));
     }
   };
 
   const handleDelete = (id: number) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+    dispatch(removeItem(id));
   };
 
   const handleDeleteAll = () => {
-    setItems([]);
-    setSelectedItems([]);
+    dispatch(removeAll());
   };
 
-  const incrementQuantity = (id: number) => {
-    setItems(
-      items.map((item) => {
-        if (item.id === id) {
-          return { ...item, quantity: item.quantity + 1 };
-        }
-        return item;
-      })
-    );
-
-    setSelectedItems(
-      selectedItems.map((item) => {
-        if (item.id === id) {
-          return { ...item, quantity: item.quantity + 1 };
-        }
-        return item;
-      })
-    );
+  const handleDeleteSelected = () => {
+    dispatch(removeSelected());
   };
 
-  const decrementQuantity = (id: number) => {
-    setItems(
-      items.map((item) => {
-        if (item.id === id && item.quantity > 1) {
-          return { ...item, quantity: item.quantity - 1 };
-        }
-        return item;
-      })
-    );
-
-    setSelectedItems(
-      selectedItems.map((item) => {
-        if (item.id === id && item.quantity > 1) {
-          return { ...item, quantity: item.quantity - 1 };
-        }
-        return item;
-      })
-    );
+  const plusQuantity = (id: number) => {
+    const item = items.find((item) => item.id === id);
+    if (item && item.quantity < item.stock) {
+      dispatch(incrementQuantity(id));
+    }
   };
+
+  const minusQuantity = (id: number) => {
+    const item = items.find((item) => item.id === id);
+    if (item && item.quantity > 1) {
+      dispatch(decrementQuantity(id));
+    }
+  };
+
+  function formatCurrency(value: number) {
+    return new Intl.NumberFormat("ko-KR").format(value);
+  }
+
   // const BuyPrice = selectedItems.reduce(
   //   (sum, item) => sum + item.price * item.quantity,
   //   0
@@ -155,45 +136,28 @@ const ShoppingCart = () => {
             </thead>
             <tbody>
               {items.map((item) => (
-                <tr key={item.id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      onChange={() => handleItemSelect(item)}
-                      checked={selectedItems.some(
-                        (selected) => selected.id === item.id
-                      )}
-                    />
-                  </td>
-                  <td>
-                    <img src={item.imageUrl} alt="상품이미지" />
-                  </td>
-                  <td>{item.name}</td>
-                  <td>{item.price}</td>
-                  <td>
-                    <input type="number" value={item.quantity} readOnly />
-                    <button onClick={() => decrementQuantity(item.id)}>
-                      -
-                    </button>
-                    <button onClick={() => incrementQuantity(item.id)}>
-                      +
-                    </button>
-                  </td>
-
-                  <td>{item.price * item.quantity}</td>
-                  <td>
-                    <button onClick={() => handleDelete(item.id)}>삭제</button>
-                  </td>
-                </tr>
+                <CartItem
+                  key={item.id}
+                  item={item}
+                  handleItemSelect={handleItemSelect}
+                  plusQuantity={plusQuantity}
+                  minusQuantity={minusQuantity}
+                  handleDelete={handleDelete}
+                  selectedItems={selectedItems}
+                  formatCurrency={formatCurrency}
+                />
               ))}
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan={7}>총 금액: {totalPrice} 원</td>
+                <td colSpan={7}>총 금액: {formatCurrency(totalPrice)} 원</td>
               </tr>
             </tfoot>
           </table>
-          <button onClick={handleDeleteAll}>장바구니 비우기</button>
+          <div>
+            <button onClick={handleDeleteAll}>장바구니 전체삭제</button>
+            <button onClick={handleDeleteSelected}>선택삭제</button>
+          </div>
         </div>
       </div>
     </CartWrapper>
@@ -201,52 +165,3 @@ const ShoppingCart = () => {
 };
 
 export default ShoppingCart;
-
-const CartWrapper = styled.div`
-  margin-top: 50px;
-  width: 100%;
-  .cart_title {
-    text-align: center;
-    font-size: 40px;
-    font-weight: 500;
-    margin-bottom: 100px;
-  }
-  .cart_length_view {
-    width: 100%;
-    font-size: 15px;
-    background-color: #f6f6f6;
-    border: 1px solid #d7d5d5;
-    span {
-      display: inline-block;
-      padding: 10px 20px;
-    }
-  }
-  table {
-    th,
-    td {
-      text-align: center;
-      vertical-align: middle;
-    }
-    th {
-      padding: 10px 0;
-    }
-    td {
-      height: 110px;
-      img {
-        width: 80px;
-        height: 80px;
-      }
-    }
-
-    td:nth-child(3) {
-      text-align: left;
-    }
-    tbody tr {
-      border-bottom: 1px solid #d7d5d5;
-    }
-    tfoot td {
-      text-align: right;
-      padding-right: 30px;
-    }
-  }
-`;

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
 import reset from "styled-reset";
 
 const GlobalStyles = createGlobalStyle`
@@ -11,6 +11,15 @@ const GlobalStyles = createGlobalStyle`
   a{
     color:inherit;
   }
+
+  ${css`
+    :root {
+      --primary-color: #31caae;
+      --primary-up-color: #31caae;
+      --primary-down-color: #218574;
+    }
+  `}
+
   `;
 
 export default GlobalStyles;

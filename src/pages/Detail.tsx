@@ -14,6 +14,4 @@ const Detail = () => {
 
 export default Detail;
 
-const Container = styled.div`
-  border: 1px solid black;
-`;
+const Container = styled.div``;

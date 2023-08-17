@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
+import descriptionImage from "../../assets/test/DescriptionImage.jpg";
 import styled from "styled-components";
-import icons from "../../assets/test/icons.png";
 
 let optionData = [
   { option: "이건 개" },
@@ -11,11 +11,28 @@ let optionData = [
   { option: "이건 토끼" },
 ];
 
+let responseProductData = {
+  product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
+  price: 10000,
+  stock: 5,
+  description: "A 물품 상세 설명",
+  description_img: "A 물품 상세 이미지",
+  category_name: "간식",
+  product_img: image,
+  sales_end_date: "2023-08-15",
+};
+
+interface DetailDescriptionBoxProps {
+  isMoreView?: boolean;
+}
+
+///컴포넌트시작
 const DetailDescription = () => {
   const { productid } = useParams();
   console.log("제품ID", productid);
   const [isOption, setIsOption] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
+  const [isMoreView, setIsMoreView] = useState(false);
   const [OptionValue, setOptionValue] = useState("옵션선택");
   const [productAmount, setProductAmount] = useState(1);
 
@@ -41,19 +58,21 @@ const DetailDescription = () => {
     }
   };
 
-  fetch();
+  const ProductInformationMoreViewHandler = () => {
+    setIsMoreView((prev) => !prev);
+  };
+  console.log(isMoreView);
+
   return (
     <>
       <Container>
         <Imagemox>
-          <img src={image} alt="dd" />
+          <img src={responseProductData.product_img} alt="dd" />
         </Imagemox>
         <DescriptionBox>
           <ProductTitleDiv>
             <DivFlex className="설명제목">
-              <ProductTitle>
-                귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!
-              </ProductTitle>
+              <ProductTitle>{responseProductData.product_name}</ProductTitle>
               <DivFlex>
                 <HartIcon>❤️</HartIcon>
                 <ShareIcon>🔨</ShareIcon>
@@ -66,10 +85,12 @@ const DetailDescription = () => {
 
           <ProductPriceDiv>
             <div>
-              124000 원<span style={{ marginLeft: "1rem" }}>소비자가</span>
+              {responseProductData.price * 1.18} 원
+              <span style={{ marginLeft: "1rem" }}>소비자가</span>
             </div>
             <div>
-              110000 원<span style={{ marginLeft: "1rem" }}>루팡가</span>
+              {responseProductData.price} 원
+              <span style={{ marginLeft: "1rem" }}>루팡가</span>
             </div>
             <div></div>
             <HoverContainer>
@@ -80,6 +101,7 @@ const DetailDescription = () => {
             </HoverContainer>
           </ProductPriceDiv>
 
+          {/* 옵션 선택구간 */}
           <ProductOption>
             <OptionSelect onClick={optionClcikHandler}>
               <div>{OptionValue}</div>
@@ -130,6 +152,27 @@ const DetailDescription = () => {
           </div>
         </DescriptionBox>
       </Container>
+      <DetailDescriptionBox isMoreView={isMoreView}>
+        <DescriptionImage src={descriptionImage} alt="" />
+      </DetailDescriptionBox>
+      <MoreViewButtonBox >
+        {isMoreView?
+        
+        <BuyContainer>
+          <BuyButton  onClick={ProductInformationMoreViewHandler}>
+            <Content>상품정보 더보기△</Content>
+            <BuyFill />
+          </BuyButton>
+        </BuyContainer> : 
+
+<BuyContainer>
+<BuyButton  onClick={ProductInformationMoreViewHandler}>
+  <Content>상품정보 더보기▽</Content>
+  <BuyFill />
+</BuyButton>
+</BuyContainer>
+        }
+      </MoreViewButtonBox>
     </>
   );
 };
@@ -146,13 +189,12 @@ const Imagemox = styled.div`
   margin: 5px;
   width: 500px;
   height: 500px;
-  border: 1px solid black;
 `;
 const DescriptionBox = styled.div`
   margin: 5px;
   width: 500px;
   height: 500px;
-  border: 1px solid black;
+
   padding: 1rem;
 `;
 const DivFlex = styled.div`
@@ -354,4 +396,26 @@ const MinusButton = styled.div`
   padding: 1rem;
   text-align: center;
   cursor: pointer;
+`;
+
+const DetailDescriptionBox = styled.div<DetailDescriptionBoxProps>`
+  display: block;
+  position: relative;
+  width: 100%;
+  height: ${({ isMoreView }) => isMoreView ? "auto" : "1500px"};
+  overflow: ${({ isMoreView }) => isMoreView ? "visible" : "hidden"};
+
+`;
+
+const DescriptionImage = styled.img`
+  width: 100%;
+`;
+
+const MoreViewButtonBox = styled.div`
+  width: 100%;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
 `;

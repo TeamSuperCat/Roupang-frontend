@@ -23,7 +23,7 @@ const AuthComponents: React.FC<GeneralLayoutProps> = ({
       return;
     }
 
-    setUserProfile(null); // 로그인여부
+    setUserProfile(null); // 로그인해서 올바른 토큰을 받아 왔거나 올바른 유저 정보를 서버에서 가져왔으면 상태 갱신 나중에 전역상태로 바꿔줘야함
   };
 
   useEffect(() => {

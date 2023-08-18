@@ -37,14 +37,14 @@ const MainCarousel: React.FC = () => {
                   <CarouselImgDiv key={index}>
                     <img src={item} />
                   </CarouselImgDiv>
-                  <Infomation>
+                  {/* <Infomation>
                     <InfomationLeft>
                       <div>제목입니다.</div>
                       <div>설명입니다.</div>
                       <button>버튼</button>
                     </InfomationLeft>
                     <InfomationRight></InfomationRight>
-                  </Infomation>
+                  </Infomation> */}
                 </SwiperSlide>
               </>
             );

@@ -26,7 +26,6 @@ export const LoadingWrapper = styled.div`
           0 7px 0 transparent, 0 8px 0 transparent, 0 9px 0 transparent,
           0 10px 10px rgba(0, 0, 0, 0.4);
       }
-
       &:nth-child(2) {
         animation: bounce 0.3s ease infinite alternate;
         animation-delay: 0.1s;

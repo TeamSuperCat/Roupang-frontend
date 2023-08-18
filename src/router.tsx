@@ -9,6 +9,7 @@ import Footer from "./components/Footer/Footer";
 import Test from "./pages/Test";
 import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
+import Error from "./pages/ErrorPage";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -16,6 +17,7 @@ interface RouterBase {
   label: string; // 사이드바에 표시할 페이지 이름
   element: React.ReactNode; // 페이지 엘리먼트
   children?: RouterElement[]; // 중첩라우팅에서 인증이 필요한 페이지가 있을경우 처리하기 위해서 RouterBase 에서 RouterElement로 바꿨습니다
+  errorElement?: React.ReactNode; // 에러 페이지 엘러먼트
 }
 
 interface UserAccessibleRouterElement extends RouterBase {
@@ -80,6 +82,12 @@ const routerData: RouterElement[] = [
     path: "/",
     label: "Footer",
     element: <Footer />,
+  },
+  {
+    id: 4,
+    path: "*",
+    label: "Footer",
+    element: <Error />,
   },
 
   // {

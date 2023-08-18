@@ -1,7 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
 import { SiNaver } from "react-icons/si";
-import { BsChatFill } from "react-icons/bs";
 
 type ButtonProps = {
   loginType: {
@@ -22,7 +21,7 @@ const OAuthButton = ({ loginType }: ButtonProps) => {
         </Button>
       ) : loginType.logo === "kakao" ? (
         <Button color={loginType.color}>
-          <BsChatFill />
+          <img src="/img/icon_kakao.png" alt="카카오아이콘" />
           {loginType.title}
         </Button>
       ) : null}
@@ -56,10 +55,14 @@ const Button = styled.button`
     font-size: 14px;
     border-radius: 8px;
   }
-  svg {
+  img {
     position: absolute;
     top: 50%;
     left: 20px;
     transform: translate(0, -50%);
+    width: 22px;
+    @media (max-width: 520px) {
+      width: 20px;
+    }
   }
 `;

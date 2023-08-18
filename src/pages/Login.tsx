@@ -45,6 +45,7 @@ const Login = () => {
   return (
     <Container>
       <Form onSubmit={loginHandler}>
+        <h3>로그인</h3>
         {InputPropsValue.map((elem, i) => (
           <LoginInput
             key={i}
@@ -94,6 +95,12 @@ const Form = styled.form`
   }
   @media (max-width: 520px) {
     width: 260px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 20px;
   }
 `;
 

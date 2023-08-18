@@ -6,16 +6,12 @@ import HeaderLayout from "./layout/HeaderLayout";
 import Signup from "./pages/Signup";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
-import Footer from "./components/Footer";
 import Test from "./pages/Test";
 import Footer from "./components/Footer/Footer";
-import Test from "./pages/Test";
 import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";
 import Error from "./pages/ErrorPage";
-import Test from "./pages/Test";
-import Footer from "./components/Footer";
 import Seller from "./pages/Seller";
 import SellerEdit from "./pages/SellerEdit";
 

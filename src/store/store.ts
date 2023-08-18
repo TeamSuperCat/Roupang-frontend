@@ -1,7 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from "../slice/cartSlice";
+import modalReducer from "../slice/tmpSlice";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    modalReducer,
+    cart: cartReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

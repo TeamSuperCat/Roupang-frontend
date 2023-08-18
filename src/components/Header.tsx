@@ -68,8 +68,8 @@ const Header = () => {
               navigation
               autoplay={{ delay: 2000, disableOnInteraction: false }}
               pagination={{ clickable: true }}
-              onSlideChange={() => console.log("slide change")}
-              onSwiper={(swiper) => console.log(swiper, "어흥")}
+              // onSlideChange={() => console.log("slide change")}
+              // onSwiper={(swiper) => console.log(swiper, "어흥")}
             >
               <SwiperSlide>
                 <img src="/img/header1.jpg" alt="header1" />

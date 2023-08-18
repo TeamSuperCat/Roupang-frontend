@@ -71,11 +71,15 @@ const Seller = () => {
     }
 
     try {
-      const response = await axios.post("your-api-endpoint", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8080/seller/products/register",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("Response:", response.data);
       // Handle success or show a success message to the user.

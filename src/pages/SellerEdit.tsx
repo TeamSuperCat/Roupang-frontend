@@ -35,6 +35,7 @@ const SellerEdit = () => {
   };
 
   const handleMainImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log("뭐가 찍히나 보자 이벤트이미지", event.target.files[0]);
     if (event.target.files && event.target.files.length > 0) {
       setProduct((prevProduct) => ({
         ...prevProduct,
@@ -71,11 +72,15 @@ const SellerEdit = () => {
     }
 
     try {
-      const response = await axios.post("your-api-endpoint", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.patch(
+        "http://localhost:8080/seller/products/{product_id}",
+        formData,
+        {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("Response:", response.data);
     } catch (error) {
@@ -166,7 +171,9 @@ const SellerEdit = () => {
           />
         </FormItem>
         <ButtonEditWarp>
-          <button type="submit">수정완료</button>
+          <button type="submit">
+            <Link to="/seller">수정완료</Link>
+          </button>
         </ButtonEditWarp>
       </form>
     </Container>

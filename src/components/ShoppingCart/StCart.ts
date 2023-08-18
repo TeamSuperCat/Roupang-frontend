@@ -81,6 +81,10 @@ export const CartWrapper = styled.div`
             &:nth-child(2) {
               border-radius: 0 0 5px 0;
             }
+            img {
+              width: 10px;
+              height: 15px;
+            }
           }
         }
       }
@@ -101,7 +105,7 @@ export const CartWrapper = styled.div`
         text-align: left;
         border-radius: 3px;
         width: 90px;
-        background-color: #555;
+        background-color: #50d2ba;
         font-size: 12px;
         padding: 7px 0 7px 10px;
         color: #fff;
@@ -109,22 +113,22 @@ export const CartWrapper = styled.div`
         &:active {
           transform: scale(0.96);
         }
-        &:nth-child(1):hover,
-        &:nth-child(2):hover {
-          background-color: #333;
+        &:nth-child(1):hover {
+          opacity: 1;
         }
         &:nth-child(1) {
           transition: all 0.3s;
+          opacity: 0.7;
         }
         &:nth-child(2) {
           background-color: #fff;
           color: #333;
-          border: 1px solid #333;
+          border: 1px solid #50d2ba;
           transition: all 0.7s;
         }
         &:nth-child(2):hover {
           background-color: #fff;
-          box-shadow: 100px 0 0 0 #333 inset;
+          box-shadow: 100px 0 0 0 #50d2ba inset;
           color: #fff;
         }
         &:nth-child(3) {

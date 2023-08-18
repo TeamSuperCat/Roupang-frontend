@@ -46,8 +46,12 @@ const CartItem: React.FC<CartItemProps> = ({
         <div className="quantity_inputbox">
           <input type="number" value={item.quantity} readOnly />
           <div className="quantity_btnbox">
-            <button onClick={() => plusQuantity(item.id)}>+</button>
-            <button onClick={() => minusQuantity(item.id)}>-</button>
+            <button onClick={() => plusQuantity(item.id)}>
+              <img src="/img/toparw.svg" alt="화살표" />
+            </button>
+            <button onClick={() => minusQuantity(item.id)}>
+              <img src="/img/bottomarw.svg" alt="화살표" />
+            </button>
           </div>
         </div>
         <div className="item_stock">재고 : {item.stock}</div>

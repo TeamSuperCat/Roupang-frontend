@@ -8,6 +8,8 @@ import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Test from "./pages/Test";
 import Footer from "./components/Footer";
+import Seller from "./pages/Seller";
+import SellerEdit from "./pages/SellerEdit";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -66,6 +68,18 @@ const routerData: RouterElement[] = [
         label: "Signup",
         element: <Signup />,
       },
+      {
+        id: 7,
+        path: "seller",
+        label: "Seller",
+        element: <Seller />,
+      },
+      {
+        id: 8,
+        path: "selleredit",
+        label: "SellerEdit",
+        element: <SellerEdit />,
+      },
     ],
   },
   {
@@ -96,7 +110,11 @@ interface RouteObject {
 //router.children가 존재하면 다시 함수를 다시 호출해서 중첩라우팅을 변환합니다. 재귀를 사용했으니 2중3중으로 들어가도 처리가능합니다.
 function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   return routerArray.map((router) => {
-    const routeElement = router.withAuth ? <AuthComponents>{router.element}</AuthComponents> : router.element;
+    const routeElement = router.withAuth ? (
+      <AuthComponents>{router.element}</AuthComponents>
+    ) : (
+      router.element
+    );
 
     const routeObject: RouteObject = {
       path: router.path,
@@ -116,4 +134,6 @@ function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   });
 }
 
-export const routers: RemixRouter = createBrowserRouter(transformRoutes(routerData));
+export const routers: RemixRouter = createBrowserRouter(
+  transformRoutes(routerData)
+);

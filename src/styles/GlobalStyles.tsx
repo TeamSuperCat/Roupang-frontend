@@ -11,6 +11,10 @@ const GlobalStyles = createGlobalStyle`
   a{
     color:inherit;
   }
+  button{
+    user-select:none;
+    cursor:pointer;
+  }
   `;
 
 export default GlobalStyles;

@@ -13,15 +13,17 @@ const GlobalStyles = createGlobalStyle`
   a{
     color:inherit;
   }
-
-  ${css`
-    :root {
-      --primary-color: #31caae;
-      --primary-up-color: #31caae;
-      --primary-down-color: #218574;
-    }
-  `}
-
+    button{
+    user-select:none;
+    cursor:pointer;
+  }
+    ${css`
+      :root {
+        --primary-color: #31caae;
+        --primary-up-color: #31caae;
+        --primary-down-color: #218574;
+      }
+    `}
   `;
 
 export default GlobalStyles;

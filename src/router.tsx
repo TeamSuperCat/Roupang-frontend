@@ -3,14 +3,21 @@ import { Router as RemixRouter } from "@remix-run/router/dist/router";
 import Home from "./pages/Home";
 import AuthComponents from "./Auth/AuthComponents";
 import HeaderLayout from "./layout/HeaderLayout";
+import Signup from "./pages/Signup";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
+import Footer from "./components/Footer";
+import Test from "./pages/Test";
 import Footer from "./components/Footer/Footer";
 import Test from "./pages/Test";
 import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";
 import Error from "./pages/ErrorPage";
+import Test from "./pages/Test";
+import Footer from "./components/Footer";
+import Seller from "./pages/Seller";
+import SellerEdit from "./pages/SellerEdit";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -75,6 +82,24 @@ const routerData: RouterElement[] = [
         path: "detail/:productid",
         label: "Detail",
         element: <Detail />,
+      },
+      {
+        id: 10,
+        path: "signup",
+        label: "Signup",
+        element: <Signup />,
+      },
+      {
+        id: 11,
+        path: "seller",
+        label: "Seller",
+        element: <Seller />,
+      },
+      {
+        id: 12,
+        path: "selleredit",
+        label: "SellerEdit",
+        element: <SellerEdit />,
       },
     ],
   },

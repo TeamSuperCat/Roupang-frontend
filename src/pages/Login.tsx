@@ -17,7 +17,7 @@ const InputPropsValue = [
 const buttonItems = [
   { title: "로그인", logo: "", color: "", isOAuth: false },
   { title: "카카오 로그인", logo: "kakao", color: "#fee500", isOAuth: true },
-  { title: "네이버 로그인", logo: "naver", color: "#03c75a", isOAuth: true },
+  // { title: "네이버 로그인", logo: "naver", color: "#03c75a", isOAuth: true },
 ];
 
 interface Data {
@@ -81,13 +81,20 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px;
-  height: 80vh;
+  height: calc(100vh - 480px);
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 10px;
+  @media (max-width: 650px) {
+    width: 360px;
+  }
+  @media (max-width: 520px) {
+    width: 260px;
+  }
 `;
 
 const LinkWrap = styled.div`
@@ -95,4 +102,10 @@ const LinkWrap = styled.div`
   align-items: center;
   gap: 16px;
   margin-bottom: 20px;
+  @media (max-width: 520px) {
+    font-size: 14px;
+  }
+  a {
+    color: #888;
+  }
 `;

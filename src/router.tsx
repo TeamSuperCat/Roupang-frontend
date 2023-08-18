@@ -9,6 +9,7 @@ import Footer from "./components/Footer/Footer";
 import Test from "./pages/Test";
 import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
+import Loading from "./components/Loading/Loading";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -80,6 +81,12 @@ const routerData: RouterElement[] = [
     path: "/",
     label: "Footer",
     element: <Footer />,
+  },
+  {
+    id: 8,
+    path: "/loading",
+    label: "Loading",
+    element: <Loading />,
   },
 
   // {

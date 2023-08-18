@@ -3,6 +3,8 @@ import ModalMenu from "./ModalMenu";
 import useToggleModal from "../../hooks/useToggleModal";
 import MenuBtn from "./MenuBtn";
 import { RxCross2 } from "react-icons/rx";
+import ModalHeader from "./ModalHeader";
+import MyShop from "./MyShop";
 
 interface IModalCard {
   isOpen: boolean;
@@ -18,7 +20,13 @@ function MainModal() {
 
   return (
     <ModalCard isOpen={isOpen} onClick={handleClick}>
-      <ModalTitle>마이쇼핑</ModalTitle>
+      <ModalTop>
+        <ModalTitle>마이쇼핑</ModalTitle>
+      </ModalTop>
+      <ModalContent>
+        <ModalHeader />
+        <MyShop />
+      </ModalContent>
       <ModalMenu />
       <BtnWrap onClick={toggleModal}>
         <MenuBtn text="닫기">
@@ -41,8 +49,20 @@ const ModalCard = styled.div<ModalPropstwo>`
   background-color: white;
   z-index: 1000;
   transition: transform 0.4s;
-  padding: 60px 30px 40px 30px;
+  display: grid;
+  grid-template-rows: 100px 1fr;
   ${({ isOpen }) => !isOpen && { transform: "translateX(300px)" }};
+`;
+
+const ModalTop = styled.div`
+  display: flex;
+  align-items: flex-end;
+  padding-left: 30px;
+`;
+
+const ModalContent = styled.div`
+  margin: 30px;
+  border-top: 1px solid rgba(0, 0, 0, 0.4);
 `;
 
 const ModalTitle = styled.h1`

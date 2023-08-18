@@ -50,7 +50,7 @@ const ModalMenuLayOut = styled.div`
   top: 50%;
   height: 290px;
   width: 70px;
-  transform: translate3d(-100px, -50%, 0);
+  transform: translate3d(-70px, -50%, 0);
   background-color: white;
   border-top-left-radius: 14px;
   border-bottom-left-radius: 14px;

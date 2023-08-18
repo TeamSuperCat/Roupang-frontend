@@ -7,7 +7,11 @@ import { Link } from "react-router-dom";
 
 const InputPropsValue = [
   { name: "email", type: "email", placeholder: "이메일을 입력해주세요." },
-  { name: "password", type: "password", placeholder: "비밀번호를 입력해주세요." },
+  {
+    name: "password",
+    type: "password",
+    placeholder: "비밀번호를 입력해주세요.",
+  },
 ];
 
 const buttonItems = [
@@ -55,8 +59,8 @@ const Login = () => {
       </Form>
 
       <LinkWrap>
-        <Link to='/signup'>회원가입하기</Link>
-        <Link to='/findpassword'>비밀번호찾기</Link>
+        <Link to="/signup">회원가입하기</Link>
+        <Link to="/findpassword">비밀번호찾기</Link>
       </LinkWrap>
 
       {buttonItems
@@ -77,6 +81,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px;
+  height: 80vh;
 `;
 
 const Form = styled.form`

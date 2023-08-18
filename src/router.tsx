@@ -78,7 +78,7 @@ const routerData: RouterElement[] = [
         element: <Detail />,
       },
       {
-        id: 8,
+        id: 10,
         path: "signup",
         label: "Signup",
         element: <Signup />,

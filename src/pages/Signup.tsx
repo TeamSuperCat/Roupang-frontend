@@ -2,40 +2,47 @@ import React, { useEffect, useRef, useState } from "react";
 import SignupInput from "../components/signup/SignupInput";
 import { styled } from "styled-components";
 import useGetUrl from "../hooks/useGetUrls";
-import axiosClient from "../api/axios";
 
 const signupInputProps = [
   {
     type: "email",
     name: "email",
     text: "이메일",
+    dupCheck: true,
   },
   {
     type: "password",
     name: "password",
     text: "비밀번호",
+    dupCheck: false,
   },
   {
     type: "password",
     name: "passwordCheck",
     text: "비밀번호 확인",
+    dupCheck: false,
   },
   {
     type: "text",
     name: "nickname",
     text: "닉네임",
+    dupCheck: true,
   },
   {
     type: "phoneNumber",
     name: "phoneNumber",
     text: "전화번호",
+    dupCheck: false,
   },
   {
     type: "address",
     name: "address",
     text: "주소",
+    dupCheck: false,
   },
 ];
+
+const requestUrl = "http://3.12.151.96:8080/api/v1/member";
 
 const defaultProfilePath = "default_profile.png";
 
@@ -112,7 +119,7 @@ const Signup = () => {
       // setData((prev) => ({ ...prev, phoneNumber: requestPhoneNumber }));
       console.log("일치", data);
       onChange();
-      // const response = await axiosClient.post<Data>("/signup");
+      // const response = await axiosClient.post<Data>(`${requestUrl}/register`);
       // console.log(response);
     }
 
@@ -181,6 +188,7 @@ const Signup = () => {
                   name={elem.name}
                   type={elem.type}
                   text={elem.text}
+                  dupCheck={elem.dupCheck}
                   data={data}
                   onChange={inputChangeHandler}
                 />

@@ -8,11 +8,13 @@ const useGetUrl = (urlState: urlProps) => {
   const imageMutation = useImage();
   const { isLoading, isError, error } = imageMutation;
 
-  const handleImageUpload = async () => {
+  const handleImageUpload = async (): Promise<string | void> => {
     if (!inputRef.current || !inputRef.current.files) return;
     const images = [...inputRef.current.files];
     const urls = await imageMutation.mutateAsync(images);
     urlState(urls);
+
+    return isError ? "fail" : "done";
   };
 
   return {

@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SearchModal from "../SearchModal/SearchModal";
+import { Link } from "react-router-dom";
 import {
   HeaderWrapper,
   HeaderTopbox,
@@ -91,7 +92,9 @@ const Header = () => {
           </div>
 
           <div className="header_mainlogo">
-            <img src="/img/roupang.svg" alt="mainlogo" />
+            <Link to="/">
+              <img src="/img/roupang.svg" alt="mainlogo" />
+            </Link>
           </div>
           <div className="header_myinfo">
             <div className="header_userbox">

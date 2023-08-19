@@ -1,11 +1,47 @@
 import { styled } from "styled-components";
 
-function ModalHeader() {
+type TitleKey = "myshop" | "recent" | "interest" | "like" | "customer";
+
+interface Props {
+  category?: TitleKey;
+}
+
+interface LanguagePair {
+  kor: string;
+  eng: string;
+}
+
+type TitleType<T extends string> = Record<T, LanguagePair>;
+
+const title: TitleType<TitleKey> = {
+  myshop: {
+    kor: "내 쇼핑정보",
+    eng: "MY SHOP",
+  },
+  recent: {
+    kor: "최근 본 상품",
+    eng: "RECENT",
+  },
+  interest: {
+    kor: "내 관심상품",
+    eng: "WISHLIST",
+  },
+  like: {
+    kor: "좋아요",
+    eng: "LIKE",
+  },
+  customer: {
+    kor: "고객센터",
+    eng: "CUSTOMER",
+  },
+};
+
+function ModalHeader({ category }: Props) {
   return (
     <MyShopHeader>
-      <div>내 쇼핑정보</div>
+      <div>{!category ? "값이 없음" : title[category].kor}</div>
       <i></i>
-      <HeaderEng>MY SHOP</HeaderEng>
+      <HeaderEng>{!category ? "값이 없음" : title[category].eng}</HeaderEng>
       <MoreBtn>더보기</MoreBtn>
     </MyShopHeader>
   );
@@ -19,12 +55,13 @@ const MyShopHeader = styled.div`
   font: inherit;
   font-weight: bold;
   position: relative;
+  margin-bottom: 30px;
 
   &::before {
     content: "";
     height: 3px;
     position: absolute;
-    top: 47.5px;
+    top: 45.5px;
     left: 0;
     width: 240px;
     background-color: rgba(128, 128, 128, 0.2);
@@ -32,25 +69,23 @@ const MyShopHeader = styled.div`
   }
 
   & > div:nth-child(1) {
-    font-size: 15px;
+    font-size: 13px;
     padding-bottom: 7px;
     border-bottom: 3.5px solid black;
     z-index: 2;
+    margin-right: 20px;
   }
 
-  & > i::before {
-    content: "";
-    position: absolute;
+  & > i {
     top: 28px;
-    left: 90px;
-    width: 1px;
+    border-right: 1.5px solid rgba(128, 128, 128, 0.3);
     height: 9px;
-    background-color: rgba(128, 128, 128, 0.3);
+    /* background-color: rgba(128, 128, 128, 0.3); */
   }
 `;
 
 const HeaderEng = styled.div`
-  font-size: 12px;
+  font-size: 11px;
   margin-left: 25px;
   color: rgba(128, 128, 128, 0.5);
 `;
@@ -59,6 +94,6 @@ const MoreBtn = styled.p`
   position: absolute;
   right: 10px;
   top: 27px;
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
 `;

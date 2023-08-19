@@ -4,6 +4,8 @@ interface IChildrenProps {
 }
 
 interface IButtonProps extends IChildrenProps {
+  $active?: boolean;
+  category?: boolean;
   primary?: boolean;
   rotateState?: boolean;
   text: string;

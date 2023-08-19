@@ -1,33 +1,51 @@
 import styled from "styled-components";
 import ModalMenu from "./ModalMenu";
-import useToggleModal from "../../hooks/useToggleModal";
+import useToggleModal from "../../hooks/useHandleModal";
 import MenuBtn from "./MenuBtn";
 import { RxCross2 } from "react-icons/rx";
 import ModalHeader from "./ModalHeader";
-import MyShop from "./MyShop";
+import MyShop from "./ModalCard/UserStatus/MyShop";
+import { useState } from "react";
+import Recent from "./ModalCard/Recent/Recent";
 
 interface IModalCard {
-  isOpen: boolean;
+  $isOpen: boolean;
 }
 
 type ModalPropstwo = IModalCard & HasClickEvent;
 
+function switchComponent(category: string): React.ReactNode {
+  switch (category) {
+    case "myshop":
+      return <MyShop />;
+    case "recent":
+      return <Recent />;
+    case "favorite":
+      return;
+  }
+}
+
 function MainModal() {
+  const [category, setCategory] = useState("myshop");
   const { isOpen, toggleModal } = useToggleModal();
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
+  const switchCategory = (current: string) => {
+    setCategory(current);
+  };
+
   return (
-    <ModalCard isOpen={isOpen} onClick={handleClick}>
+    <ModalCard $isOpen={isOpen} onClick={handleClick}>
       <ModalTop>
         <ModalTitle>마이쇼핑</ModalTitle>
       </ModalTop>
       <ModalContent>
-        <ModalHeader />
-        <MyShop />
+        <ModalHeader category={category} />
+        {switchComponent(category)}
       </ModalContent>
-      <ModalMenu />
+      <ModalMenu onClick={switchCategory} category={category} />
       <BtnWrap onClick={toggleModal}>
         <MenuBtn text="닫기">
           <RxCross2 />
@@ -51,7 +69,7 @@ const ModalCard = styled.div<ModalPropstwo>`
   transition: transform 0.4s;
   display: grid;
   grid-template-rows: 100px 1fr;
-  ${({ isOpen }) => !isOpen && { transform: "translateX(300px)" }};
+  ${({ $isOpen }) => !$isOpen && { transform: "translateX(300px)" }};
 `;
 
 const ModalTop = styled.div`

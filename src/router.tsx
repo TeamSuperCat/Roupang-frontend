@@ -85,7 +85,7 @@ const routerData: RouterElement[] = [
   },
   {
     id: 9,
-    path: "*",
+    path: "/error",
     label: "Footer",
     element: <Error />,
   },

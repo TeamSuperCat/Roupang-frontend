@@ -1,11 +1,14 @@
 import { css, styled } from "styled-components";
-
 interface IToggleBtnType {
-  primary?: boolean;
-  rotate?: boolean;
+  $primary?: boolean;
+  $rotate?: boolean;
+  $category?: boolean;
 }
 
+interface Props {}
+
 function MenuBtn({
+  category,
   children,
   onClick,
   primary,
@@ -14,7 +17,11 @@ function MenuBtn({
 }: IButtonProps) {
   return (
     <BtnWrapper onClick={onClick}>
-      <ModalToggleBtn primary={primary} rotate={rotateState}>
+      <ModalToggleBtn
+        $primary={primary}
+        $rotate={rotateState}
+        $category={category}
+      >
         {children}
       </ModalToggleBtn>
       <Bubble>{text}</Bubble>
@@ -61,27 +68,45 @@ const ModalToggleBtn = styled.button<IToggleBtnType>`
   font-size: 21px;
   transition: transform 0.3s 0.44s;
   cursor: pointer;
-  ${({ primary }) =>
-    primary &&
+  position: relative;
+  ${({ $primary }) =>
+    $primary &&
     css`
       color: var(--primary-color);
     `}
 
-  ${({ primary }) =>
-    !primary &&
+  ${({ $primary }) =>
+    !$primary &&
     css`
       &:hover {
         color: var(--primary-color);
       }
     `}
-  ${({ rotate }) =>
-    rotate &&
+  ${({ $rotate }) =>
+    $rotate &&
     css`
       transform: rotate(90deg);
     `}
+
+  ${({ $category }) =>
+    $category &&
+    css`
+      color: var(--primary-color);
+
+      &::before {
+        content: "";
+        width: 40px;
+        height: 40px;
+        background: rgba(128, 128, 128, 0.1);
+        border-radius: 50%;
+        position: absolute;
+        top: -9px;
+        left: -4px;
+      }
+    `}
 `;
 
-const BtnWrapper = styled.li`
+const BtnWrapper = styled.li<Props>`
   display: flex;
   justify-content: flex-end;
   &:hover {

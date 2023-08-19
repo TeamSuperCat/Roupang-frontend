@@ -3,13 +3,23 @@ import { BsThreeDotsVertical, BsBell, BsClock, BsStar } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { AiOutlineHeart } from "react-icons/ai";
 import MenuBtn from "./MenuBtn";
-import useToggleModal from "../../hooks/useToggleModal";
+import useHandleModal from "../../hooks/useHandleModal";
 
-function ModalMenu() {
-  const { isOpen, toggleModal } = useToggleModal();
+interface Props {
+  category: string;
+  onClick: (category: string) => void;
+}
+
+function ModalMenu({ onClick, category }: Props) {
+  const { isOpen, toggleModal, openModal } = useHandleModal();
 
   const handleClick = () => {
     toggleModal();
+  };
+
+  const handleActive = (category: string) => {
+    onClick(category);
+    openModal();
   };
 
   return (
@@ -23,19 +33,39 @@ function ModalMenu() {
         >
           <BsThreeDotsVertical />
         </MenuBtn>
-        <MenuBtn text="고객센터">
+        <MenuBtn
+          text="고객센터"
+          onClick={() => handleActive("customer")}
+          category={category === "customer" && isOpen}
+        >
           <BsBell />
         </MenuBtn>
-        <MenuBtn text="마이샵">
+        <MenuBtn
+          text="마이샵"
+          onClick={() => handleActive("myshop")}
+          category={category === "myshop" && isOpen}
+        >
           <CgProfile />
         </MenuBtn>
-        <MenuBtn text="최근 본 상품">
+        <MenuBtn
+          text="최근 본 상품"
+          onClick={() => handleActive("recent")}
+          category={category === "recent" && isOpen}
+        >
           <BsClock />
         </MenuBtn>
-        <MenuBtn text="관심 상품">
+        <MenuBtn
+          text="관심 상품"
+          onClick={() => handleActive("interest")}
+          category={category === "interest" && isOpen}
+        >
           <AiOutlineHeart />
         </MenuBtn>
-        <MenuBtn text="좋아요">
+        <MenuBtn
+          text="좋아요"
+          onClick={() => handleActive("like")}
+          category={category === "like" && isOpen}
+        >
           <BsStar />
         </MenuBtn>
       </BtnWrapper>

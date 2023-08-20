@@ -3,6 +3,7 @@ import SignupInput from "../components/signup/SignupInput";
 import { styled } from "styled-components";
 import useGetUrl from "../hooks/useGetUrls";
 import axiosClient from "../api/axios";
+import { useNavigate } from "react-router";
 
 const signupInputProps = [
   {
@@ -45,7 +46,7 @@ const signupInputProps = [
   },
 ];
 
-const requestUrl = "http://3.12.151.96:8080/api/v1/member";
+// const requestUrl = "http://3.12.151.96:8080/api/v1/member";
 
 const defaultProfilePath = "default_profile.png";
 
@@ -56,9 +57,10 @@ interface Data {
   nickname: string;
   phoneNumber: string | undefined;
   address: string;
-  profile: string;
+  memberImg: string;
 }
 const Signup = () => {
+  const navigate = useNavigate();
   const [urls, setUrls] = useState<string[]>([]);
   const { ref, onChange, isLoading } = useGetUrl(setUrls);
   const submitUrl = useRef<string>(defaultProfilePath);
@@ -77,7 +79,7 @@ const Signup = () => {
     nickname: "",
     phoneNumber: "",
     address: "",
-    profile: "",
+    memberImg: "",
   });
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,16 +120,20 @@ const Signup = () => {
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const checkEmailDuplicate = async () => {
-    const response = await axiosClient.post<Data>(`${requestUrl}/check`, {
+  const checkEmailDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(e);
+    e.preventDefault();
+
+    const response = await axiosClient.post<Data>(`/check`, {
       email: data.email,
     });
     console.log(response);
     response.status === 200 ? setIsUniqueEmail(true) : setIsUniqueEmail(false);
   };
 
-  const checkNicknameDuplicate = async () => {
-    const response = await axiosClient.post<Data>(`${requestUrl}/check`, {
+  const checkNicknameDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const response = await axiosClient.post<Data>(`/check`, {
       nickname: data.nickname,
     });
     console.log(response);
@@ -137,12 +143,22 @@ const Signup = () => {
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("bfr", data);
-    if (isUniqueEmail && isValidEmail && isSamePassword && isValidPassword && isUniqueNinkname && isValidPhoneNumber) {
-      console.log("일치", data);
-      onChange();
-      const response = await axiosClient.post<Data>(`${requestUrl}/register`);
-      console.log(response);
+    // if (isUniqueEmail && isValidEmail && isSamePassword && isValidPassword && isUniqueNinkname && isValidPhoneNumber) {
+    //   console.log("일치", data);
+    await onChange();
+    setData((prev) => ({ ...prev, memberImg: urls[0] }));
+    console.log("마지막", data);
+    const response = await axiosClient.post<Data>(`/register`);
+    console.log(response);
+    if (response.status === 200) {
+      const accessToken = response.headers["authorization"];
+      localStorage.setItem("accessToken", accessToken);
+      alert("회원가입이 완료되었습니다.");
+      navigate("/");
+    } else {
+      alert("회원가입에 실패하였습니다.");
     }
+    // }
   };
 
   useEffect(() => {
@@ -168,9 +184,9 @@ const Signup = () => {
 
   useEffect(() => {
     if (urls[0]) {
-      setData((prev) => ({ ...prev, profile: urls[0] }));
+      setData((prev) => ({ ...prev, memberImg: urls[0] }));
     } else {
-      setData((prev) => ({ ...prev, profile: submitUrl.current }));
+      setData((prev) => ({ ...prev, memberImg: submitUrl.current }));
     }
 
     return () => {};

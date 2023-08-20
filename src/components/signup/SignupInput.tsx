@@ -7,6 +7,7 @@ type inputProps = {
   type: string;
   text: string;
   dupCheck: boolean;
+  placeholder: string | undefined;
   data: {
     email: string;
     password: string;
@@ -17,7 +18,7 @@ type inputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const SignupInput = ({ name, type, text, dupCheck, data, onChange }: inputProps) => {
+const SignupInput = ({ name, type, text, dupCheck, placeholder, data, onChange }: inputProps) => {
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [resultMsg, setResultMsg] = useState("");
   const dupCheckHandler = async () => {
@@ -39,7 +40,14 @@ const SignupInput = ({ name, type, text, dupCheck, data, onChange }: inputProps)
 
   return (
     <InputWrap>
-      <Input name={name} type={type} value={data[name]} onChange={(e) => onChange(e)} onBlur={dupCheckHandler} />
+      <Input
+        name={name}
+        type={type}
+        value={data[name]}
+        onChange={(e) => onChange(e)}
+        onBlur={dupCheckHandler}
+        placeholder={placeholder}
+      />
       <label htmlFor='email'>{text}</label>
       {isDuplicate ? <p>{resultMsg}</p> : null}
     </InputWrap>
@@ -59,7 +67,7 @@ const InputWrap = styled.div`
 `;
 
 const Input = styled.input`
-  width: 310px;
+  width: 330px;
   height: 50px;
   box-sizing: border-box;
   border-radius: 10px;

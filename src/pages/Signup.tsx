@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import SignupInput from "../components/signup/SignupInput";
 import { styled } from "styled-components";
 import useGetUrl from "../hooks/useGetUrls";
+import axiosClient from "../api/axios";
 
 const signupInputProps = [
   {
@@ -15,6 +16,7 @@ const signupInputProps = [
     name: "password",
     text: "비밀번호",
     dupCheck: false,
+    placeholder: "영문자, 숫자를 조합하여 8~20자 이내로 입력해주세요.",
   },
   {
     type: "password",
@@ -33,6 +35,7 @@ const signupInputProps = [
     name: "phoneNumber",
     text: "전화번호",
     dupCheck: false,
+    placeholder: '"-" 없이 숫자만 입력해주세요.',
   },
   {
     type: "address",
@@ -61,7 +64,12 @@ const Signup = () => {
   const submitUrl = useRef<string>(defaultProfilePath);
   const [tempImg, setTempImg] = useState("");
 
+  const [isUniqueEmail, setIsUniqueEmail] = useState(false);
+  const [isUniqueNinkname, setIsUniqueNinkname] = useState(false);
   const [isSamePassword, setIsSamePassword] = useState(false);
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(false);
   const [data, setData] = useState<Data>({
     email: "",
     password: "",
@@ -93,42 +101,59 @@ const Signup = () => {
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    //전화번호 유효성 검사
-    if (name === "phoneNumber") {
-      const regex = /^[0-9\b -]{0,13}$/;
-
-      const cleanValue = value
-        .replace(/[^0-9]/g, "")
-        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
-        .replace(/(\-{1,2})$/g, "");
-
-      if (regex.test(value)) {
-        setData({ ...data, ["phoneNumber"]: cleanValue });
-      }
-    } else {
-      setData({ ...data, [name]: value });
+    if (name === "email") {
+      //이메일 유효성 검사
+      const regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+      regex.test(value) ? setIsValidEmail(true) : setIsValidEmail(false);
+    } else if (name === "password") {
+      //비밀번호 유효성 검사
+      const regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
+      regex.test(value) ? setIsValidPassword(true) : setIsValidPassword(false);
+    } else if (name === "phoneNumber") {
+      //전화번호 유효성 검사
+      const regex = /^[0-9]{10,11}$/;
+      regex.test(value) ? setIsValidPhoneNumber(true) : setIsValidPhoneNumber(false);
     }
+
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const checkEmailDuplicate = async () => {
+    const response = await axiosClient.post<Data>(`${requestUrl}/check`, {
+      email: data.email,
+    });
+    console.log(response);
+    response.status === 200 ? setIsUniqueEmail(true) : setIsUniqueEmail(false);
+  };
+
+  const checkNicknameDuplicate = async () => {
+    const response = await axiosClient.post<Data>(`${requestUrl}/check`, {
+      nickname: data.nickname,
+    });
+    console.log(response);
+    response.status === 200 ? setIsUniqueNinkname(true) : setIsUniqueNinkname(false);
   };
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("bfr", data);
-    // const originalPhoneNumber = data.phoneNumber;
-    if (isSamePassword) {
-      // const requestPhoneNumber = data.phoneNumber?.split("-").join("");
-      // setData((prev) => ({ ...prev, phoneNumber: requestPhoneNumber }));
+    if (isUniqueEmail && isValidEmail && isSamePassword && isValidPassword && isUniqueNinkname && isValidPhoneNumber) {
       console.log("일치", data);
       onChange();
-      // const response = await axiosClient.post<Data>(`${requestUrl}/register`);
-      // console.log(response);
+      const response = await axiosClient.post<Data>(`${requestUrl}/register`);
+      console.log(response);
     }
-
-    // setData({ ...data, ["phoneNumber"]: originalPhoneNumber });
   };
 
-  // useEffect(() => {
-  //   return () => {};
-  // }, [data.phoneNumber]);
+  useEffect(() => {
+    // console.log(data.email);
+    // console.log(isValidEmail);
+    // console.log(data.password);
+    // console.log(isPasswordValid);
+    // console.log(data.phoneNumber);
+    // console.log(isValidPhoneNumber);
+    return () => {};
+  }, [data]);
 
   useEffect(() => {
     //비밀번호 확인
@@ -150,10 +175,6 @@ const Signup = () => {
 
     return () => {};
   }, [urls]);
-
-  // useEffect(() => {
-  //   return () => {};
-  // }, [submitUrl]);
 
   return (
     <>
@@ -189,12 +210,15 @@ const Signup = () => {
                   type={elem.type}
                   text={elem.text}
                   dupCheck={elem.dupCheck}
+                  placeholder={elem.placeholder}
                   data={data}
                   onChange={inputChangeHandler}
                 />
               ))}
             </InputDiv>
           </FormInnerDiv>
+          <button onClick={checkEmailDuplicate}>이메일중복확인</button>
+          <button onClick={checkNicknameDuplicate}>닉네임중복확인</button>
           <SignupButton>회원가입</SignupButton>
         </SignupForm>
 
@@ -235,7 +259,7 @@ const SignupForm = styled.form`
 `;
 
 const FormInnerDiv = styled.div`
-  width: 660px;
+  width: 690px;
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 40px;

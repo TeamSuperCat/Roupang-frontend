@@ -11,6 +11,7 @@ import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";
 import Error from "./pages/ErrorPage";
+import KakaoPayment from "./pages/KakaoPayment";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -75,6 +76,12 @@ const routerData: RouterElement[] = [
         path: "detail/:productid",
         label: "Detail",
         element: <Detail />,
+      },
+      {
+        id: 8,
+        path: "payment",
+        label: "Payment",
+        element: <KakaoPayment />,
       },
     ],
   },

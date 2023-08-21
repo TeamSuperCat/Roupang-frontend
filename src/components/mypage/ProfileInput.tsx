@@ -5,6 +5,7 @@ type inputProps = {
   type: string;
   text: string;
   data: {
+    [key: string]: string | undefined;
     email: string;
     phoneNumber: string | undefined;
     address: string;

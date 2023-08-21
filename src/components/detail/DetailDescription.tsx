@@ -4,7 +4,7 @@ import image from "../../assets/test/carousel04.jpg";
 import descriptionImage from "../../assets/test/DescriptionImage.jpg";
 import styled from "styled-components";
 import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
-import kakaoPaymentfunction from "../../pages/KakaoPayment";
+import kakaoPaymentfunction from "../../api/KakaoPayment";
 
 let optionData = [
   { option: "이건 개" },

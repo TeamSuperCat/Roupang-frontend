@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Test from "./pages/Test";
+import Footer from "./components/Footer/Footer";
 import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";
@@ -14,9 +15,7 @@ import Error from "./pages/ErrorPage";
 import Order from "./pages/Order";
 import Seller from "./pages/Seller";
 import SellerEdit from "./pages/SellerEdit";
-import Footer from "./components/Footer/Footer";
 import Mypage from "./pages/Mypage";
-import KakaoPayment from "./pages/KakaoPayment";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -82,8 +81,6 @@ const routerData: RouterElement[] = [
         label: "Detail",
         element: <Detail />,
       },
-      { id: 8, path: "payment", label: "Payment", element: <KakaoPayment /> },
-
       {
         id: 11,
         path: "signup",

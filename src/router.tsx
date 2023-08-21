@@ -7,9 +7,17 @@ import Signup from "./pages/Signup";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Test from "./pages/Test";
-import Footer from "./components/Footer";
+import Footer from "./components/Footer/Footer";
+import Cart from "./pages/Cart";
+import Detail from "./pages/Detail";
+import Loading from "./components/Loading/Loading";
+import Error from "./pages/ErrorPage";
+import Order from "./pages/Order";
 import Seller from "./pages/Seller";
 import SellerEdit from "./pages/SellerEdit";
+import Footer from "./components/Footer/Footer";
+import Mypage from "./pages/Mypage";
+import KakaoPayment from "./pages/KakaoPayment";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -17,6 +25,7 @@ interface RouterBase {
   label: string; // 사이드바에 표시할 페이지 이름
   element: React.ReactNode; // 페이지 엘리먼트
   children?: RouterElement[]; // 중첩라우팅에서 인증이 필요한 페이지가 있을경우 처리하기 위해서 RouterBase 에서 RouterElement로 바꿨습니다
+  errorElement?: React.ReactNode; // 에러 페이지 엘러먼트
 }
 
 interface UserAccessibleRouterElement extends RouterBase {
@@ -64,23 +73,62 @@ const routerData: RouterElement[] = [
       },
       {
         id: 6,
+        path: "cart",
+        label: "Cart",
+        element: <Cart />,
+      },
+      {
+        id: 7,
+        path: "detail/:productid",
+        label: "Detail",
+        element: <Detail />,
+      },
+      { id: 8, path: "payment", label: "Payment", element: <KakaoPayment /> },
+
+      {
+        id: 11,
         path: "signup",
         label: "Signup",
         element: <Signup />,
       },
       {
-        id: 7,
+        id: 12,
         path: "seller",
         label: "Seller",
         element: <Seller />,
       },
       {
-        id: 8,
+        id: 13,
         path: "selleredit",
         label: "SellerEdit",
         element: <SellerEdit />,
       },
+      {
+        id: 14,
+        path: "mypage",
+        label: "Mypage",
+        element: <Mypage />,
+      },
     ],
+  },
+  {
+    id: 10,
+    path: "/order",
+    label: "Order",
+    element: <Order />,
+    withAuth: false,
+  },
+  {
+    id: 8,
+    path: "/loading",
+    label: "Loading",
+    element: <Loading />,
+  },
+  {
+    id: 9,
+    path: "/error",
+    label: "Footer",
+    element: <Error />,
   },
   {
     id: 4,

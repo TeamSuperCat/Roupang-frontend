@@ -7,11 +7,14 @@ type CloudinaryResponse = {
   secure_url: string;
 };
 
+const { VITE_CLOUDINARY_API_KEY, VITE_CLOUDINARY_UPLOAD_PRESET } = import.meta
+  .env;
+
 const handleImageUpload: UploadImageFn = async (files) => {
   const imageArray: FormData[] = files.map((image) => {
     const formData = new FormData();
-    formData.append("api_key", "618146626818528");
-    formData.append("upload_preset", "hoh2g1dm");
+    formData.append("api_key", VITE_CLOUDINARY_API_KEY);
+    formData.append("upload_preset", VITE_CLOUDINARY_UPLOAD_PRESET);
     formData.append("file", image);
     return formData;
   });

@@ -7,6 +7,7 @@ import { useRouter } from "../hooks/useRouter";
 import OrderAccordion from "../components/Order/OrderAccordion";
 import { useState } from "react";
 import ShipInfo from "../components/Order/ShipInfo";
+import OrderList from "../components/Order/OrderList";
 
 type InfoType = "member" | "new";
 
@@ -43,7 +44,9 @@ function Order() {
         <OrderAccordion title={"배송지"}>
           <ShipInfo />
         </OrderAccordion>
-        <OrderAccordion title={"주문상품"}></OrderAccordion>
+        <OrderAccordion title={"주문상품"}>
+          <OrderList />
+        </OrderAccordion>
       </FormWrap>
     </OrderLayout>
   );

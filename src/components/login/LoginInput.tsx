@@ -1,36 +1,43 @@
 import { styled } from "styled-components";
-import { useState, useRef } from "react";
 
 type PlaceholderInput = {
-  propsValue: {
-    type: string;
-    placeholder?: string;
+  name: string;
+  type: string;
+  placeholder?: string;
+  data: {
+    email: string;
+    password: string;
   };
-  inputHandle: (e: string, title: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
+  ref: null;
 };
 
-const LoginInput = ({ propsValue, inputHandle }: PlaceholderInput) => {
-  const ref = useRef<HTMLInputElement>(null);
-
-  const inputValue = (input: string) => {
-    //input 요소의 value를 가져오기
-    const value = input;
-
-    // props로 전달된 함수 호출
-    if (inputHandle) {
-      inputHandle(value, propsValue.type);
-    }
-  };
-
+const LoginInput = ({
+  name,
+  type,
+  placeholder,
+  data,
+  onChange,
+  onBlur,
+  ref,
+}: PlaceholderInput) => {
+  // 에러 메시지를 보여주는 경우, true -> 메시지 노출
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameIsTouched;
   return (
     <>
       <Input
-        type={propsValue.type}
-        placeholder={propsValue.placeholder}
-        value=""
-        onChange={(e) => inputValue(e.target.value)}
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        value={data[name]}
+        onChange={(e) => onChange(e)}
+        onBlur={onBlur}
         ref={ref}
-      ></Input>
+      />
+      {nameInputIsInvalid && (
+        <p className="error-text">값은 빈 값이 아니어야 합니다.</p>
+      )}
     </>
   );
 };
@@ -38,7 +45,8 @@ const LoginInput = ({ propsValue, inputHandle }: PlaceholderInput) => {
 export default LoginInput;
 
 const Input = styled.input`
-  background-color: pink;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 4px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   color: #222;
   font-weight: 600;
   width: 460px;
@@ -50,4 +58,17 @@ const Input = styled.input`
   box-sizing: border-box;
   border: none;
   border-radius: 10px;
+  transition: all ease-in-out 0.3s;
+  @media (max-width: 650px) {
+    width: 100%;
+  }
+  @media (max-width: 520px) {
+    width: 100%;
+    height: 40px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+  &:focus {
+    outline-color: var(--primary-color);
+  }
 `;

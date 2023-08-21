@@ -1,17 +1,13 @@
 import React from "react";
-import Category from "../components/main/Category";
-import Carousel from "../components/main/MainCarousel";
+
+import MainList from "../components/MainList/MainList";
+import MainListControl from "../components/MainList/MainListControl";
 
 function Main() {
   return (
     <>
-      <div>
-        <Category></Category>
-      </div>
-      <div>
-        <Carousel></Carousel>
-      </div>
-      <div>상품리스트</div>
+      <MainListControl />
+      <MainList />
     </>
   );
 }

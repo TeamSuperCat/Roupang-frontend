@@ -150,6 +150,7 @@ const Seller = () => {
               <th>판매가</th>
               <th>할인가</th>
               <th>상품수정</th>
+              <th>상품삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -170,6 +171,9 @@ const Seller = () => {
                 <button>
                   <Link to='/selleredit'>수정</Link>
                 </button>
+              </td>
+              <td>
+                <button>삭제</button>
               </td>
             </tr>
           </tbody>

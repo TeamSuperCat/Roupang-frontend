@@ -28,16 +28,15 @@ const MainCarousel: React.FC = () => {
           spaceBetween={50}
           slidesPerView={1}
           onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => console.log(swiper)}
+          onSwiper={(swiper) => ""}
         >
           {mainimagelist.map((item, index) => {
             return (
-              <>
-                <SwiperSlide>
-                  <CarouselImgDiv key={index}>
-                    <img src={item} />
-                  </CarouselImgDiv>
-                  {/* <Infomation>
+              <SwiperSlide key={index}>
+                <CarouselImgDiv>
+                  <img src={item} />
+                </CarouselImgDiv>
+                {/* <Infomation>
                     <InfomationLeft>
                       <div>제목입니다.</div>
                       <div>설명입니다.</div>
@@ -45,8 +44,7 @@ const MainCarousel: React.FC = () => {
                     </InfomationLeft>
                     <InfomationRight></InfomationRight>
                   </Infomation> */}
-                </SwiperSlide>
-              </>
+              </SwiperSlide>
             );
           })}
         </StyledSwiper>

@@ -9,6 +9,8 @@ type PlaceholderInput = {
     password: string;
   };
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
+  ref: null;
 };
 
 const LoginInput = ({
@@ -17,6 +19,8 @@ const LoginInput = ({
   placeholder,
   data,
   onChange,
+  onBlur,
+  ref,
 }: PlaceholderInput) => {
   return (
     <>
@@ -26,6 +30,8 @@ const LoginInput = ({
         placeholder={placeholder}
         value={data[name]}
         onChange={(e) => onChange(e)}
+        onBlur={onBlur}
+        ref={ref}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import LoginInput from "../components/login/LoginInput";
 import { styled } from "styled-components";
 import CustomButton from "../components/login/CustomButton";
@@ -24,11 +24,16 @@ interface Data {
   email: string;
   password: string;
 }
+
 const Login = () => {
   const [data, setData] = useState<Data>({
     email: "",
     password: "",
   });
+
+  const nameInputRef = useRef();
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  const [enteredNameIsTouched, setEnteredNameIsTouched] = useState(false);
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,22 +45,54 @@ const Login = () => {
     console.log(e);
     console.log(data);
     // const response = await axiosClient.post<Data>('/login');
+    setEnteredNameIsTouched(true);
+
+    // data이 빈 값인 경우 제출이 안 되게 수정
+    if (data.trim() === "") {
+      console.log("submit fail");
+      setEnteredNameIsValid(false);
+      return;
+    }
+    setEnteredNameIsValid(true);
+    setData("");
   };
+
+  const nameInputBlurHandler = (ㄷ: React.FormEvent) => {
+    console.log("event onBlur");
+    setEnteredNameIsTouched(true);
+    if (data.trim() === "") {
+      setEnteredNameIsValid(false);
+      return;
+    }
+  };
+  // 에러 메시지를 보여주는 경우, true -> 메시지 노출
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameIsTouched;
+
+  const nameInputClasses = nameInputIsInvalid
+    ? "form-control invalid"
+    : "form-control";
 
   return (
     <Container>
       <Form onSubmit={loginHandler}>
         <h3>로그인</h3>
-        {InputPropsValue.map((elem, i) => (
-          <LoginInput
-            key={i}
-            name={elem.name}
-            type={elem.type}
-            placeholder={elem.placeholder}
-            data={data}
-            onChange={inputChangeHandler}
-          />
-        ))}
+        <div className={nameInputClasses}>
+          {InputPropsValue.map((elem, i) => (
+            <LoginInput
+              key={i}
+              name={elem.name}
+              type={elem.type}
+              placeholder={elem.placeholder}
+              data={data}
+              onChange={inputChangeHandler}
+              onBlur={nameInputBlurHandler}
+              ref={nameInputRef}
+            />
+          ))}
+          {nameInputIsInvalid && (
+            <p className="error-text">이름 값은 빈 값이 아니어야 합니다.</p>
+          )}
+        </div>
         <CustomButton />
       </Form>
 

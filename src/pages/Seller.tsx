@@ -187,6 +187,7 @@ const Seller = () => {
               <th>판매가</th>
               <th>할인가</th>
               <th>상품수정</th>
+              <th>상품삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -207,6 +208,9 @@ const Seller = () => {
                 <button>
                   <Link to="/selleredit">수정</Link>
                 </button>
+              </td>
+              <td>
+                <button>삭제</button>
               </td>
             </tr>
           </tbody>
@@ -337,7 +341,7 @@ const ProductsLists = styled.section`
       font-weight: 600;
       background-color: #fff;
       border: none;
-      box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px,
         rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
       border-radius: 5px;
       color: #757575;

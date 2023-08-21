@@ -15,6 +15,7 @@ import Order from "./pages/Order";
 import Seller from "./pages/Seller";
 import SellerEdit from "./pages/SellerEdit";
 import Footer from "./components/Footer/Footer";
+import Mypage from "./pages/Mypage";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -97,6 +98,12 @@ const routerData: RouterElement[] = [
         path: "selleredit",
         label: "SellerEdit",
         element: <SellerEdit />,
+      },
+      {
+        id: 14,
+        path: "mypage",
+        label: "Mypage",
+        element: <Mypage />,
       },
     ],
   },

@@ -334,6 +334,10 @@ export const HeaderBottonbox = styled.div`
       font-size: 15px;
       font-weight: 500;
       cursor: pointer;
+      &:hover {
+        transition: all 0.2s;
+        color: #50d2ba;
+      }
     }
   }
   .header_search_box {

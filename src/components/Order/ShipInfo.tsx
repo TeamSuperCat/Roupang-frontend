@@ -229,7 +229,6 @@ const ReceiverWrap = styled.table`
       top: 0;
       left: 0;
       width: 100%;
-      z-index: 4;
       transform: translateY(-21px);
       outline: none;
       border: 1px solid #a7a7a7;
@@ -237,9 +236,10 @@ const ReceiverWrap = styled.table`
 
     & input {
       position: absolute;
+      visibility: hidden;
       top: 2px;
       left: 2px;
-      z-index: 4;
+      z-index: 2;
       transform: translateY(-21px);
       border: none;
       width: 96%;

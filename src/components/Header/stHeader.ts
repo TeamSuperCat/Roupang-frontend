@@ -36,8 +36,7 @@ export const HeaderTopbox = styled.div`
     &:hover {
       img {
         transition: all 0.2s;
-        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg)
-          brightness(85%) contrast(92%);
+        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg) brightness(85%) contrast(92%);
       }
     }
   }
@@ -186,8 +185,7 @@ export const HeaderMiddlebox = styled.div`
     img {
       transition: all 0.2s;
       &:hover {
-        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg)
-          brightness(85%) contrast(92%);
+        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg) brightness(85%) contrast(92%);
       }
     }
   }

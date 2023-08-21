@@ -136,7 +136,6 @@ const Signup = () => {
         }
       })
       .catch((err) => {
-        console.log("err", err);
         if (err.code === "ERR_BAD_REQUEST") {
           setIsUniqueEmail(false);
         }
@@ -145,11 +144,20 @@ const Signup = () => {
 
   const checkNicknameDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const response = await axiosClient.post<Data>(`/member/check`, {
-      nickname: data.nickname,
-    });
-    console.log(response);
-    response.status === 200 ? setIsUniqueNinkname(true) : setIsUniqueNinkname(false);
+    await axiosClient
+      .post<Data>(`/member/check`, {
+        nickname: data.nickname,
+      })
+      .then((res) => {
+        if (res) {
+          setIsUniqueNinkname(true);
+        }
+      })
+      .catch((err) => {
+        if (err.code === "ERR_BAD_REQUEST") {
+          setIsUniqueNinkname(false);
+        }
+      });
   };
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -161,8 +169,12 @@ const Signup = () => {
       setData((prev) => ({ ...prev, memberImg: urls[0] }));
       console.log("마지막", data);
       await axiosClient
-        .post<Data>(`/member/register`, data)
+        .post<Data>(`/member/register`, data, {
+          withCredentials: true,
+        })
         .then((res) => {
+          console.log(res);
+          console.log(res.headers);
           const accessToken = res.headers["authorization"];
           localStorage.setItem("accessToken", accessToken);
           alert("회원가입이 완료되었습니다.");

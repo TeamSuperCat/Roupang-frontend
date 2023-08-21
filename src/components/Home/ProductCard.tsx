@@ -1,18 +1,16 @@
 import { styled } from "styled-components";
 // import { useRouter } from "../../hooks/useRouter";
-
-interface CardProps {
-  title: string;
+interface ProductCardProps {
+  item: ItemData;
 }
 
-function ProductCard({ title = "애견삼각미니똑딱이4종" }: CardProps) {
-  // const { routeTo } = useRouter();
-
+function ProductCard({ item }: ProductCardProps) {
   return (
     <CardWrapper>
       <CardImgWrapper>
         <a>
           <CardImg
+            //데이터 이미지경로 item.product_img
             src={
               "https://puppydog.co.kr/web/product/medium/202305/1270aa8f684d10bebc459d51d0ffc37a.jpg"
             }
@@ -22,13 +20,13 @@ function ProductCard({ title = "애견삼각미니똑딱이4종" }: CardProps) {
       <CardInfoWrapper>
         <CardTitleWrapper>
           <CardLink>
-            <CardText>{title}</CardText>
+            <CardText>{item.product_name}</CardText>
           </CardLink>
         </CardTitleWrapper>
         <CardPrice>
           <PriceText>35%</PriceText>
           <PriceText>34,000원</PriceText>
-          <PriceText>22,200원</PriceText>
+          <PriceText>{item.price}</PriceText>
         </CardPrice>
       </CardInfoWrapper>
     </CardWrapper>

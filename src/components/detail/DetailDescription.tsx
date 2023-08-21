@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
 import descriptionImage from "../../assets/test/DescriptionImage.jpg";
 import styled from "styled-components";
 
-let optionData = [
+const optionData = [
   { option: "이건 개" },
   { option: "이건 고양이" },
   { option: "이건 닭" },
   { option: "이건 토끼" },
 ];
 
-let responseProductData = {
+const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
   price: 10000,
   stock: 5,
@@ -31,7 +31,7 @@ const DetailDescription = () => {
   const { productid } = useParams();
   console.log("제품ID", productid);
   const [isOption, setIsOption] = useState(false);
-  const [isCheck, setIsCheck] = useState(false);
+  const [, setIsCheck] = useState(false);
   const [isMoreView, setIsMoreView] = useState(false);
   const [OptionValue, setOptionValue] = useState("옵션선택");
   const [productAmount, setProductAmount] = useState(1);
@@ -44,6 +44,7 @@ const DetailDescription = () => {
     event: React.MouseEvent<HTMLDivElement>,
     data: string
   ) => {
+    console.log(event);
     setIsCheck((prev) => !prev);
     setOptionValue(data);
     setIsOption((prev) => !prev);
@@ -69,44 +70,44 @@ const DetailDescription = () => {
   //장바구니 api로 보낸다
   //데이터는 제품아이디, 수량, 가격
   const shopingCartButton = () => {
-    let token = localStorage.getItem("userinfo");
-    const request = fetch("http://localhost:8080/api/v1/cart/items", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        product_idx: productid,
-        amount: productAmount,
-      }),
-    })
-      .then()
-      .catch(() => {
-        console.log("장바구니 응안돼");
-      });
+    // const token = localStorage.getItem("userinfo");
+    // const request = fetch("http://localhost:8080/api/v1/cart/items", {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify({
+    //     product_idx: productid,
+    //     amount: productAmount,
+    //   }),
+    // })
+    //   .then()
+    //   .catch(() => {
+    //     console.log("장바구니 응안돼");
+    //   });
   };
 
   //구매하기
   //구매하기 api로 보낸다
   //데이터는 제품아이디, 수량, 가격
   const buyButton = () => {
-    let token = localStorage.getItem("userinfo");
-    const request = fetch("http://localhost:8080/api/v1/cart/items", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        product_idx: productid,
-        amount: productAmount,
-      }),
-    })
-      .then()
-      .catch(() => {
-        console.log("구매하기 응안돼");
-      });
+    // const token = localStorage.getItem("userinfo");
+    // const request = fetch("http://localhost:8080/api/v1/cart/items", {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify({
+    //     product_idx: productid,
+    //     amount: productAmount,
+    //   }),
+    // })
+    //   .then()
+    //   .catch(() => {
+    //     console.log("구매하기 응안돼");
+    //   });
   };
 
   return (

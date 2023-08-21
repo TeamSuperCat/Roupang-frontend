@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import Test from "./pages/Test";
+import Footer from "./components/Footer/Footer";
 import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";

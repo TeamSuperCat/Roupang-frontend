@@ -122,19 +122,28 @@ const Signup = () => {
   };
 
   const checkEmailDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e);
     e.preventDefault();
 
-    const response = await axiosClient.post<Data>(`/check`, {
-      email: data.email,
-    });
-    console.log(response);
-    response.status === 200 ? setIsUniqueEmail(true) : setIsUniqueEmail(false);
+    await axiosClient
+      .post<Data>(`/member/check`, {
+        email: data.email,
+      })
+      .then((res) => {
+        if (res.result) {
+          setIsUniqueEmail(true);
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
+        if (err.code === "ERR_BAD_REQUEST") {
+          setIsUniqueEmail(false);
+        }
+      });
   };
 
   const checkNicknameDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const response = await axiosClient.post<Data>(`/check`, {
+    const response = await axiosClient.post<Data>(`/member/check`, {
       nickname: data.nickname,
     });
     console.log(response);
@@ -149,16 +158,17 @@ const Signup = () => {
     await onChange();
     setData((prev) => ({ ...prev, memberImg: urls[0] }));
     console.log("마지막", data);
-    const response = await axiosClient.post<Data>(`/register`);
-    console.log(response);
-    if (response.status === 200) {
-      const accessToken = response.headers["authorization"];
-      localStorage.setItem("accessToken", accessToken);
-      alert("회원가입이 완료되었습니다.");
-      navigate("/");
-    } else {
-      alert("회원가입에 실패하였습니다.");
-    }
+    await axiosClient
+      .post<Data>(`/member/register`, data)
+      .then((res) => {
+        const accessToken = res.headers["authorization"];
+        localStorage.setItem("accessToken", accessToken);
+        alert("회원가입이 완료되었습니다.");
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     // }
   };
 

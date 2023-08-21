@@ -46,8 +46,6 @@ const signupInputProps = [
   },
 ];
 
-// const requestUrl = "http://3.12.151.96:8080/api/v1/member";
-
 const defaultProfilePath = "default_profile.png";
 
 interface Data {
@@ -183,12 +181,6 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    // console.log(data.email);
-    // console.log(isValidEmail);
-    // console.log(data.password);
-    // console.log(isPasswordValid);
-    // console.log(data.phoneNumber);
-    // console.log(isValidPhoneNumber);
     return () => {};
   }, [data]);
 

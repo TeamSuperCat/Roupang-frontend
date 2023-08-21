@@ -13,12 +13,12 @@ function Footer() {
           <BsGithub />
         </a>
         <a
-          href="https://www.notion.so/Team-Super-Cat-819e1a14b6a847299bb6866eaff22032?pvs=4"
+          href="https://www.notion.so/Team-Suer-Cat-819e1a14b6a847299bb6866eaff22032?pvs=4"
           target="_blank"
         >
           <SiNotion />
         </a>
-        <a href="javascript:void(0);">
+        <a>
           <BsYoutube />
         </a>
       </LogoWrap>

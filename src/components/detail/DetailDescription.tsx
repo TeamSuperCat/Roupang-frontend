@@ -4,6 +4,8 @@ import image from "../../assets/test/carousel04.jpg";
 import descriptionImage from "../../assets/test/DescriptionImage.jpg";
 import styled from "styled-components";
 import axiosClient from "../../api/axios";
+import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
+import kakaoPaymentfunction from "../../api/KakaoPayment";
 
 let optionData = [
   { option: "이건 개" },
@@ -13,8 +15,8 @@ let optionData = [
 ];
 
 let responseProductData = {
-  product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
-  price: 10000,
+  product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리",
+  price: 5252,
   stock: 5,
   description: "A 물품 상세 설명",
   description_img: descriptionImage,
@@ -177,7 +179,7 @@ const DetailDescription = () => {
 
           <ProductPriceDiv>
             <div>
-              {responseProductData.price * 1.18} 원
+              {parseInt(responseProductData.price * 1.18)} 원
               <span style={{ marginLeft: "1rem" }}>소비자가</span>
             </div>
             <div>
@@ -257,7 +259,7 @@ const DetailDescription = () => {
           </ProductCounter>
 
           {/* 장바구니 구매하기버튼 시작 */}
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <CartBuyButtonContainer>
             <ShopingCartContainer>
               <ShopingCartButton onClick={shopingCartButton}>
                 <Content>장바구니</Content>
@@ -271,7 +273,23 @@ const DetailDescription = () => {
                 <BuyFill />
               </BuyButton>
             </BuyContainer>
-          </div>
+          </CartBuyButtonContainer>
+          <SimplePayment>
+            <div>간편결제</div>
+            <div>
+              <img
+                src={Kakaopaymenticon}
+                alt=""
+                onClick={() =>
+                  kakaoPaymentfunction(
+                    responseProductData.product_name,
+                    productAmount,
+                    responseProductData.price
+                  )
+                }
+              />
+            </div>
+          </SimplePayment>
         </DescriptionBox>
       </Container>
       <DetailDescriptionBox isMoreView={isMoreView}>
@@ -538,4 +556,27 @@ const MoreViewButtonBox = styled.div`
   justify-content: center;
   align-items: center;
   font-weight: bold;
+`;
+
+//장바구니 구매하기 버튼 컨테이너
+const CartBuyButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;
+
+//간편결제
+const SimplePayment = styled.div`
+  display: flex;
+  flex-direction: column;
+  div {
+    margin-bottom: 0.5rem;
+    img {
+      cursor: pointer;
+      &:hover {
+        scale: 1.1;
+        transition: all 0.3s;
+      }
+    }
+  }
 `;

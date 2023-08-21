@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
-const BASE_URL = "/api";
-const token = "쿠키 던지 로컬스토리지던지 토큰을 가져와서 넣기";
+const BASE_URL = `${import.meta.env.VITE_API_SERVER}`;
+const token = localStorage.getItem("accessToken");
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -15,7 +15,7 @@ axiosClient.interceptors.response.use((response) => {
 axiosClient.interceptors.request.use((config) => {
   config.headers["Content-Type"] = "application/json; charset=utf-8";
   if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers["Authorization"] = token;
   }
   return config;
 });

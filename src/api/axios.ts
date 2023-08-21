@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-const BASE_URL = "http://3.12.151.96:8080/api/v1";
+const BASE_URL = `${import.meta.env.VITE_API_SERVER}`;
 const token: string | null = localStorage.getItem("token");
 
 if (token) {

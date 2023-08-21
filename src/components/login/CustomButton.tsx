@@ -1,18 +1,14 @@
 import { styled } from "styled-components";
 
-type ButtonProps = {
-  onClick: () => void;
-};
-
-const CustomButton = (props: ButtonProps) => {
-  return <Button onClick={props.onClick}>로그인</Button>;
+const CustomButton = () => {
+  return <Button>로그인</Button>;
 };
 
 export default CustomButton;
 
 const Button = styled.button`
-  background-color: ${(props) => props.color};
-  color: #222;
+  background-color: var(--primary-color);
+  color: #fff;
   font-weight: 600;
   font-size: 16px;
   border: 1px solid transparent;
@@ -25,6 +21,16 @@ const Button = styled.button`
   align-items: center;
   border-radius: 10px;
   position: relative;
+  transition: all ease-in-out 0.3s;
+  @media (max-width: 650px) {
+    width: 100%;
+  }
+  @media (max-width: 520px) {
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
   svg {
     position: absolute;
     top: 50%;

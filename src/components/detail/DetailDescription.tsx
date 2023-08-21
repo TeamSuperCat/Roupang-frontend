@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
 import descriptionImage from "../../assets/test/DescriptionImage.jpg";
 import styled from "styled-components";
+import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
+import kakaoPaymentfunction from "../../api/KakaoPayment";
 
-let optionData = [
+const optionData = [
   { option: "이건 개" },
   { option: "이건 고양이" },
   { option: "이건 닭" },
   { option: "이건 토끼" },
 ];
 
-let responseProductData = {
+const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
   price: 10000,
   stock: 5,
@@ -31,7 +33,7 @@ const DetailDescription = () => {
   const { productid } = useParams();
   console.log("제품ID", productid);
   const [isOption, setIsOption] = useState(false);
-  const [isCheck, setIsCheck] = useState(false);
+  const [, setIsCheck] = useState(false);
   const [isMoreView, setIsMoreView] = useState(false);
   const [OptionValue, setOptionValue] = useState("옵션선택");
   const [productAmount, setProductAmount] = useState(1);
@@ -44,6 +46,7 @@ const DetailDescription = () => {
     event: React.MouseEvent<HTMLDivElement>,
     data: string
   ) => {
+    console.log(event);
     setIsCheck((prev) => !prev);
     setOptionValue(data);
     setIsOption((prev) => !prev);
@@ -69,44 +72,44 @@ const DetailDescription = () => {
   //장바구니 api로 보낸다
   //데이터는 제품아이디, 수량, 가격
   const shopingCartButton = () => {
-    let token = localStorage.getItem("userinfo");
-    const request = fetch("http://localhost:8080/api/v1/cart/items", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        product_idx: productid,
-        amount: productAmount,
-      }),
-    })
-      .then()
-      .catch(() => {
-        console.log("장바구니 응안돼");
-      });
+    // const token = localStorage.getItem("userinfo");
+    // const request = fetch("http://localhost:8080/api/v1/cart/items", {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify({
+    //     product_idx: productid,
+    //     amount: productAmount,
+    //   }),
+    // })
+    //   .then()
+    //   .catch(() => {
+    //     console.log("장바구니 응안돼");
+    //   });
   };
 
   //구매하기
   //구매하기 api로 보낸다
   //데이터는 제품아이디, 수량, 가격
   const buyButton = () => {
-    let token = localStorage.getItem("userinfo");
-    const request = fetch("http://localhost:8080/api/v1/cart/items", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        product_idx: productid,
-        amount: productAmount,
-      }),
-    })
-      .then()
-      .catch(() => {
-        console.log("구매하기 응안돼");
-      });
+    // const token = localStorage.getItem("userinfo");
+    // const request = fetch("http://localhost:8080/api/v1/cart/items", {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify({
+    //     product_idx: productid,
+    //     amount: productAmount,
+    //   }),
+    // })
+    //   .then()
+    //   .catch(() => {
+    //     console.log("구매하기 응안돼");
+    //   });
   };
 
   return (
@@ -131,7 +134,7 @@ const DetailDescription = () => {
 
           <ProductPriceDiv>
             <div>
-              {responseProductData.price * 1.18} 원
+              {parseInt((responseProductData.price * 1.18).toString())} 원
               <span style={{ marginLeft: "1rem" }}>소비자가</span>
             </div>
             <div>
@@ -187,7 +190,7 @@ const DetailDescription = () => {
           </ProductCounter>
 
           {/* 장바구니 구매하기버튼 시작 */}
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <CartBuyButtonContainer>
             <ShopingCartContainer>
               <ShopingCartButton onClick={shopingCartButton}>
                 <Content>장바구니</Content>
@@ -201,7 +204,23 @@ const DetailDescription = () => {
                 <BuyFill />
               </BuyButton>
             </BuyContainer>
-          </div>
+          </CartBuyButtonContainer>
+          <SimplePayment>
+            <div>간편결제</div>
+            <div>
+              <img
+                src={Kakaopaymenticon}
+                alt=""
+                onClick={() =>
+                  kakaoPaymentfunction(
+                    responseProductData.product_name,
+                    productAmount,
+                    responseProductData.price
+                  )
+                }
+              />
+            </div>
+          </SimplePayment>
         </DescriptionBox>
       </Container>
       <DetailDescriptionBox isMoreView={isMoreView}>
@@ -468,4 +487,27 @@ const MoreViewButtonBox = styled.div`
   justify-content: center;
   align-items: center;
   font-weight: bold;
+`;
+
+//장바구니 구매하기 버튼 컨테이너
+const CartBuyButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;
+
+//간편결제
+const SimplePayment = styled.div`
+  display: flex;
+  flex-direction: column;
+  div {
+    margin-bottom: 0.5rem;
+    img {
+      cursor: pointer;
+      &:hover {
+        scale: 1.1;
+        transition: all 0.3s;
+      }
+    }
+  }
 `;

@@ -5,14 +5,14 @@ import { RxPerson } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { useRouter } from "../hooks/useRouter";
 import OrderAccordion from "../components/Order/OrderAccordion";
-import { useState } from "react";
+// import { useState } from "react";
 import ShipInfo from "../components/Order/ShipInfo";
 import OrderList from "../components/Order/OrderList";
 
-type InfoType = "member" | "new";
+// type InfoType = "member" | "new";
 
 function Order() {
-  const [shipment, setShipment] = useState<InfoType>("member");
+  // const [shipment, setShipment] = useState<InfoType>("member");
   const { routeTo } = useRouter();
 
   return (

@@ -11,7 +11,7 @@ interface ModalProps {
   onClick: NoneEvent | undefined;
 }
 
-function Portal({ children }: IChildrenProps) {
+function Portal() {
   const portal = document.querySelector("#portal");
   const { isOpen, toggleModal } = useToggleModal();
 

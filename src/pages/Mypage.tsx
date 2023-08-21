@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import ProfileInput from "../components/mypage/ProfileInput";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const userProfileInfoProps = [
   {
@@ -128,8 +129,24 @@ const Mypage = () => {
     return () => {};
   }, []);
 
+  const login = () => {
+    axios
+      .post("http://3.12.151.96:8080/api/v1/member/login", {
+        email: "test@GoMail.com",
+        password: "12341234q",
+      })
+      .then((res) => {
+        console.log(res);
+        console.log(res.headers);
+        console.log(res.headers["authorization"]);
+        const accessToken = res.headers["authorization"];
+        localStorage.setItem("accessToken", accessToken);
+      });
+  };
+
   return (
     <>
+      <button onClick={login}>login</button>
       <Heading>This is MYpage.</Heading>
       <Container>
         <MypageDiv>

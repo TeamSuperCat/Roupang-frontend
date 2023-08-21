@@ -1,4 +1,3 @@
-import React from "react";
 import axios from "axios";
 
 const url = "https://kapi.kakao.com/v1/payment/ready";

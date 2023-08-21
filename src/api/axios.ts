@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
-const BASE_URL = "/api";
-const token = "쿠키 던지 로컬스토리지던지 토큰을 가져와서 넣기";
+const BASE_URL = `${import.meta.env.VITE_API_SERVER}`;
+const token = localStorage.getItem("accessToken");
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -15,7 +15,7 @@ axiosClient.interceptors.response.use((response) => {
 axiosClient.interceptors.request.use((config) => {
   config.headers["Content-Type"] = "application/json; charset=utf-8";
   if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers["Authorization"] = token;
   }
   return config;
 });
@@ -24,9 +24,10 @@ axiosClient.interceptors.request.use((config) => {
 // axiosClient.메소드('경로') 해서 사용 baseURL 은 이미 설정되어 있으므로 URI 만 붙여서 사용해야함
 
 // interface Data {
+//   기타 필요한 필드 추가
+//   ex) 밑의 키 밸류는 예시임 필요한 데이터 정의해서 사용하면 됨
 //   id: number;
 //   name: string;
-//   // 기타 필요한 필드 추가
 // }
 
 // const [data, setData] = useState<Data | null>(null);

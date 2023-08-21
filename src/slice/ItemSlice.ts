@@ -4,13 +4,14 @@ import axiosClient from "../api/axios";
 
 export const getItems = createAsyncThunk("item/getItems", async () => {
   const response = await axiosClient.get(
-    "/products/category/2?page=0&size=5&order="
+    "/products/category/1?page=0&size=5&order="
   );
   return response.data;
 });
 
 const initialState = {
   items: [],
+  isLoading: false,
 };
 
 const itemSlice = createSlice({
@@ -20,15 +21,14 @@ const itemSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getItems.pending, (state) => {
-        console.log("팬딩", state);
+        state.isLoading = false;
       })
       .addCase(getItems.fulfilled, (state, action) => {
         state.items = action.payload;
-        console.log(action.payload, "풀필드");
+        console.log(action.payload, "풀필드1");
       })
       .addCase(getItems.rejected, (state, action) => {
-        console.log(state, "리젝");
-        console.log(action, "리젝2");
+        console.log(action.error, "실패");
       });
   },
 });

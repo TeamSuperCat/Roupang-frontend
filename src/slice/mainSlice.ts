@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axiosClient from "../api/axios";
 
 export const getAllCategorys = createAsyncThunk<AllProducts[], void>(
-  "item/getItems",
+  "main/getAllCategorys",
   async () => {
     const getCategoryUrl = (categoryId: number) =>
       `/products/category/${categoryId}?page=0&size=5&order=`;
@@ -23,7 +23,7 @@ const initialState: { items: AllProducts[]; isLoading: boolean } = {
 };
 
 const mainSlice = createSlice({
-  name: "item",
+  name: "main",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

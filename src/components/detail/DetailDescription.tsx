@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
 import descriptionImage from "../../assets/test/DescriptionImage.jpg";
 import styled from "styled-components";
+import axiosClient from "../../api/axios";
 
 let optionData = [
   { option: "이건 개" },
@@ -20,6 +21,42 @@ let responseProductData = {
   category_name: "간식",
   product_img: image,
   sales_end_date: "2023-08-15",
+  options: [
+    {
+      optionTypeIdx: 1,
+      optionTypeNameIdx: 1,
+      optionTypeName: "크기",
+      optionDetails: [
+        {
+          optionDetailIdx: 1,
+          optionDetailName: "S",
+        },
+        {
+          optionDetailIdx: 2,
+          optionDetailName: "M",
+        },
+        {
+          optionDetailIdx: 3,
+          optionDetailName: "L",
+        },
+      ],
+    },
+    {
+      optionTypeIdx: 2,
+      optionTypeNameIdx: 3,
+      optionTypeName: "색상",
+      optionDetails: [
+        {
+          optionDetailIdx: 4,
+          optionDetailName: "Red",
+        },
+        {
+          optionDetailIdx: 5,
+          optionDetailName: "Blue",
+        },
+      ],
+    },
+  ],
 };
 
 interface DetailDescriptionBoxProps {
@@ -31,10 +68,20 @@ const DetailDescription = () => {
   const { productid } = useParams();
   console.log("제품ID", productid);
   const [isOption, setIsOption] = useState(false);
+  const [isSecoundOption, setIsSecoundOption] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [isMoreView, setIsMoreView] = useState(false);
   const [OptionValue, setOptionValue] = useState("옵션선택");
   const [productAmount, setProductAmount] = useState(1);
+
+  const product_id: number = 1;
+  let data;
+  useEffect(() => {
+    axiosClient.get(`products/${product_id}`).then((res) => {
+      data = res.data;
+      return console.log(data);
+    });
+  });
 
   const optionClcikHandler = () => {
     console.log(isOption);
@@ -86,13 +133,12 @@ const DetailDescription = () => {
         console.log("장바구니 응안돼");
       });
   };
-
   //구매하기
   //구매하기 api로 보낸다
   //데이터는 제품아이디, 수량, 가격
   const buyButton = () => {
     let token = localStorage.getItem("userinfo");
-    const request = fetch("http://localhost:8080/api/v1/cart/items", {
+    const request = fetch(`http://localhost:8080/products/${product_id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -175,6 +221,30 @@ const DetailDescription = () => {
                 </OptionList>
               );
             })}
+          {isSecoundOption && (
+            <ProductOption>
+              <OptionSelect onClick={optionClcikHandler}>
+                <div>{OptionValue}</div>
+                <div>▿</div>
+              </OptionSelect>
+            </ProductOption>
+          )}
+          {isSecoundOption &&
+            optionData.map((data, index) => {
+              return (
+                <OptionList>
+                  <div
+                    key={index}
+                    onClick={(event) => optionCheckHandler(event, data.option)}
+                  >
+                    {data.option}
+                  </div>
+
+                  <div></div>
+                </OptionList>
+              );
+            })}
+
           {/* 수량표시하는곳 */}
           <ProductCounter>
             <Amount>수량</Amount>

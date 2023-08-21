@@ -22,6 +22,10 @@ const GlobalStyles = createGlobalStyle`
     }
   `}
 
+  button{
+    user-select:none;
+    cursor:pointer;
+  }
   `;
 
 export default GlobalStyles;

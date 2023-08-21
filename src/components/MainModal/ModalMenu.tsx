@@ -3,37 +3,69 @@ import { BsThreeDotsVertical, BsBell, BsClock, BsStar } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { AiOutlineHeart } from "react-icons/ai";
 import MenuBtn from "./MenuBtn";
-import useToggleModal from "../../hooks/useToggleModal";
-import { useState } from "react";
+import useHandleModal from "../../hooks/useHandleModal";
 
-function ModalMenu() {
-  const { toggleModal } = useToggleModal();
-  const [rotateState, setRotateState] = useState(false);
+interface Props {
+  category: string;
+  onClick: (category: TitleKey) => void;
+}
+
+function ModalMenu({ onClick, category }: Props) {
+  const { isOpen, toggleModal, openModal } = useHandleModal();
 
   const handleClick = () => {
     toggleModal();
-    setRotateState(!rotateState);
+  };
+
+  const handleActive = (category: TitleKey) => {
+    onClick(category);
+    openModal();
   };
 
   return (
     <ModalMenuLayOut>
       <BtnWrapper>
-        <MenuBtn primary={true} rotateState={rotateState} onClick={handleClick}>
+        <MenuBtn
+          primary={true}
+          rotateState={isOpen}
+          onClick={handleClick}
+          text={isOpen ? "닫기" : "열기"}
+        >
           <BsThreeDotsVertical />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn
+          text="고객센터"
+          onClick={() => handleActive("customer")}
+          category={category === "customer" && isOpen}
+        >
           <BsBell />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn
+          text="마이샵"
+          onClick={() => handleActive("myshop")}
+          category={category === "myshop" && isOpen}
+        >
           <CgProfile />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn
+          text="최근 본 상품"
+          onClick={() => handleActive("recent")}
+          category={category === "recent" && isOpen}
+        >
           <BsClock />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn
+          text="관심 상품"
+          onClick={() => handleActive("interest")}
+          category={category === "interest" && isOpen}
+        >
           <AiOutlineHeart />
         </MenuBtn>
-        <MenuBtn>
+        <MenuBtn
+          text="좋아요"
+          onClick={() => handleActive("like")}
+          category={category === "like" && isOpen}
+        >
           <BsStar />
         </MenuBtn>
       </BtnWrapper>
@@ -49,7 +81,7 @@ const ModalMenuLayOut = styled.div`
   height: 290px;
   width: 70px;
   transform: translate3d(-70px, -50%, 0);
-  background-color: #fff;
+  background-color: white;
   border-top-left-radius: 14px;
   border-bottom-left-radius: 14px;
   display: grid;

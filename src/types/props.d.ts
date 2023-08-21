@@ -4,8 +4,11 @@ interface IChildrenProps {
 }
 
 interface IButtonProps extends IChildrenProps {
+  $active?: boolean;
+  category?: boolean;
   primary?: boolean;
   rotateState?: boolean;
+  text: string;
 }
 
 interface INoneEventFunc {
@@ -20,3 +23,4 @@ interface IToggleStateProps {
 
 type NoneEvent = () => void;
 type HasClickEvent = (e: ClickEventType) => void;
+type TitleKey = "myshop" | "recent" | "interest" | "like" | "customer";

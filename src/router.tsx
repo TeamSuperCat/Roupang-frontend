@@ -6,12 +6,15 @@ import HeaderLayout from "./layout/HeaderLayout";
 import Signup from "./pages/Signup";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
-import Footer from "./components/Footer/Footer";
 import Test from "./pages/Test";
 import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";
 import Error from "./pages/ErrorPage";
+import Order from "./pages/Order";
+import Seller from "./pages/Seller";
+import SellerEdit from "./pages/SellerEdit";
+import Footer from "./components/Footer/Footer";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -78,18 +81,31 @@ const routerData: RouterElement[] = [
         element: <Detail />,
       },
       {
-        id: 10,
+        id: 11,
         path: "signup",
         label: "Signup",
         element: <Signup />,
       },
+      {
+        id: 12,
+        path: "seller",
+        label: "Seller",
+        element: <Seller />,
+      },
+      {
+        id: 13,
+        path: "selleredit",
+        label: "SellerEdit",
+        element: <SellerEdit />,
+      },
     ],
   },
   {
-    id: 4,
-    path: "/",
-    label: "Footer",
-    element: <Footer />,
+    id: 10,
+    path: "/order",
+    label: "Order",
+    element: <Order />,
+    withAuth: false,
   },
   {
     id: 8,
@@ -99,9 +115,15 @@ const routerData: RouterElement[] = [
   },
   {
     id: 9,
-    path: "*",
+    path: "/error",
     label: "Footer",
     element: <Error />,
+  },
+  {
+    id: 4,
+    path: "/",
+    label: "Footer",
+    element: <Footer />,
   },
 
   // {

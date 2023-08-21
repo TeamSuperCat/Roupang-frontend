@@ -4,10 +4,10 @@ import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
 import Portal from "../components/Portal";
 import Modal from "../components/MainModal/MainModal";
-import useToggleModal from "../hooks/useToggleModal";
+import useHandleModal from "../hooks/useHandleModal";
 
 const HeaderLayout = () => {
-  const { isOpen } = useToggleModal();
+  const { isOpen } = useHandleModal();
 
   return (
     <LayOut>

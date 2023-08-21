@@ -1,7 +1,5 @@
 import { styled } from "styled-components";
 
-type TitleKey = "myshop" | "recent" | "interest" | "like" | "customer";
-
 interface Props {
   category?: TitleKey;
 }
@@ -61,7 +59,7 @@ const MyShopHeader = styled.div`
     content: "";
     height: 3px;
     position: absolute;
-    top: 45.5px;
+    top: 45.2px;
     left: 0;
     width: 240px;
     background-color: rgba(128, 128, 128, 0.2);

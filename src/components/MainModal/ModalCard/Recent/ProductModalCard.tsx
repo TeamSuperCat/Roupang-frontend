@@ -21,6 +21,10 @@ const ProductCardWrap = styled.li`
   padding-bottom: 20px;
   margin-bottom: 20px;
   cursor: pointer;
+
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 const ProductImg = styled.div`

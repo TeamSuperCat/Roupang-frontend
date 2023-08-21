@@ -5,7 +5,7 @@ import MenuBtn from "./MenuBtn";
 import { RxCross2 } from "react-icons/rx";
 import ModalHeader from "./ModalHeader";
 import MyShop from "./ModalCard/UserStatus/MyShop";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Recent from "./ModalCard/Recent/Recent";
 
 interface IModalCard {
@@ -26,15 +26,31 @@ function switchComponent(category: string): React.ReactNode {
 }
 
 function MainModal() {
-  const [category, setCategory] = useState("myshop");
+  const [category, setCategory] = useState<TitleKey>("myshop");
   const { isOpen, toggleModal } = useToggleModal();
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
-  const switchCategory = (current: string) => {
+  const switchCategory = (current: TitleKey) => {
     setCategory(current);
   };
+
+  useEffect(() => {
+    const preventBodyScroll = () => {
+      if (isOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "visible";
+      }
+    };
+
+    preventBodyScroll();
+
+    return () => {
+      document.body.style.overflow = "visible";
+    };
+  }, [isOpen]);
 
   return (
     <ModalCard $isOpen={isOpen} onClick={handleClick}>
@@ -81,6 +97,7 @@ const ModalTop = styled.div`
 const ModalContent = styled.div`
   margin: 30px;
   border-top: 1px solid rgba(0, 0, 0, 0.4);
+  overflow: auto;
 `;
 
 const ModalTitle = styled.h1`

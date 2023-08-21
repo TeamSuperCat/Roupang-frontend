@@ -5,10 +5,11 @@ import {
   modalClose,
 } from "../slice/modalSlice";
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "./useDispatch";
+import { useAppDispatch } from "./useDispatch";
+import { useSelector } from "react-redux";
 
 const useHandleModal = () => {
-  const state = useAppSelector(toggleState);
+  const state = useSelector(toggleState);
   const dispatch = useAppDispatch();
 
   const toggleModal = useCallback(() => {

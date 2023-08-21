@@ -12,6 +12,15 @@ function Recent() {
       <ProductModalCard />
       <ProductModalCard />
       <ProductModalCard />
+      <ProductModalCard />
+      <ProductModalCard />
+      <ProductModalCard />
+      <ProductModalCard />
+      <ProductModalCard />
+      <ProductModalCard />
+      <ProductModalCard />
+      <ProductModalCard />
+      <ProductModalCard />
     </ProductCardUl>
   );
 }
@@ -21,4 +30,5 @@ export default Recent;
 const ProductCardUl = styled.ul`
   display: flex;
   flex-direction: column;
+  overflow: overlay;
 `;

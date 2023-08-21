@@ -23,3 +23,4 @@ interface IToggleStateProps {
 
 type NoneEvent = () => void;
 type HasClickEvent = (e: ClickEventType) => void;
+type TitleKey = "myshop" | "recent" | "interest" | "like" | "customer";

@@ -7,7 +7,7 @@ import useHandleModal from "../../hooks/useHandleModal";
 
 interface Props {
   category: string;
-  onClick: (category: string) => void;
+  onClick: (category: TitleKey) => void;
 }
 
 function ModalMenu({ onClick, category }: Props) {
@@ -17,7 +17,7 @@ function ModalMenu({ onClick, category }: Props) {
     toggleModal();
   };
 
-  const handleActive = (category: string) => {
+  const handleActive = (category: TitleKey) => {
     onClick(category);
     openModal();
   };

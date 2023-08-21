@@ -10,6 +10,7 @@ import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";
 import Error from "./pages/ErrorPage";
+import Order from "./pages/Order";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -76,6 +77,13 @@ const routerData: RouterElement[] = [
         element: <Detail />,
       },
     ],
+  },
+  {
+    id: 10,
+    path: "/order",
+    label: "Order",
+    element: <Order />,
+    withAuth: false,
   },
   {
     id: 8,

@@ -18,6 +18,8 @@ const Home = () => {
   return (
     <>
       {LoadingData ? (
+        <Loading />
+      ) : (
         <>
           <MainCarousel />
           {AllCategory.filter((category) => category.length > 0).map(
@@ -26,8 +28,6 @@ const Home = () => {
             )
           )}
         </>
-      ) : (
-        <Loading />
       )}
     </>
   );

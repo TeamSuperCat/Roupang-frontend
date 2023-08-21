@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import axiosClient from "../api/axios";
 
-export const getAllCategorys = createAsyncThunk<AllProducts[], void>(
+export const getAllCategorys = createAsyncThunk<ItemData[], void>(
   "main/getAllCategorys",
   async () => {
     const getCategoryUrl = (categoryId: number) =>
@@ -15,11 +15,9 @@ export const getAllCategorys = createAsyncThunk<AllProducts[], void>(
   }
 );
 
-type AllProducts = ItemData[];
-
-const initialState: { items: AllProducts[]; isLoading: boolean } = {
+const initialState: { items: ItemData[]; isLoading: boolean } = {
   items: [],
-  isLoading: false,
+  isLoading: true,
 };
 
 const mainSlice = createSlice({
@@ -29,11 +27,11 @@ const mainSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllCategorys.pending, (state) => {
-        state.isLoading = false;
+        state.isLoading = true;
       })
       .addCase(getAllCategorys.fulfilled, (state, action) => {
         state.items = action.payload;
-        state.isLoading = true;
+        state.isLoading = false;
       })
       .addCase(getAllCategorys.rejected, (state, action) => {
         console.log(action.error, "실패");

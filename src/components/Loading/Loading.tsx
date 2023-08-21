@@ -1,4 +1,3 @@
-import React from "react";
 import { LoadingWrapper } from "./stLoading";
 
 const Loading = () => {

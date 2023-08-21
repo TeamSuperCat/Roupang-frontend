@@ -1,5 +1,3 @@
-import React from "react";
-
 import MainList from "../components/MainList/MainList";
 import MainListControl from "../components/MainList/MainListControl";
 

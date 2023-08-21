@@ -105,7 +105,7 @@ const Divider = styled.hr`
   &::after {
     content: "";
     left: 50%;
-    top: 389px;
+    top: 409px;
     width: 7px;
     height: 7px;
     background-color: black;

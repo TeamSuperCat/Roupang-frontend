@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import { styled } from "styled-components";
-import useToggleModal from "../hooks/useToggleModal";
+import useToggleModal from "../hooks/useHandleModal";
 // import Modal from "./Modal";
 
 // type PortalReturnType = React.ReactPortal | React.ReactNode;
@@ -31,7 +31,7 @@ function Portal({ children }: IChildrenProps) {
   return ReactDOM.createPortal(
     <>
       {isOpen && (
-        <ModalWrapper onClick={() => toggleModal()}>
+        <ModalWrapper onClick={toggleModal}>
           {/* {modifiedChildren} */}
         </ModalWrapper>
       )}

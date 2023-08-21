@@ -12,8 +12,11 @@ import Cart from "./pages/Cart";
 import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";
 import Error from "./pages/ErrorPage";
+import Order from "./pages/Order";
 import Seller from "./pages/Seller";
 import SellerEdit from "./pages/SellerEdit";
+import Footer from "./components/Footer/Footer";
+import Mypage from "./pages/Mypage";
 
 interface RouterBase {
   id: number; // 페이지 아이디 (반복문용 고유값)
@@ -80,30 +83,37 @@ const routerData: RouterElement[] = [
         element: <Detail />,
       },
       {
-        id: 10,
+        id: 11,
         path: "signup",
         label: "Signup",
         element: <Signup />,
       },
       {
-        id: 11,
+        id: 12,
         path: "seller",
         label: "Seller",
         element: <Seller />,
       },
       {
-        id: 12,
+        id: 13,
         path: "selleredit",
         label: "SellerEdit",
         element: <SellerEdit />,
       },
+      {
+        id: 14,
+        path: "mypage",
+        label: "Mypage",
+        element: <Mypage />,
+      },
     ],
   },
   {
-    id: 4,
-    path: "/",
-    label: "Footer",
-    element: <Footer />,
+    id: 10,
+    path: "/order",
+    label: "Order",
+    element: <Order />,
+    withAuth: false,
   },
   {
     id: 8,
@@ -113,9 +123,15 @@ const routerData: RouterElement[] = [
   },
   {
     id: 9,
-    path: "*",
+    path: "/error",
     label: "Footer",
     element: <Error />,
+  },
+  {
+    id: 4,
+    path: "/",
+    label: "Footer",
+    element: <Footer />,
   },
 
   // {
@@ -139,11 +155,7 @@ interface RouteObject {
 //router.children가 존재하면 다시 함수를 다시 호출해서 중첩라우팅을 변환합니다. 재귀를 사용했으니 2중3중으로 들어가도 처리가능합니다.
 function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   return routerArray.map((router) => {
-    const routeElement = router.withAuth ? (
-      <AuthComponents>{router.element}</AuthComponents>
-    ) : (
-      router.element
-    );
+    const routeElement = router.withAuth ? <AuthComponents>{router.element}</AuthComponents> : router.element;
 
     const routeObject: RouteObject = {
       path: router.path,
@@ -163,6 +175,4 @@ function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   });
 }
 
-export const routers: RemixRouter = createBrowserRouter(
-  transformRoutes(routerData)
-);
+export const routers: RemixRouter = createBrowserRouter(transformRoutes(routerData));

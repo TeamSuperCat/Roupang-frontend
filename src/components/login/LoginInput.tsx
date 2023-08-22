@@ -77,7 +77,7 @@ const LoginInput = () => {
       console.log(requestData);
 
       await axiosClient
-        .post<RequestData>("http://3.12.151.96:8080/api/v1/member/login", requestData)
+        .post<RequestData>("/member/login", requestData)
         .then((res) => {
           console.log(res);
           navigate("/");

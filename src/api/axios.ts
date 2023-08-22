@@ -12,6 +12,10 @@ const axiosClient: AxiosInstance = axios.create({
 });
 
 axiosClient.interceptors.response.use((response) => {
+  if (response.headers["authorization"]) {
+    const accessToken = response.headers["authorization"];
+    localStorage.setItem("accessToken", accessToken);
+  }
   return response.data;
 });
 

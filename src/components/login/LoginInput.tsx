@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "./CustomButton";
 import { useNavigate } from "react-router";
-import axios from "axios";
+import axiosClient from "../../api/axios";
 
 // type PlaceholderInput = {
 //   enteredNameIsValid: boolean;
@@ -65,16 +65,21 @@ const LoginInput = () => {
   // 4. 전송버튼
   const handleLoginSubmit = async () => {
     if (isValidEmail(email) && isValidPassword(password)) {
-      const data = {
+      interface RequestData {
+        email: string;
+        password: string;
+      }
+
+      const requestData = {
         email,
         password,
       };
+      console.log(requestData);
 
-      axios
-        .post("http://3.12.151.96:8080/api/v1/member/login", data)
+      await axiosClient
+        .post<RequestData>("http://3.12.151.96:8080/api/v1/member/login", requestData)
         .then((res) => {
-          const accessToken = res.headers["authorization"];
-          localStorage.setItem("accessToken", accessToken);
+          console.log(res);
           navigate("/");
         })
         .catch((err) => {
@@ -82,6 +87,19 @@ const LoginInput = () => {
             console.log(err.response.data.msg);
           }
         });
+
+      // axios
+      //   .post("http://3.12.151.96:8080/api/v1/member/login", data)
+      //   .then((res) => {
+      //     const accessToken = res.headers["authorization"];
+      //     localStorage.setItem("accessToken", accessToken);
+      //     navigate("/");
+      //   })
+      //   .catch((err) => {
+      //     if (err) {
+      //       console.log(err.response.data.msg);
+      //     }
+      //   });
 
       // try {
       //   const response = await fetch("http://localhost:8080/api/v1/member/login", {

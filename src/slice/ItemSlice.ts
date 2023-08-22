@@ -8,6 +8,7 @@ export const getItems = createAsyncThunk(
     const response = await axiosClient.get(
       `/products/category/${categoryId}?page=0&size=12&order=`
     );
+    console.log(response.data);
     return response.data;
   }
 );
@@ -32,11 +33,13 @@ const initialState: {
   items: ItemData[];
   isLoading: boolean;
   categorynum: string;
+  catesort: string;
   Totalitems: number;
 } = {
   items: [],
   isLoading: true,
   categorynum: "",
+  catesort: "",
   Totalitems: 0,
 };
 
@@ -47,6 +50,9 @@ const itemSlice = createSlice({
     getCatenum: (state, action: PayloadAction<string>) => {
       state.categorynum = action.payload;
     },
+    getSortType: (state, action: PayloadAction<string>) => {
+      state.catesort = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -56,7 +62,7 @@ const itemSlice = createSlice({
       .addCase(getItems.fulfilled, (state, action) => {
         state.items = action.payload.content;
         state.Totalitems = action.payload.totalElements;
-        console.log(action.payload, "풀필드1");
+        state.catesort = "";
         state.isLoading = false;
       })
       .addCase(getItems.rejected, (state, action) => {
@@ -69,7 +75,6 @@ const itemSlice = createSlice({
       .addCase(getCateItems.fulfilled, (state, action) => {
         state.items = action.payload.content;
         state.Totalitems = action.payload.totalElements;
-        console.log(action.payload, "풀필드1");
         state.isLoading = false;
       })
       .addCase(getCateItems.rejected, (state, action) => {
@@ -79,6 +84,6 @@ const itemSlice = createSlice({
   },
 });
 
-export const { getCatenum } = itemSlice.actions;
+export const { getCatenum, getSortType } = itemSlice.actions;
 
 export default itemSlice.reducer;

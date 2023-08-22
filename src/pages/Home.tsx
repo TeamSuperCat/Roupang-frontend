@@ -15,8 +15,6 @@ const Home = () => {
   const AllCategory: ItemData[][] = useAppSelector((state) => state.main.items);
   const LoadingData = useAppSelector((state) => state.main.isLoading);
 
-  console.log(AllCategory);
-
   return (
     <>
       {LoadingData ? (

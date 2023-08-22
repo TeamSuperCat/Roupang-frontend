@@ -12,8 +12,10 @@ const Home = () => {
     dispatch(getAllCategorys());
   }, []);
 
-  const AllCategory = useAppSelector((state) => state.main.items);
+  const AllCategory: ItemData[][] = useAppSelector((state) => state.main.items);
   const LoadingData = useAppSelector((state) => state.main.isLoading);
+
+  console.log(AllCategory);
 
   return (
     <>

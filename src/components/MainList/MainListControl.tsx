@@ -3,11 +3,9 @@ import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
 import { getCateItems } from "../../slice/ItemSlice";
 
 const MainListControl = () => {
-  const itemCount = useAppSelector((state) => state.item.items.length);
+  const itemCount = useAppSelector((state) => state.item.Totalitems);
   const categoryId = useAppSelector((state) => state.item.categorynum);
   const dispatch = useAppDispatch();
-
-  console.log(categoryId);
 
   const handleGetCateItems = (category: string) => {
     dispatch(getCateItems({ categoryId, category }));

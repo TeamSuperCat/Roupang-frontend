@@ -6,9 +6,9 @@ export const getItems = createAsyncThunk(
   "item/getItems",
   async (categoryId: string) => {
     const response = await axiosClient.get(
-      `/products/category/${categoryId}?page=0&size=5&order=`
+      `/products/category/${categoryId}?page=0&size=12&order=`
     );
-    return response.data.content;
+    return response.data;
   }
 );
 
@@ -22,9 +22,9 @@ export const getCateItems = createAsyncThunk(
     category: string;
   }) => {
     const response = await axiosClient.get(
-      `/products/category/${categoryId}?page=0&size=5&order=${category}`
+      `/products/category/${categoryId}?page=0&size=12&order=${category}`
     );
-    return response.data.content;
+    return response.data;
   }
 );
 
@@ -32,10 +32,12 @@ const initialState: {
   items: ItemData[];
   isLoading: boolean;
   categorynum: string;
+  Totalitems: number;
 } = {
   items: [],
   isLoading: true,
   categorynum: "",
+  Totalitems: 0,
 };
 
 const itemSlice = createSlice({
@@ -52,7 +54,8 @@ const itemSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getItems.fulfilled, (state, action) => {
-        state.items = action.payload;
+        state.items = action.payload.content;
+        state.Totalitems = action.payload.totalElements;
         console.log(action.payload, "풀필드1");
         state.isLoading = false;
       })
@@ -64,7 +67,8 @@ const itemSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getCateItems.fulfilled, (state, action) => {
-        state.items = action.payload;
+        state.items = action.payload.content;
+        state.Totalitems = action.payload.totalElements;
         console.log(action.payload, "풀필드1");
         state.isLoading = false;
       })

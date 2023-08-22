@@ -36,30 +36,24 @@ const Header = () => {
           <div className='header_support_info'>/ 고객 지원센터 | 012-3456-7890</div>
           <div className='header_mymenu_info'>
             <div className='header_login_info'>
-              <div className='header_login'>
-                <Link to='/login'>로그인</Link>
+              <div className='header_login' onClick={() => navigate("/login")}>
+                로그인
               </div>
               <div>/</div>
-              <div className='header_join'>
+              <div className='header_join' onClick={() => navigate("/signup")}>
                 <Link to='/signup'>회원가입</Link>
               </div>
               <div className='header_login_drop'>
                 <ul className='login_drop_menu'>
-                  <li>
-                    <Link to='/mypage'>내 정보 수정</Link>
-                  </li>
-                  <li>
-                    <Link to='/login'>로그인</Link>
-                  </li>
-                  <li>
-                    <Link to='/signup'>회원가입</Link>
-                  </li>
+                  <li onClick={() => navigate("/mypage")}>내 정보 수정</li>
+                  <li onClick={() => navigate("/login")}>로그인</li>
+                  <li onClick={() => navigate("/signup")}>회원가입</li>
                 </ul>
               </div>
             </div>
-            <div className='header_mypage_info'>
+            <div className='header_mypage_info' onClick={() => navigate("/mypage")}>
               <img src='/img/mypage.svg' alt='mypage' />
-              <div className='header_mypage'>마이샵</div>
+              <div className='header_mypage'>마이페이지</div>
               <div className='header_mypage_drop'>
                 <ul className='mypage_drop_menu'>
                   <li>나의글</li>
@@ -114,22 +108,20 @@ const Header = () => {
             </Link>
           </div>
           <div className='header_myinfo'>
-            <div className='header_userbox'>
+            <div className='header_userbox' onClick={() => navigate("/mypage")}>
               <img src='/img/user.svg' alt='user' />
-              <div className='header_user_ex'>마이샵</div>
+              <div className='header_user_ex'>마이페이지</div>
             </div>
             <div className='header_clockbox'>
               <img src='/img/clock.svg' alt='time' />
               <div className='header_clock_ex'>최근 본 상품</div>
             </div>
-            <div className='header_cartimg_box'>
-              <Link to='/cart'>
-                <img className='header_cartimg' src='/img/cart.svg' alt='cart' />
-                <span className='header_cart_count'>
-                  <span>0</span>
-                </span>
-                <div className='header_cart_ex'>장바구니</div>
-              </Link>
+            <div className='header_cartimg_box' onClick={() => navigate("/cart")}>
+              <img className='header_cartimg' src='/img/cart.svg' alt='cart' />
+              <span className='header_cart_count'>
+                <span>0</span>
+              </span>
+              <div className='header_cart_ex'>장바구니</div>
             </div>
           </div>
         </HeaderMiddlebox>

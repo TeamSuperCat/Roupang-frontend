@@ -6,13 +6,9 @@ import styled from "styled-components";
 import axiosClient from "../../api/axios";
 import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
-
-let optionData = [
-  { option: "이건 개" },
-  { option: "이건 고양이" },
-  { option: "이건 닭" },
-  { option: "이건 토끼" },
-];
+import { DataRouterContext } from "react-router/dist/lib/context";
+import loadingImage from "../../assets/test/loading.gif";
+import Option from "./Option";
 
 let responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리",
@@ -23,28 +19,12 @@ let responseProductData = {
   category_name: "간식",
   product_img: image,
   sales_end_date: "2023-08-15",
+};
+let optiondata = {
+  productIdx: 13,
   options: [
     {
-      optionTypeIdx: 1,
-      optionTypeNameIdx: 1,
-      optionTypeName: "크기",
-      optionDetails: [
-        {
-          optionDetailIdx: 1,
-          optionDetailName: "S",
-        },
-        {
-          optionDetailIdx: 2,
-          optionDetailName: "M",
-        },
-        {
-          optionDetailIdx: 3,
-          optionDetailName: "L",
-        },
-      ],
-    },
-    {
-      optionTypeIdx: 2,
+      optionTypeIdx: 7,
       optionTypeNameIdx: 3,
       optionTypeName: "색상",
       optionDetails: [
@@ -58,48 +38,67 @@ let responseProductData = {
         },
       ],
     },
+    {
+      optionTypeIdx: 8,
+      optionTypeNameIdx: 1,
+      optionTypeName: "크기",
+      optionDetails: [
+        {
+          optionDetailIdx: 1,
+          optionDetailName: "S",
+        },
+        {
+          optionDetailIdx: 2,
+          optionDetailName: "M",
+        },
+      ],
+    },
+    {
+      optionTypeIdx: 32,
+      optionTypeNameIdx: 4,
+      optionTypeName: "사료 형태",
+      optionDetails: [
+        {
+          optionDetailIdx: 60,
+          optionDetailName: "습식",
+        },
+        {
+          optionDetailIdx: 61,
+          optionDetailName: "건식",
+        },
+      ],
+    },
   ],
 };
 
 interface DetailDescriptionBoxProps {
   isMoreView?: boolean;
 }
+interface OptionType {
+  s?: any;
+}
 
 ///컴포넌트시작
 const DetailDescription = () => {
   const { productid } = useParams();
-  console.log("제품ID", productid);
-  const [isOption, setIsOption] = useState(false);
-  const [isSecoundOption, setIsSecoundOption] = useState(false);
-  const [isCheck, setIsCheck] = useState(false);
   const [isMoreView, setIsMoreView] = useState(false);
-  const [OptionValue, setOptionValue] = useState("옵션선택");
   const [productAmount, setProductAmount] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState({});
+  const [option, setOption] = useState([]);
 
   const product_id: number = 1;
-  let data;
-  useEffect(() => {
-    axiosClient.get(`products/${product_id}`).then((res) => {
-      data = res.data;
-      return console.log(data);
-    });
-  });
 
-  const optionClcikHandler = () => {
-    console.log(isOption);
-    setIsOption((prev) => !prev);
-  };
-  const optionCheckHandler = (
-    event: React.MouseEvent<HTMLDivElement>,
-    data: string
-  ) => {
-    setIsCheck((prev) => !prev);
-    setOptionValue(data);
-    setIsOption((prev) => !prev);
-  };
+  useEffect(() => {
+    // axiosClient.get(`products/${product_id}`).then((res) => {
+    axiosClient.get(`products/65`).then((res) => {
+      setData(res.data);
+      setIsLoading(false);
+    });
+  }, [product_id]);
 
   const productAmountUp = () => {
-    if (productAmount < responseProductData.stock) {
+    if (productAmount < data.stock) {
       setProductAmount((prev) => prev + 1);
     }
   };
@@ -112,11 +111,11 @@ const DetailDescription = () => {
   const ProductInformationMoreViewHandler = () => {
     setIsMoreView((prev) => !prev);
   };
-  console.log(isMoreView);
 
   //장바구니에 넣기
   //장바구니 api로 보낸다
-  //데이터는 제품아이디, 수량, 가격
+  //데이터는 제품아이디, 수량, 가격 ,옵션
+
   const shopingCartButton = () => {
     let token = localStorage.getItem("userinfo");
     const request = fetch("http://localhost:8080/api/v1/cart/items", {
@@ -157,16 +156,46 @@ const DetailDescription = () => {
       });
   };
 
+  const finalSelectionOptions = (optiondata, optionType) => {
+    console.log(optiondata);
+    if (Object.keys(optiondata).length > 0) {
+      for (let i = 0; i < option.length; i++) {
+        let key = Object.keys(option[i])[0];
+        if (key === optionType) {
+          setOption([{ key: "ㄴㅇㄴㅇ" }]);
+        } else {
+        }
+      }
+      setOption([...option, optiondata]);
+    }
+  };
+
+  useEffect(() => {
+    console.log(option);
+  }, [option]);
+
   return (
     <>
       <Container>
-        <Imagemox>
-          <img src={responseProductData.product_img} alt="dd" />
-        </Imagemox>
+        {isLoading ? (
+          <ImageBox>
+            <img src={loadingImage} alt="dd" />
+          </ImageBox>
+        ) : (
+          <ImageBox>
+            <img src={responseProductData.product_img} alt="dd" />
+          </ImageBox>
+        )}
+
         <DescriptionBox>
           <ProductTitleDiv>
             <DivFlex className="설명제목">
-              <ProductTitle>{responseProductData.product_name}</ProductTitle>
+              {isLoading ? (
+                <ProductTitle></ProductTitle>
+              ) : (
+                <ProductTitle>{data.product_name}</ProductTitle>
+              )}
+
               <DivFlex>
                 <HartIcon>❤️</HartIcon>
                 <ShareIcon>🔨</ShareIcon>
@@ -179,11 +208,11 @@ const DetailDescription = () => {
 
           <ProductPriceDiv>
             <div>
-              {parseInt(responseProductData.price * 1.18)} 원
+              {isLoading ? "" : parseInt(data.price * 1.18)} 원
               <span style={{ marginLeft: "1rem" }}>소비자가</span>
             </div>
             <div>
-              {responseProductData.price} 원
+              {isLoading ? "" : data.price} 원
               <span style={{ marginLeft: "1rem" }}>루팡가</span>
             </div>
             <div></div>
@@ -202,50 +231,17 @@ const DetailDescription = () => {
           </ProductPriceDiv>
 
           {/* 옵션 선택구간 */}
-          <ProductOption>
-            <OptionSelect onClick={optionClcikHandler}>
-              <div>{OptionValue}</div>
-              <div>▿</div>
-            </OptionSelect>
-          </ProductOption>
-          {isOption &&
-            optionData.map((data, index) => {
-              return (
-                <OptionList>
-                  <div
-                    key={index}
-                    onClick={(event) => optionCheckHandler(event, data.option)}
-                  >
-                    {data.option}
-                  </div>
-
-                  <div></div>
-                </OptionList>
-              );
-            })}
-          {isSecoundOption && (
-            <ProductOption>
-              <OptionSelect onClick={optionClcikHandler}>
-                <div>{OptionValue}</div>
-                <div>▿</div>
-              </OptionSelect>
-            </ProductOption>
+          {data.options ? (
+            data.options.map((item: any, index: number) => (
+              <Option
+                key={index}
+                option={item}
+                finalSelectionOptions={finalSelectionOptions}
+              />
+            ))
+          ) : (
+            <></>
           )}
-          {isSecoundOption &&
-            optionData.map((data, index) => {
-              return (
-                <OptionList>
-                  <div
-                    key={index}
-                    onClick={(event) => optionCheckHandler(event, data.option)}
-                  >
-                    {data.option}
-                  </div>
-
-                  <div></div>
-                </OptionList>
-              );
-            })}
 
           {/* 수량표시하는곳 */}
           <ProductCounter>
@@ -255,7 +251,7 @@ const DetailDescription = () => {
               <ProductAmount>{productAmount}</ProductAmount>
               <PlusButton onClick={productAmountUp}>+</PlusButton>
             </DivFlex>
-            <Amount>재고 : {responseProductData.stock}</Amount>
+            <Amount>재고 : {data.stock}</Amount>
           </ProductCounter>
 
           {/* 장바구니 구매하기버튼 시작 */}
@@ -292,6 +288,7 @@ const DetailDescription = () => {
           </SimplePayment>
         </DescriptionBox>
       </Container>
+
       <DetailDescriptionBox isMoreView={isMoreView}>
         <DescriptionImage src={responseProductData.description_img} alt="" />
       </DetailDescriptionBox>
@@ -324,7 +321,10 @@ const Container = styled.div`
   justify-content: center;
   margin: auto;
 `;
-const Imagemox = styled.div`
+const ImageBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 5px;
   width: 500px;
   height: 500px;

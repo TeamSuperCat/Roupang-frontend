@@ -1,24 +1,19 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
-import descriptionImage from "../../assets/test/DescriptionImage.jpg";
+import descImage from "../../assets/test/descImage.jpg";
 import styled from "styled-components";
 import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
 
-const optionData = [
-  { option: "이건 개" },
-  { option: "이건 고양이" },
-  { option: "이건 닭" },
-  { option: "이건 토끼" },
-];
+const optionData = [{ option: "이건 개" }, { option: "이건 고양이" }, { option: "이건 닭" }, { option: "이건 토끼" }];
 
 const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
   price: 10000,
   stock: 5,
   description: "A 물품 상세 설명",
-  description_img: descriptionImage,
+  description_img: descImage,
   category_name: "간식",
   product_img: image,
   sales_end_date: "2023-08-15",
@@ -42,10 +37,7 @@ const DetailDescription = () => {
     console.log(isOption);
     setIsOption((prev) => !prev);
   };
-  const optionCheckHandler = (
-    event: React.MouseEvent<HTMLDivElement>,
-    data: string
-  ) => {
+  const optionCheckHandler = (event: React.MouseEvent<HTMLDivElement>, data: string) => {
     console.log(event);
     setIsCheck((prev) => !prev);
     setOptionValue(data);
@@ -116,11 +108,11 @@ const DetailDescription = () => {
     <>
       <Container>
         <Imagemox>
-          <img src={responseProductData.product_img} alt="dd" />
+          <img src={responseProductData.product_img} alt='dd' />
         </Imagemox>
         <DescriptionBox>
           <ProductTitleDiv>
-            <DivFlex className="설명제목">
+            <DivFlex className='설명제목'>
               <ProductTitle>{responseProductData.product_name}</ProductTitle>
               <DivFlex>
                 <HartIcon>❤️</HartIcon>
@@ -138,8 +130,7 @@ const DetailDescription = () => {
               <span style={{ marginLeft: "1rem" }}>소비자가</span>
             </div>
             <div>
-              {responseProductData.price} 원
-              <span style={{ marginLeft: "1rem" }}>루팡가</span>
+              {responseProductData.price} 원<span style={{ marginLeft: "1rem" }}>루팡가</span>
             </div>
             <div></div>
             <HoverContainer>
@@ -167,10 +158,7 @@ const DetailDescription = () => {
             optionData.map((data, index) => {
               return (
                 <OptionList>
-                  <div
-                    key={index}
-                    onClick={(event) => optionCheckHandler(event, data.option)}
-                  >
+                  <div key={index} onClick={(event) => optionCheckHandler(event, data.option)}>
                     {data.option}
                   </div>
 
@@ -210,13 +198,9 @@ const DetailDescription = () => {
             <div>
               <img
                 src={Kakaopaymenticon}
-                alt=""
+                alt=''
                 onClick={() =>
-                  kakaoPaymentfunction(
-                    responseProductData.product_name,
-                    productAmount,
-                    responseProductData.price
-                  )
+                  kakaoPaymentfunction(responseProductData.product_name, productAmount, responseProductData.price)
                 }
               />
             </div>
@@ -224,7 +208,7 @@ const DetailDescription = () => {
         </DescriptionBox>
       </Container>
       <DetailDescriptionBox isMoreView={isMoreView}>
-        <DescriptionImage src={responseProductData.description_img} alt="" />
+        <DescriptionImage src={responseProductData.description_img} alt='' />
       </DetailDescriptionBox>
       <MoreViewButtonBox>
         {isMoreView ? (

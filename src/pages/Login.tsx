@@ -1,18 +1,23 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import LoginInput from "../components/login/LoginInput";
 import { styled } from "styled-components";
-import CustomButton from "../components/login/CustomButton";
 import OAuthButton from "../components/login/OAuthButton";
 import { Link } from "react-router-dom";
 
-const InputPropsValue = [
-  { name: "email", type: "email", placeholder: "이메일을 입력해주세요." },
-  {
-    name: "password",
-    type: "password",
-    placeholder: "비밀번호를 입력해주세요.",
-  },
-];
+// const InputPropsValue = [
+//   {
+//     name: "email",
+//     type: "email",
+//     placeholder: "이메일을 입력해주세요.",
+//     validationText: "이메일 값은 빈 값이 아니어야 합니다.",
+//   },
+//   {
+//     name: "password",
+//     type: "password",
+//     placeholder: "비밀번호를 입력해주세요.",
+//     validationText: "비밀번호 값은 빈 값이 아니어야 합니다.",
+//   },
+// ];
 
 const buttonItems = [
   { title: "로그인", logo: "", color: "", isOAuth: false },
@@ -20,80 +25,128 @@ const buttonItems = [
   // { title: "네이버 로그인", logo: "naver", color: "#03c75a", isOAuth: true },
 ];
 
-interface Data {
-  email: string;
-  password: string;
-}
+// interface Data {
+//   [key: string]: string;
+//   email: string;
+//   password: string;
+// }
 
 const Login = () => {
-  const [data, setData] = useState<Data>({
-    email: "",
-    password: "",
-  });
+  // const navigate = useNavigate();
+  // const [enteredNameIsTouched, setEnteredNameIsTouched] = useState(false);
+  // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
+  // const [data, setData] = useState<Data>({
+  //   email: "",
+  //   password: "",
+  // });
 
-  const nameInputRef = useRef();
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
-  const [enteredNameIsTouched, setEnteredNameIsTouched] = useState(false);
+  // const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setData({ ...data, [name]: value });
 
-  const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
+  //   // if (name === "email") {
+  //   //   //이메일 형식에 맞으면 set true, 아니면 false
+  //   //   const emailRegex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+  //   //   emailRegex.test(value)
+  //   //     ? setEnteredNameIsValid(true);
+  //   //     : setEnteredNameIsValid(false);
+  //   // } else if (name === "email") {
+  //   //   //비밀번호 형식에 맞으면 set true, 아니면 false
+  //   //   const pswdRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
+  //   //   pswdRegex.test(value)
+  //   //   ? setEnteredNameIsValid(true);
+  //   //   : setEnteredNameIsValid(false);
+  //   // }
+
+  //   if (data.email.trim() === "") {
+  //     console.log("submit fail");
+  //     setEnteredNameIsValid(false);
+  //     return;
+  //   }
+
+  //   if (data.password.trim() === "") {
+  //     console.log("submit fail");
+  //     setEnteredNameIsValid(false);
+  //     return;
+  //   }
+  //   setEnteredNameIsValid(true);
+
+  //   //유효성검사는 이메일 형식이 맞는지, 비밀번호가 사실 8-20자리 영문자+숫자 형식입니다. 녭!!
+
+  //   // 값 입력하면서 콘솔도 확인해보죵 녭!!
+  //   console.log("enteredNameIsValid", enteredNameIsValid);
+
+  //   console.log(name, value);
+  // };
 
   const loginHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(e);
-    console.log(data);
-    // const response = await axiosClient.post<Data>('/login');
-    setEnteredNameIsTouched(true);
+    // console.log(e);
+    // console.log(data);
+    // setEnteredNameIsTouched(true);
 
-    // data이 빈 값인 경우 제출이 안 되게 수정
-    if (data.trim() === "") {
-      console.log("submit fail");
-      setEnteredNameIsValid(false);
-      return;
-    }
-    setEnteredNameIsValid(true);
-    setData("");
+    // 유효성 검사 통과 시 로그인 시도
+    // await axiosClient.post<Data>("/member/login", data).then(res=>{
+    //    if(res) {
+    //      // 로그인 성공
+    //      const accessToken = res.headers['authorization']
+    //      localstorage.setItem("accessToken",accessToken)
+    //      navigate("/")
+    //    }
+    // }).catch(err=>{
+    //    //로그인 실패
+    //    if(err.errorCode === "MEMBER_NOT_FOUND") {
+    //        // "등록 되지 않은 아이디 입니다"
+    //        console.log(err.errorMessage)
+    //    }
+    //    if(err.errorCode === "PASSWORD_MISMATCH") {
+    //        // "비밀 번호가 일치하지 않습니다"
+    //        console.log(err.errorMessage)
+    //    }
+    // });
   };
 
-  const nameInputBlurHandler = (ㄷ: React.FormEvent) => {
-    console.log("event onBlur");
-    setEnteredNameIsTouched(true);
-    if (data.trim() === "") {
-      setEnteredNameIsValid(false);
-      return;
-    }
-  };
+  // const nameInputBlurHandler = (e: React.FormEvent) => {
+  //   // 유효성 검사를 통해 set어쩌구 한다.
+  //   // styledComponent Form 태그 밑에 CSS props로 전달해서 어쩌구 함
+  //   console.log("event onBlur");
 
-  const nameInputClasses = nameInputIsInvalid
-    ? "form-control invalid"
-    : "form-control";
+  //   setEnteredNameIsTouched(true);
+  //   if (data.email.trim() === "") {
+  //     setEnteredNameIsValid(false);
+  //     return;
+  //   }
+  //   if (data.password.trim() === "") {
+  //     setEnteredNameIsValid(false);
+  //     return;
+  //   }
+  // };
 
   return (
     <Container>
       <Form onSubmit={loginHandler}>
         <h3>로그인</h3>
-        <div className={nameInputClasses}>
-          {InputPropsValue.map((elem, i) => (
-            <LoginInput
-              key={i}
-              name={elem.name}
-              type={elem.type}
-              placeholder={elem.placeholder}
-              data={data}
-              onChange={inputChangeHandler}
-              onBlur={nameInputBlurHandler}
-              ref={nameInputRef}
-            />
-          ))}
-        </div>
-        <CustomButton />
+        {/* {InputPropsValue.map((elem, i) => (
+        <LoginInput
+
+        key={i}
+        enteredNameIsValid={enteredNameIsValid}
+        enteredNameIsTouched={enteredNameIsTouched}
+        name={elem.name}
+        type={elem.type}
+        placeholder={elem.placeholder}
+        validationText={elem.validationText}
+        data={data}
+        onChange={inputChangeHandler}
+        onBlur={nameInputBlurHandler}
+        />
+        ))} */}
+        <LoginInput />
       </Form>
 
       <LinkWrap>
-        <Link to="/signup">회원가입하기</Link>
-        <Link to="/findpassword">비밀번호찾기</Link>
+        <Link to='/signup'>회원가입하기</Link>
+        {/* <Link to="/findpassword">비밀번호찾기</Link> */}
       </LinkWrap>
 
       {buttonItems

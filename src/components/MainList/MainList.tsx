@@ -22,6 +22,17 @@ const MainList = () => {
       const response = await axiosClient.get(
         `/products/category/${catetype}?page=${pageParam}&size=8&order=${sorttype}`
       );
+
+      if (pageParam === 0) {
+        const responsePage1 = await axiosClient.get(
+          `/products/category/${catetype}?page=1&size=8&order=${sorttype}`
+        );
+        return {
+          ...response.data,
+          content: [...response.data.content, ...responsePage1.data.content],
+        };
+      }
+
       return response.data;
     } catch (error) {
       console.error("실패했다요", error);
@@ -46,7 +57,12 @@ const MainList = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         const first = entries[0];
-        if (first.isIntersecting && hasNextPage && !isCooltime) {
+        if (
+          first.isIntersecting &&
+          hasNextPage &&
+          !isCooltime &&
+          !isFetchingNextPage
+        ) {
           setIsCooltime(true);
           fetchNextPage();
           setTimeout(() => {
@@ -54,19 +70,21 @@ const MainList = () => {
           }, 1500);
         }
       },
-      { threshold: 0 }
+      { threshold: 0.25 }
     );
 
     const ref = loadMoreRef.current;
     if (ref) {
       observer.observe(ref);
     }
-  }, [hasNextPage, fetchNextPage]);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasNextPage, fetchNextPage, sorttype]);
 
   const allData = data?.pages?.map((page) => page.content).flat() || [];
   const displayData = allData.length > 12 ? allData : items;
-
-  console.log(allData.length);
 
   return (
     <>

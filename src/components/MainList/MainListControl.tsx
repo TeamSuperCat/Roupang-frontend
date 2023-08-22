@@ -11,8 +11,6 @@ const MainListControl = () => {
 
   const [isfilterType, setIsfilterTpye] = useState("");
 
-  console.log(filtersort);
-
   useEffect(() => {
     setIsfilterTpye(filtersort);
   }, [filtersort]);

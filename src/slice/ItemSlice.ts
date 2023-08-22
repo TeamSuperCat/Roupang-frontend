@@ -8,7 +8,6 @@ export const getItems = createAsyncThunk(
     const response = await axiosClient.get(
       `/products/category/${categoryId}?page=0&size=12&order=`
     );
-    console.log(response.data);
     return response.data;
   }
 );

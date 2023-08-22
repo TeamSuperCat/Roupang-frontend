@@ -9,7 +9,6 @@ export const ListWrapper = styled.div`
   grid-column-gap: 5px;
   margin-top: 10px;
   .observer {
-    margin-top: 70px;
     width: 100px;
     height: 100px;
     background-color: transparent;

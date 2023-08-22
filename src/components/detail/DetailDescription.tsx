@@ -9,6 +9,7 @@ import kakaoPaymentfunction from "../../api/KakaoPayment";
 import { DataRouterContext } from "react-router/dist/lib/context";
 import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
+import CartModal from "./CartModal";
 
 let responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리",
@@ -19,56 +20,6 @@ let responseProductData = {
   category_name: "간식",
   product_img: image,
   sales_end_date: "2023-08-15",
-};
-let optiondata = {
-  productIdx: 13,
-  options: [
-    {
-      optionTypeIdx: 7,
-      optionTypeNameIdx: 3,
-      optionTypeName: "색상",
-      optionDetails: [
-        {
-          optionDetailIdx: 4,
-          optionDetailName: "Red",
-        },
-        {
-          optionDetailIdx: 5,
-          optionDetailName: "Blue",
-        },
-      ],
-    },
-    {
-      optionTypeIdx: 8,
-      optionTypeNameIdx: 1,
-      optionTypeName: "크기",
-      optionDetails: [
-        {
-          optionDetailIdx: 1,
-          optionDetailName: "S",
-        },
-        {
-          optionDetailIdx: 2,
-          optionDetailName: "M",
-        },
-      ],
-    },
-    {
-      optionTypeIdx: 32,
-      optionTypeNameIdx: 4,
-      optionTypeName: "사료 형태",
-      optionDetails: [
-        {
-          optionDetailIdx: 60,
-          optionDetailName: "습식",
-        },
-        {
-          optionDetailIdx: 61,
-          optionDetailName: "건식",
-        },
-      ],
-    },
-  ],
 };
 
 interface DetailDescriptionBoxProps {
@@ -85,8 +36,17 @@ const DetailDescription = () => {
   const [productAmount, setProductAmount] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({});
-  const [option, setOption] = useState({});
+  const [option, setOption] = useState([]);
+  const [optionValue, setOptionValue] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const product_id: number = 1;
 
   useEffect(() => {
@@ -117,22 +77,36 @@ const DetailDescription = () => {
   //데이터는 제품아이디, 수량, 가격 ,옵션
 
   const shopingCartButton = () => {
-    let token = localStorage.getItem("userinfo");
-    const request = fetch("http://localhost:8080/api/v1/cart/items", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        product_idx: productid,
+    axiosClient
+      .post(`/cart`, {
         amount: productAmount,
-      }),
-    })
-      .then()
-      .catch(() => {
-        console.log("장바구니 응안돼");
+        productIdx: productid,
+        options: option,
+      })
+      .then((res) => {
+        console.log(res);
+        console.log("응잘되");
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("응안돼");
       });
+
+    // const request = fetch("v1/cart/items", {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify({
+    //     product_idx: productid,
+    //     amount: productAmount,
+    //   }),
+    // })
+    //   .then()
+    //   .catch(() => {
+    //     console.log("장바구니 응안돼");
+    //   });
   };
   //구매하기
   //구매하기 api로 보낸다
@@ -155,21 +129,11 @@ const DetailDescription = () => {
         console.log("구매하기 응안돼");
       });
   };
-  const Optionarray = [];
 
-  const finalSelectionOptions = (optiondata, optionType ) => {
-
-    console.log(optiondata)
-    if(option.length > 0){
-      setOption({...option,
-        [optionType]: optiondata}
-        )  
-    }
+  //선택한 옵션으로 중복되지않게 옵션을만듬
+  const finalSelectionOptions = (optiondata: string, optionType: string) => {
+    setOption({ ...option, [optionType]: optiondata });
   };
-
-  useEffect(() => {
-    console.log(option);
-  }, [option]);
 
   return (
     <>
@@ -259,6 +223,13 @@ const DetailDescription = () => {
                 <ShopingCartFill />
               </ShopingCartButton>
             </ShopingCartContainer>
+
+            <CartModal isOpen={isModalOpen} onClose={closeModal}>
+              <h2>장바구니에 담으시겠어요?</h2>
+              <p>{data.product_name}</p>
+
+              <p>이곳에 모달에 표시할 내용을 넣어주세요.</p>
+            </CartModal>
 
             <BuyContainer>
               <BuyButton onClick={buyButton}>

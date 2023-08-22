@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import CartItem from "./CartItem";
 import { CartWrapper } from "./StCart";
 import { useCartDispatch } from "./useCartDispatch";

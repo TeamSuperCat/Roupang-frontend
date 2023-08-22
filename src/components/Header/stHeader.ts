@@ -39,6 +39,9 @@ export const HeaderTopbox = styled.div`
         filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg) brightness(85%) contrast(92%);
       }
     }
+    a {
+      text-decoration: none;
+    }
   }
 
   .header_login_info {
@@ -82,6 +85,9 @@ export const HeaderTopbox = styled.div`
             transition: all 0.3s;
             background-color: #333;
             color: #fff;
+          }
+          a {
+            text-decoration: none;
           }
         }
       }
@@ -332,6 +338,10 @@ export const HeaderBottonbox = styled.div`
       font-size: 15px;
       font-weight: 500;
       cursor: pointer;
+      &:hover {
+        transition: all 0.2s;
+        color: #50d2ba;
+      }
     }
   }
   .header_search_box {

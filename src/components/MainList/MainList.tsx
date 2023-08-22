@@ -1,24 +1,29 @@
-import React from "react";
 import styled from "styled-components";
 import ProductCard from "../Home/ProductCard";
+import { useAppSelector } from "../../hooks/useDispatch";
+import Loading from "../Loading/Loading";
+import { useEffect } from "react";
 
 const MainList = () => {
+  const items = useAppSelector((state) => state.item.items);
+  const LoadingData = useAppSelector((state) => state.item.isLoading);
+
+  useEffect(() => {}, []);
+
+  console.log(items);
+
   return (
-    <ListWrapper>
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-      <ProductCard title="어흥" />
-    </ListWrapper>
+    <>
+      {LoadingData ? (
+        <Loading />
+      ) : (
+        <ListWrapper>
+          {items.map((item, i) => (
+            <ProductCard key={i} item={item} />
+          ))}
+        </ListWrapper>
+      )}
+    </>
   );
 };
 

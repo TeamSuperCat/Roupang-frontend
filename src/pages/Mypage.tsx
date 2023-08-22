@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import ProfileInput from "../components/mypage/ProfileInput";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import axiosClient from "../api/axios";
 
 const userProfileInfoProps = [
   {
@@ -98,7 +99,14 @@ const Mypage = () => {
 
   useEffect(() => {
     //get user & get cart
-
+    (async () => {
+      await axiosClient.get("/mypage").then((res) => {
+        if (res) {
+          console.log(res);
+          // setData(prev => {...prev, res.data})
+        }
+      });
+    })();
     return () => {};
   }, []);
 

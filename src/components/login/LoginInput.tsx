@@ -2,51 +2,23 @@ import { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "./CustomButton";
 
-type PlaceholderInput = {
-  enteredNameIsValid: boolean;
-  enteredNameIsTouched: boolean;
-  name: string;
-  type: string;
-  validationText: string;
-  placeholder?: string;
-  data: {
-    [key: string]: string;
-    email: string;
-    password: string;
-  };
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
-};
+// type PlaceholderInput = {
+//   enteredNameIsValid: boolean;
+//   enteredNameIsTouched: boolean;
+//   name: string;
+//   type: string;
+//   validationText: string;
+//   placeholder?: string;
+//   data: {
+//     [key: string]: string;
+//     email: string;
+//     password: string;
+//   };
+//   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+//   onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
+// };
 
-const LoginInput = ({
-  enteredNameIsValid,
-  enteredNameIsTouched,
-  name,
-  type,
-  placeholder,
-  validationText,
-  data,
-  onChange,
-  onBlur,
-}: PlaceholderInput) => {
-  // 의도가 무엇인지 먼저 설명하고 쓰는 건 어떨까요? 🥹
-  // 그럼 지금 형식에 맞게 적용시켜야겠네요 🥹
-  // 강의 내용 실습하신건가봐요?
-  // 여기에 develop 머지 되어있죠?
-  //  signup 하고 signupinput 이 이거랑 똑같은 형식인데 한 번 보시죠
-  // 저는 인풋마다 전달하는 값을 다 따로 주고
-  // signup 에 있는 onchange에서 어차피 인풋하나씩 입력받으니까 분기처리했습니다
-  // 유효성 검사 분기처리요.. (if 문으로 어떤 입력필드인지 확인함)
-
-  // 넵! / 넵! /나니?! 아 앗 넵!!! 감사합니다 ㅠㅠ
-  // 네 그렇숨댜 지금 한 state로 이메일, 패스워드 둘 다 적용하다 보니 둘이 동시에 뜨는 에러도 있는 것 같숨다
-
-  // 에러 메시지를 보여주는 경우, true -> 메시지 노출
-  // const [enteredEmail, setEnteredEmail] = useState("");
-  // const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
-  // const enteredEmailIsValid = enteredEmail.includes("@");
-  // const enteredEmailIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
-
+const LoginInput = () => {
   // 1. 상태값을 각 인풋 별로 나누기, (에러 상태도 마찬가지, 인풋별로 각각 상태 나타내기.,)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -68,9 +40,7 @@ const LoginInput = ({
     if (password.trim() === "") {
       setPasswordError("비밀번호를 입력해주세요.");
     } else if (!isValidPassword(password)) {
-      setPasswordError(
-        "비밀번호는 8-20자리의 영문자와 숫자를 포함해야 합니다."
-      );
+      setPasswordError("비밀번호는 8-20자리의 영문자와 숫자를 포함해야 합니다.");
     } else {
       setPasswordError("");
     }
@@ -93,16 +63,13 @@ const LoginInput = ({
   const handleLoginSubmit = async () => {
     if (isValidEmail(email) && isValidPassword(password)) {
       try {
-        const response = await fetch(
-          "http://localhost:8080/api/v1/member/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-          }
-        );
+        const response = await fetch("http://localhost:8080/api/v1/member/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
 
         if (response.ok) {
           console.log("로그인 성공");
@@ -123,17 +90,12 @@ const LoginInput = ({
     // 4. xml 에 적용
     <Container>
       <InputWrap>
-        <Input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={handleEmailBlur}
-        />
+        <Input type='email' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleEmailBlur} />
         {emailError && <ErrorText>{emailError}</ErrorText>}
       </InputWrap>
       <InputWrap>
         <Input
-          type="password"
+          type='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           onBlur={handlePasswordBlur}
@@ -141,11 +103,7 @@ const LoginInput = ({
 
         {passwordError && <ErrorText>{passwordError}</ErrorText>}
       </InputWrap>
-      <CustomButton
-        email={email}
-        password={password}
-        onLoginClick={handleLoginSubmit}
-      />
+      <CustomButton email={email} password={password} onLoginClick={handleLoginSubmit} />
     </Container>
 
     // <Container className={nameInputClasses}>
@@ -171,8 +129,7 @@ const InputWrap = styled.div`
 `;
 
 const Input = styled.input`
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 4px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 4px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   color: #222;
   font-weight: 600;
   width: 460px;

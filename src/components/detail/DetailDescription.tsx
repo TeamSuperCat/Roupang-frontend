@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
-import descriptionImage from "../../assets/test/DescriptionImage.jpg";
+import descImage from "../../assets/test/descImage.jpg";
 import styled from "styled-components";
 import axiosClient from "../../api/axios";
 import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
@@ -11,12 +11,12 @@ import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
 import CartModal from "./CartModal";
 
-let responseProductData = {
-  product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리",
-  price: 5252,
+const responseProductData = {
+  product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
+  price: 10000,
   stock: 5,
   description: "A 물품 상세 설명",
-  description_img: descriptionImage,
+  description_img: descImage,
   category_name: "간식",
   product_img: image,
   sales_end_date: "2023-08-15",
@@ -32,6 +32,9 @@ interface OptionType {
 ///컴포넌트시작
 const DetailDescription = () => {
   const { productid } = useParams();
+  console.log("제품ID", productid);
+  const [isOption, setIsOption] = useState(false);
+  const [isCheck, setIsCheck] = useState(false);
   const [isMoreView, setIsMoreView] = useState(false);
   const [productAmount, setProductAmount] = useState(1);
   const [isLoading, setIsLoading] = useState(true);

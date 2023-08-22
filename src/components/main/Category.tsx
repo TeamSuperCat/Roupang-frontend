@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 //카테고리 받아오기 ~!

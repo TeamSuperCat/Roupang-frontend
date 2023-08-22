@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import SignupInput from "../components/signup/SignupInput";
 import { styled } from "styled-components";
@@ -47,11 +46,10 @@ const signupInputProps = [
   },
 ];
 
-// const requestUrl = "http://3.12.151.96:8080/api/v1/member";
-
 const defaultProfilePath = "default_profile.png";
 
 interface Data {
+  [key: string]: string | undefined;
   email: string;
   password: string;
   passwordCheck: string;
@@ -85,6 +83,8 @@ const Signup = () => {
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
+    if (file === undefined) return;
 
     // Blob 객체로 변환
     const blob = new Blob([file], { type: file.type });
@@ -122,53 +122,65 @@ const Signup = () => {
   };
 
   const checkEmailDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e);
     e.preventDefault();
 
-    const response = await axiosClient.post<Data>(`/check`, {
-      email: data.email,
-    });
-    console.log(response);
-    response.status === 200 ? setIsUniqueEmail(true) : setIsUniqueEmail(false);
+    await axiosClient
+      .post<Data>(`/member/check`, {
+        email: data.email,
+      })
+      .then((res) => {
+        if (res) {
+          setIsUniqueEmail(true);
+        }
+      })
+      .catch((err) => {
+        if (err.code === "ERR_BAD_REQUEST") {
+          setIsUniqueEmail(false);
+        }
+      });
   };
 
   const checkNicknameDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const response = await axiosClient.post<Data>(`/check`, {
-      nickname: data.nickname,
-    });
-    console.log(response);
-    response.status === 200 ? setIsUniqueNinkname(true) : setIsUniqueNinkname(false);
+    await axiosClient
+      .post<Data>(`/member/check`, {
+        nickname: data.nickname,
+      })
+      .then((res) => {
+        if (res) {
+          setIsUniqueNinkname(true);
+        }
+      })
+      .catch((err) => {
+        if (err.code === "ERR_BAD_REQUEST") {
+          setIsUniqueNinkname(false);
+        }
+      });
   };
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("bfr", data);
-    // if (isUniqueEmail && isValidEmail && isSamePassword && isValidPassword && isUniqueNinkname && isValidPhoneNumber) {
-    //   console.log("일치", data);
-    await onChange();
-    setData((prev) => ({ ...prev, memberImg: urls[0] }));
-    console.log("마지막", data);
-    const response = await axiosClient.post<Data>(`/register`);
-    console.log(response);
-    if (response.status === 200) {
-      const accessToken = response.headers["authorization"];
-      localStorage.setItem("accessToken", accessToken);
-      alert("회원가입이 완료되었습니다.");
-      navigate("/");
-    } else {
-      alert("회원가입에 실패하였습니다.");
+    if (isUniqueEmail && isValidEmail && isSamePassword && isValidPassword && isUniqueNinkname && isValidPhoneNumber) {
+      console.log("일치", data);
+      await onChange();
+      setData((prev) => ({ ...prev, memberImg: urls[0] }));
+      console.log("마지막", data);
+      await axiosClient
+        .post<Data>(`/member/register`, data, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          console.log(res);
+          navigate("/login");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    // }
   };
 
   useEffect(() => {
-    // console.log(data.email);
-    // console.log(isValidEmail);
-    // console.log(data.password);
-    // console.log(isPasswordValid);
-    // console.log(data.phoneNumber);
-    // console.log(isValidPhoneNumber);
     return () => {};
   }, [data]);
 

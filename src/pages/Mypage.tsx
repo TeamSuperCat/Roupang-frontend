@@ -29,11 +29,12 @@ const userProfileInfoProps = [
 const defaultProfilePath = "default_profile.png";
 
 interface Data {
+  [key: string]: string | undefined;
   email: string;
   nickname: string;
   phoneNumber: string | undefined;
   address: string;
-  profile: string;
+  memberImg: string;
 }
 
 type Item = {
@@ -54,26 +55,9 @@ const Mypage = () => {
     nickname: "James",
     phoneNumber: "010-3030-4040",
     address: "대한민국",
-    profile: "default_profile.png",
+    memberImg: "default_profile.png",
   });
-  const [items, setItems] = useState<Item[]>([
-    // 예시 데이터를 적용할 수 있습니다.
-    {
-      id: 1,
-      name: "아이템1",
-      quantity: 1,
-      price: 15000,
-      imageUrl: "/img/cart1.jpg",
-    },
-    {
-      id: 2,
-      name: "아이템2",
-      quantity: 6,
-      price: 6000,
-      imageUrl: "/img/cart2.jpg",
-    },
-    // ...
-  ]);
+  const [items, setItems] = useState<Item[]>([]);
 
   const updateProfile = () => {
     setIsUpdate((prev) => !prev);
@@ -92,11 +76,13 @@ const Mypage = () => {
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    if (file === undefined) return;
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     fileReader.onload = (e) => {
       const result = e?.target?.result as string;
       setImgSrc(result);
+      console.log(imgSrc);
     };
   };
 
@@ -105,13 +91,41 @@ const Mypage = () => {
     setData({ ...data, [name]: value });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
   useEffect(() => {
     //get user & get cart
 
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    // if user is seller
+    setIsSeller(true);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    // init items
+    setItems([
+      {
+        id: 1,
+        name: "아이템1",
+        quantity: 1,
+        price: 15000,
+        imageUrl: "/img/cart1.jpg",
+      },
+      {
+        id: 2,
+        name: "아이템2",
+        quantity: 6,
+        price: 6000,
+        imageUrl: "/img/cart2.jpg",
+      },
+      // ...
+    ]);
     return () => {};
   }, []);
 
@@ -143,7 +157,7 @@ const Mypage = () => {
                   <FormInnerDiv>
                     <Profile>
                       <PreviewDiv>
-                        <img src={data.profile} alt='temp' />
+                        <img src={data.memberImg} alt='temp' />
                         {/* <img src={imgSrc} alt='temp' /> */}
                       </PreviewDiv>
                       <input type='file' accept='image/*' ref={fileRef} onChange={onFileChange} hidden />

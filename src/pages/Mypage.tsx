@@ -99,14 +99,7 @@ const Mypage = () => {
 
   useEffect(() => {
     //get user & get cart
-    (async () => {
-      await axiosClient.get("/mypage").then((res) => {
-        if (res) {
-          console.log(res);
-          // setData(prev => {...prev, res.data})
-        }
-      });
-    })();
+    getUserDate();
     return () => {};
   }, []);
 
@@ -138,6 +131,10 @@ const Mypage = () => {
     return () => {};
   }, []);
 
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+  };
+
   const login = () => {
     axios
       .post("http://3.12.151.96:8080/api/v1/member/login", {
@@ -153,9 +150,38 @@ const Mypage = () => {
       });
   };
 
+  const getUserDate = async () => {
+    const token = localStorage.getItem("accessToken");
+    console.log("token>>", token);
+    await axios
+      .get("http://3.12.151.96:8080/api/v1/mypage/", {
+        // withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        if (res) {
+          console.log(res.data.data);
+
+          setData(res.data.data);
+          console.log(data);
+        }
+      })
+      .catch((err) => {
+        if (err.code === "ERR_BAD_REQUEST") {
+          console.log(err.response.data.msg);
+        }
+      });
+
+    // await axiosClient.get("/mypage").then((res) => console.log(res));
+  };
+
   return (
     <>
+      <button onClick={logout}>logout</button>
       <button onClick={login}>login</button>
+      <button onClick={getUserDate}>getUserDate</button>
       <Heading>This is MYpage.</Heading>
       <Container>
         <MypageDiv>

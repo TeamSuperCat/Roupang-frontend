@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "./CustomButton";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
 // type PlaceholderInput = {
 //   enteredNameIsValid: boolean;
@@ -19,6 +21,7 @@ import CustomButton from "./CustomButton";
 // };
 
 const LoginInput = () => {
+  const navigate = useNavigate();
   // 1. 상태값을 각 인풋 별로 나누기, (에러 상태도 마찬가지, 인풋별로 각각 상태 나타내기.,)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,25 +65,43 @@ const LoginInput = () => {
   // 4. 전송버튼
   const handleLoginSubmit = async () => {
     if (isValidEmail(email) && isValidPassword(password)) {
-      try {
-        const response = await fetch("http://localhost:8080/api/v1/member/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
+      const data = {
+        email,
+        password,
+      };
+
+      axios
+        .post("http://3.12.151.96:8080/api/v1/member/login", data)
+        .then((res) => {
+          const accessToken = res.headers["authorization"];
+          localStorage.setItem("accessToken", accessToken);
+          navigate("/");
+        })
+        .catch((err) => {
+          if (err) {
+            console.log(err.response.data.msg);
+          }
         });
 
-        if (response.ok) {
-          console.log("로그인 성공");
-          // 로그인 성공 처리 및 리다이렉트 등을 수행할 수 있습니다.
-        } else {
-          console.log("로그인 실패");
-          // 로그인 실패 처리를 수행할 수 있습니다.
-        }
-      } catch (error) {
-        console.error("API 호출 에러:", error);
-      }
+      // try {
+      //   const response = await fetch("http://localhost:8080/api/v1/member/login", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({ email, password }),
+      //   });
+
+      //   if (response.ok) {
+      //     console.log("로그인 성공");
+      //     // 로그인 성공 처리 및 리다이렉트 등을 수행할 수 있습니다.
+      //   } else {
+      //     console.log("로그인 실패");
+      //     // 로그인 실패 처리를 수행할 수 있습니다.
+      //   }
+      // } catch (error) {
+      //   console.error("API 호출 에러:", error);
+      // }
     } else {
       console.log("유효성 검사 실패");
     }

@@ -7,11 +7,8 @@ interface LoginButtonProps {
   onLoginClick: () => void;
 }
 
-const CustomButton: React.FC<LoginButtonProps> = ({
-  email,
-  password,
-  onLoginClick,
-}) => {
+const CustomButton: React.FC<LoginButtonProps> = ({ email, password, onLoginClick }) => {
+  console.log(email, password);
   return <Button onClick={onLoginClick}>로그인</Button>;
 };
 

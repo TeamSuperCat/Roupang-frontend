@@ -2,20 +2,27 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import axiosClient from "../api/axios";
 
-export const getAllCategorys = createAsyncThunk<ItemData[], void>(
-  "main/getAllCategorys",
-  async () => {
-    const getCategoryUrl = (categoryId: number) =>
-      `/products/category/${categoryId}?page=0&size=5&order=`;
-    const categoryIds = [1, 2, 3, 4, 5, 6, 7];
-    const responses = await Promise.all(
-      categoryIds.map((id) => axiosClient.get(getCategoryUrl(id)))
-    );
-    return responses.map((response) => response.data.content);
-  }
-);
+interface ItemData {
+  category_name: string;
+  description: string;
+  description_img: string;
+  options: string | null;
+  price: number;
+  product_idx: number;
+  product_img: string;
+  product_name: string;
+  sales_end_date: string;
+  stock: number;
+}
 
-const initialState: { items: ItemData[]; isLoading: boolean } = {
+export const getAllCategorys = createAsyncThunk<ItemData[][], void>("main/getAllCategorys", async () => {
+  const getCategoryUrl = (categoryId: number) => `/products/category/${categoryId}?page=0&size=5&order=`;
+  const categoryIds = [1, 2, 3, 4, 5, 6, 7];
+  const responses = await Promise.all(categoryIds.map((id) => axiosClient.get(getCategoryUrl(id))));
+  return responses.map((response) => response.data.content);
+});
+
+const initialState: { items: ItemData[][]; isLoading: boolean } = {
   items: [],
   isLoading: true,
 };

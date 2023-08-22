@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 interface SidebarProps {
@@ -7,12 +6,6 @@ interface SidebarProps {
 }
 
 const MenuSidebar = ({ setCurrentPage, isSeller }: SidebarProps) => {
-  const registerSeller = () => {
-    // to be seller
-    // modal 띄운다
-    // 확인 누르면 seller가 됨
-    // 메뉴가 seller용으로 보임
-  };
 
   return (
     // <div>

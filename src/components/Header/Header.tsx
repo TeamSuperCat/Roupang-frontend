@@ -41,7 +41,7 @@ const Header = () => {
               </div>
               <div>/</div>
               <div className='header_join' onClick={() => navigate("/signup")}>
-                <Link to='/signup'>회원가입</Link>
+                회원가입
               </div>
               <div className='header_login_drop'>
                 <ul className='login_drop_menu'>

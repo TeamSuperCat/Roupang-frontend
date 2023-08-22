@@ -1,10 +1,17 @@
 import { styled } from "styled-components";
+import OrderProductList from "./OrderProductList";
 
 function OrderList() {
   return (
     <Layout>
       <PuchaseProducts>
-        <ProductWrap></ProductWrap>
+        <OrderProductList />
+        <OrderProductList />
+        <OrderProductList />
+        <OrderProductList />
+        <OrderProductList />
+        <OrderProductList />
+        <OrderProductList />
       </PuchaseProducts>
       <ShippingWrap>
         <div>배송비</div>
@@ -22,10 +29,9 @@ const Layout = styled.div`
 
 const PuchaseProducts = styled.ul`
   display: flex;
-`;
-
-const ProductWrap = styled.li`
-  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-bottom: 10px;
 `;
 
 const ShippingWrap = styled.div`

@@ -8,6 +8,9 @@ import OrderAccordion from "../components/Order/OrderAccordion";
 // import { useState } from "react";
 import ShipInfo from "../components/Order/ShipInfo";
 import OrderList from "../components/Order/OrderList";
+import OrderDisCount from "../components/Order/OrderDisCount";
+import OrderInfo from "../components/Order/OrderInfo";
+import OrderBenefit from "../components/Order/OrderBenefit";
 
 // type InfoType = "member" | "new";
 
@@ -47,7 +50,30 @@ function Order() {
         <OrderAccordion title={"주문상품"}>
           <OrderList />
         </OrderAccordion>
+        <OrderAccordion title={"할인/부가결제"}>
+          <OrderDisCount />
+        </OrderAccordion>
+        <OrderAccordion title={"결제정보"}>
+          <OrderInfo />
+        </OrderAccordion>
+        <OrderAccordion title={"적립혜택"}>
+          <OrderBenefit />
+        </OrderAccordion>
       </FormWrap>
+      <BtnWrap>
+        <PurchaseBtn>32,500원 결제하기</PurchaseBtn>
+        <span>
+          무이자할부가 적용되지 않은 상품과 무이자할부가 가능한 상품을 동시에
+          구매할 경우 전체 주문 상품 금액에 대해 무이자할부가 적용되지 않습니다.
+          무이자할부를 원하시는 경우 장바구니에서 무이자할부 상품만 선택하여
+          주문하여 주시기 바랍니다.
+          <br />
+          <br />
+          <br />
+          <br />
+          최소 결제 가능 금액은 결제금액에서 배송비를 제외한 금액입니다.
+        </span>
+      </BtnWrap>
     </OrderLayout>
   );
 }
@@ -120,4 +146,29 @@ const FormWrap = styled.ul`
   background-color: #f0f0f0;
   font-family: "NotoSansKR";
   color: #383838;
+`;
+
+const BtnWrap = styled.div`
+  display: grid;
+  height: 200px;
+
+  & span {
+    font-size: 11px;
+    color: #797979;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+`;
+
+const PurchaseBtn = styled.button`
+  width: 100%;
+  height: 50px;
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  font-size: 18px;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;

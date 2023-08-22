@@ -1,6 +1,6 @@
-import { styled } from "styled-components";
+import { styled, css } from "styled-components";
 import { useState } from "react";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
 
 interface Props extends IChildrenProps {
   title: string;
@@ -17,7 +17,9 @@ function OrderAccordion({ children, title }: Props) {
     <FormCategory>
       <FormSub onClick={() => setIsOpen(!isOpen)}>
         <FormTitle>{title}</FormTitle>
-        <ToggleBtn>{!isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}</ToggleBtn>
+        <ToggleBtn $isOpen={isOpen}>
+          <IoIosArrowUp />
+        </ToggleBtn>
       </FormSub>
       <ContentWrap $isOpen={isOpen}>{children}</ContentWrap>
     </FormCategory>
@@ -37,23 +39,31 @@ const FormSub = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 17px;
-  height: 50px;
+  height: 80px;
   background-color: white;
   cursor: pointer;
 `;
 
 const FormTitle = styled.h1`
   font-size: 17px;
-  font-weight: 400;
+  font-weight: 600;
 `;
 
-const ToggleBtn = styled.span`
+const ToggleBtn = styled.span<ToggleProps>`
   font-size: 23px;
   color: #bcbcbc;
+  transition: all 0.6s;
+  ${({ $isOpen }) =>
+    $isOpen &&
+    css`
+      transform: rotate(-180deg);
+    `}
 `;
 
 const ContentWrap = styled.div<ToggleProps>`
   background-color: white;
-  overflow: hidden;
-  max-height: ${({ $isOpen }) => ($isOpen ? "1000px" : "0px")};
+  overflow: scroll;
+  transition: all 0.6s;
+  max-height: ${({ $isOpen }) => ($isOpen ? "800px" : "0px")};
+  opacity: ${({ $isOpen }) => ($isOpen ? "1" : "0")};
 `;

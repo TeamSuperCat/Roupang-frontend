@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-let selectOptionData = {};
-
 const Option = ({ option, finalSelectionOptions }) => {
   const [isOptionCheck, setIsOptionCheck] = useState(option.optionTypeName);
   const [isClick, setIsClick] = useState(false);
@@ -23,7 +21,7 @@ const Option = ({ option, finalSelectionOptions }) => {
     setIsClick((prev) => !prev);
   };
   useEffect(() => {
-    finalSelectionOptions(selectOptionData, option.optionTypeName);
+    finalSelectionOptions(isOptionCheck, option.optionTypeName);
     // console.log(selectOptionData);
   }, [selectOptionData]);
   return (

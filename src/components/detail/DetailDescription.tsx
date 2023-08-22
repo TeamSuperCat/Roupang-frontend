@@ -85,7 +85,7 @@ const DetailDescription = () => {
   const [productAmount, setProductAmount] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({});
-  const [option, setOption] = useState([]);
+  const [option, setOption] = useState({});
 
   const product_id: number = 1;
 
@@ -155,18 +155,15 @@ const DetailDescription = () => {
         console.log("구매하기 응안돼");
       });
   };
+  const Optionarray = [];
 
-  const finalSelectionOptions = (optiondata, optionType) => {
-    console.log(optiondata);
-    if (Object.keys(optiondata).length > 0) {
-      for (let i = 0; i < option.length; i++) {
-        let key = Object.keys(option[i])[0];
-        if (key === optionType) {
-          setOption([{ key: "ㄴㅇㄴㅇ" }]);
-        } else {
-        }
-      }
-      setOption([...option, optiondata]);
+  const finalSelectionOptions = (optiondata, optionType ) => {
+
+    console.log(optiondata)
+    if(option.length > 0){
+      setOption({...option,
+        [optionType]: optiondata}
+        )  
     }
   };
 

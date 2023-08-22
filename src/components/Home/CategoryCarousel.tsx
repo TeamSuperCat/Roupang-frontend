@@ -54,7 +54,7 @@ function CategoryCarousel({ data }: CategoryCarouselProps) {
   return (
     <CarouselWrapper>
       <CategoryH1>{data[0].category_name}</CategoryH1>
-      <Slider {...settings} className=''>
+      <Slider {...settings} className="">
         {data.map((item, i) => (
           <ProductCard key={i} item={item} />
         ))}

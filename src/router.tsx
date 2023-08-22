@@ -13,7 +13,6 @@ import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";
 import Error from "./pages/ErrorPage";
 import Order from "./pages/Order";
-import Seller from "./pages/Seller";
 import SellerEdit from "./pages/SellerEdit";
 import Mypage from "./pages/Mypage";
 
@@ -86,12 +85,6 @@ const routerData: RouterElement[] = [
         path: "signup",
         label: "Signup",
         element: <Signup />,
-      },
-      {
-        id: 12,
-        path: "seller",
-        label: "Seller",
-        element: <Seller />,
       },
       {
         id: 13,

@@ -7,6 +7,19 @@ import { useState } from "react";
 import ShowMore from "./ShowMoreButton";
 import { useRouter } from "../../hooks/useRouter";
 
+interface ItemData {
+  category_name: string;
+  description: string;
+  description_img: string;
+  options: string | null;
+  price: number;
+  product_idx: number;
+  product_img: string;
+  product_name: string;
+  sales_end_date: string;
+  stock: number;
+}
+
 interface CategoryCarouselProps {
   data: ItemData[];
 }
@@ -41,7 +54,7 @@ function CategoryCarousel({ data }: CategoryCarouselProps) {
   return (
     <CarouselWrapper>
       <CategoryH1>{data[0].category_name}</CategoryH1>
-      <Slider {...settings} className="">
+      <Slider {...settings} className=''>
         {data.map((item, i) => (
           <ProductCard key={i} item={item} />
         ))}

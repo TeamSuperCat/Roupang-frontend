@@ -103,7 +103,7 @@ const Mypage = () => {
 
   useEffect(() => {
     // if user is seller
-    setIsSeller(true);
+    setIsSeller(false);
     return () => {};
   }, []);
 
@@ -132,7 +132,7 @@ const Mypage = () => {
   const login = () => {
     axios
       .post("http://3.12.151.96:8080/api/v1/member/login", {
-        email: "test@GoMail.com",
+        email: "mypage@gmail.com",
         password: "12341234q",
       })
       .then((res) => {

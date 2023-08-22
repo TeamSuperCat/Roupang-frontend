@@ -1,9 +1,14 @@
 import { styled } from "styled-components";
 import { SlArrowRight } from "react-icons/sl";
 
-function ShowMore() {
+interface Props {
+  onClick: () => void;
+}
+
+function ShowMore({ onClick }: Props) {
   return (
-    <ShowMoreBtnWrapper>
+    <ShowMoreBtnWrapper onClick={onClick}>
+      <span>더 보기</span>
       <ShowMoreBtn>
         <SlArrowRight />
       </ShowMoreBtn>
@@ -19,6 +24,10 @@ const ShowMoreBtnWrapper = styled.li.attrs({ className: `size` })`
   align-items: center;
   width: 95%;
   min-height: 350px;
+  cursor: pointer;
+  & span {
+    font-size: 12px;
+  }
 `;
 
 const ShowMoreBtn = styled.button`

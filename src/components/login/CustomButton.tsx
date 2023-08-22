@@ -1,7 +1,18 @@
+import React from "react";
 import { styled } from "styled-components";
 
-const CustomButton = () => {
-  return <Button>로그인</Button>;
+interface LoginButtonProps {
+  email: string;
+  password: string;
+  onLoginClick: () => void;
+}
+
+const CustomButton: React.FC<LoginButtonProps> = ({
+  email,
+  password,
+  onLoginClick,
+}) => {
+  return <Button onClick={onLoginClick}>로그인</Button>;
 };
 
 export default CustomButton;
@@ -15,7 +26,7 @@ const Button = styled.button`
 
   width: 460px;
   height: 50px;
-  margin: 10px 0 15px 0;
+  margin: 0 0 15px 0;
   display: flex;
   justify-content: center;
   align-items: center;

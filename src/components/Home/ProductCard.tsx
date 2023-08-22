@@ -5,6 +5,9 @@ interface ProductCardProps {
 }
 
 function ProductCard({ item }: ProductCardProps) {
+  const randomNum = Math.floor(Math.random() * 30) + 20;
+  const upPrice = item.price + item.price * (randomNum * 0.01);
+
   return (
     <CardWrapper>
       <CardImgWrapper>
@@ -24,9 +27,9 @@ function ProductCard({ item }: ProductCardProps) {
           </CardLink>
         </CardTitleWrapper>
         <CardPrice>
-          <PriceText>35%</PriceText>
-          <PriceText>34,000원</PriceText>
-          <PriceText>{item.price}</PriceText>
+          <PriceText>{`${randomNum}%`}</PriceText>
+          <PriceText>{`${~~upPrice}원`}</PriceText>
+          <PriceText>{`${item.price.toLocaleString()}원`}</PriceText>
         </CardPrice>
       </CardInfoWrapper>
     </CardWrapper>

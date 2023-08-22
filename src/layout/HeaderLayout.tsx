@@ -14,10 +14,10 @@ const HeaderLayout = () => {
       <Wrapper>
         <Header />
         <Outlet />
-        <Footer />
       </Wrapper>
       {isOpen && <Portal />}
       <Modal />
+      <Footer />
     </LayOut>
   );
 };
@@ -36,4 +36,14 @@ const Wrapper = styled.div`
   max-width: 1210px;
   height: auto;
   margin: 0 auto;
+  transition: all ease-in-out 0.2s;
+  @media (max-width: 1300px) {
+    max-width: 1000px;
+  }
+  @media (max-width: 1150px) {
+    max-width: 840px;
+  }
+  @media (max-width: 950px) {
+    max-width: 90%;
+  }
 `;

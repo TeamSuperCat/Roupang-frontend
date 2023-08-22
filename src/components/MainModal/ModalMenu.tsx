@@ -86,6 +86,9 @@ const ModalMenuLayOut = styled.div`
   border-bottom-left-radius: 14px;
   display: grid;
   align-items: center;
+  @media (max-width: 950px) {
+    display: none;
+  }
 `;
 
 const BtnWrapper = styled.ul`

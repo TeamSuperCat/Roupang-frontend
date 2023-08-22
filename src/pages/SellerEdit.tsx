@@ -146,7 +146,6 @@ const SellerEdit = () => {
             type="file"
             id="image"
             accept="image/*"
-            multiple
             onChange={handleMainImageChange}
           />
         </FormItem>

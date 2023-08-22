@@ -1,23 +1,37 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SearchModal from "../SearchModal/SearchModal";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   HeaderWrapper,
   HeaderTopbox,
   HeaderMiddlebox,
   HeaderBottonbox,
 } from "./stHeader";
+import { getItems } from "../../slice/ItemSlice";
+import { AppDispatch } from "../../store/store";
+import { useAppDispatch } from "../../hooks/useDispatch";
+import { getCatenum } from "../../slice/ItemSlice";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
 
+  const dispatch: AppDispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const modalOpen = () => {
     setShowModal(true);
+  };
+
+  const handleCategorySelect = (category: string): void => {
+    dispatch(getItems(category));
+    dispatch(getCatenum(category));
+
+    navigate("/main");
   };
 
   return (
@@ -72,7 +86,7 @@ const Header = () => {
               slidesPerView={1}
               loop={true}
               navigation
-              autoplay={{ delay: 2000, disableOnInteraction: false }}
+              autoplay={{ delay: 4000, disableOnInteraction: false }}
               pagination={{ clickable: true }}
             >
               <SwiperSlide>
@@ -116,15 +130,13 @@ const Header = () => {
         </HeaderMiddlebox>
         <HeaderBottonbox>
           <ul>
-            <li>간식</li>
-            <li>사료</li>
-            <li>미용용품</li>
-            <li>패션용품</li>
-            <li>위생용품</li>
-            <li>식기/급수기</li>
-            <li>외출용품</li>
-            <li>장난감/훈련용품</li>
-            <li>하우스/안전용품</li>
+            <li onClick={() => handleCategorySelect("1")}>카테고리</li>
+            <li onClick={() => handleCategorySelect("2")}>목욕</li>
+            <li onClick={() => handleCategorySelect("3")}>배변/위생</li>
+            <li onClick={() => handleCategorySelect("4")}>미용/케어</li>
+            <li onClick={() => handleCategorySelect("5")}>홈/리빙</li>
+            <li onClick={() => handleCategorySelect("6")}>산책/놀이</li>
+            <li onClick={() => handleCategorySelect("7")}>간식/영양제</li>
           </ul>
           <div className="header_search_box">
             <img src="/img/search.svg" alt="search" onClick={modalOpen} />

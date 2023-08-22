@@ -65,8 +65,6 @@ const Login = () => {
       return;
     }
   };
-  // 에러 메시지를 보여주는 경우, true -> 메시지 노출
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameIsTouched;
 
   const nameInputClasses = nameInputIsInvalid
     ? "form-control invalid"
@@ -89,9 +87,6 @@ const Login = () => {
               ref={nameInputRef}
             />
           ))}
-          {nameInputIsInvalid && (
-            <p className="error-text">이름 값은 빈 값이 아니어야 합니다.</p>
-          )}
         </div>
         <CustomButton />
       </Form>

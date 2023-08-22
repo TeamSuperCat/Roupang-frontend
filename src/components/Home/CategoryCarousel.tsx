@@ -7,7 +7,11 @@ import { useState } from "react";
 import ShowMore from "./ShowMoreButton";
 import { useRouter } from "../../hooks/useRouter";
 
-function CategoryCarousel() {
+interface CategoryCarouselProps {
+  data: ItemData[];
+}
+
+function CategoryCarousel({ data }: CategoryCarouselProps) {
   const [isLastSlide, setIsLastSlide] = useState(false);
   const { routeTo } = useRouter();
 
@@ -36,25 +40,11 @@ function CategoryCarousel() {
 
   return (
     <CarouselWrapper>
-      <CategoryH1>간식 / 사료</CategoryH1>
+      <CategoryH1>{data[0].category_name}</CategoryH1>
       <Slider {...settings} className="">
-        <ProductCard title="1번" />
-        <ProductCard title="2번" />
-        <ProductCard title="3번" />
-        <ProductCard title="4번" />
-        <ProductCard title="5번" />
-        <ProductCard title="6번" />
-        <ProductCard title="7번" />
-        <ProductCard title="8번" />
-        <ProductCard title="9번" />
-        <ProductCard title="10번" />
-        <ProductCard title="11번" />
-        <ProductCard title="12번" />
-        <ProductCard title="13번" />
-        <ProductCard title="14번" />
-        <ProductCard title="15번" />
-        <ProductCard title="16번" />
-        <ProductCard title={"17번"} />
+        {data.map((item, i) => (
+          <ProductCard key={i} item={item} />
+        ))}
         <ShowMore />
       </Slider>
     </CarouselWrapper>

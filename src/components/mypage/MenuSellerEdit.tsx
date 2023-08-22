@@ -13,7 +13,7 @@ interface Product {
   stock: number;
 }
 
-const SellerEdit = () => {
+const MenuSellerEdit = () => {
   const [product, setProduct] = useState<Product>({
     category: "",
     name: "",
@@ -183,7 +183,7 @@ const SellerEdit = () => {
   );
 };
 
-export default SellerEdit;
+export default MenuSellerEdit;
 
 const Container = styled.div`
   width: 800px;

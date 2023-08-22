@@ -145,7 +145,7 @@ const Login = () => {
       </Form>
 
       <LinkWrap>
-        <Link to='/signup'>회원가입하기</Link>
+        <Link to="/signup">회원가입하기</Link>
         {/* <Link to="/findpassword">비밀번호찾기</Link> */}
       </LinkWrap>
 
@@ -166,8 +166,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  height: calc(100vh - 480px);
+  padding: 20px 0 80px;
+  /* height: calc(100vh - 480px); */
 `;
 
 const Form = styled.form`

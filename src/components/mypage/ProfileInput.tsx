@@ -14,11 +14,34 @@ type inputProps = {
   isUpdate: boolean;
 };
 
-const ProfileInput = ({ name, type, text, data, onChange, isUpdate }: inputProps) => {
+const ProfileInput = ({
+  name,
+  type,
+  text,
+  data,
+  onChange,
+  isUpdate,
+}: inputProps) => {
   return (
     <InputWrap>
-      <Input name={name} type={type} value={data[name]} onChange={(e) => onChange(e)} readOnly={!isUpdate} />
-      <label htmlFor='email'>{text}</label>
+      {name !== "address" ? (
+        <Input
+          name={name}
+          type={type}
+          value={data[name]}
+          onChange={(e) => onChange(e)}
+          readOnly={!isUpdate}
+        />
+      ) : (
+        <Input
+          name={name}
+          type={type}
+          value={data[name]}
+          onChange={(e) => onChange(e)}
+        />
+      )}
+
+      <label htmlFor="email">{text}</label>
     </InputWrap>
   );
 };
@@ -38,5 +61,6 @@ const Input = styled.input`
   box-sizing: border-box;
   border-radius: 10px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 `;

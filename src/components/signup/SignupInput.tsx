@@ -1,12 +1,9 @@
-import axios from "axios";
-import { useState } from "react";
 import { styled } from "styled-components";
 
 type inputProps = {
   name: string;
   type: string;
   text: string;
-  dupCheck: boolean;
   placeholder: string | undefined;
   data: {
     [key: string]: string | undefined;
@@ -16,41 +13,22 @@ type inputProps = {
     phoneNumber: string | undefined;
     address: string;
   };
+  emailErrMsg: string;
+  nicknameErrMsg: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const SignupInput = ({ name, type, text, dupCheck, placeholder, data, onChange }: inputProps) => {
-  const [isDuplicate, setIsDuplicate] = useState(false);
-  const [resultMsg, setResultMsg] = useState("");
-  const dupCheckHandler = async () => {
-    const requestUrl = "http://3.12.151.96:8080/api/v1/member/check";
-    if (dupCheck) {
-      console.log("cur data >>", data[name]);
-      await axios.post(requestUrl, data[name]).then((res) => {
-        console.log(res); // 중복 또는 가능
-        // 중복이면 에러메시지 보여주고
-        if (res.data.errorCode === "중복") {
-          setIsDuplicate(true);
-          setResultMsg(res.data.errorMessage);
-        } else {
-          setIsDuplicate(false);
-        }
-      });
-    }
-  };
-
+const SignupInput = ({ name, type, text, placeholder, data, emailErrMsg, nicknameErrMsg, onChange }: inputProps) => {
   return (
     <InputWrap>
-      <Input
-        name={name}
-        type={type}
-        value={data[name]}
-        onChange={(e) => onChange(e)}
-        onBlur={dupCheckHandler}
-        placeholder={placeholder}
-      />
-      <label htmlFor='email'>{text}</label>
-      {isDuplicate ? <p>{resultMsg}</p> : null}
+      <div>
+        <label htmlFor='email'>{text}</label>
+        <Input name={name} type={type} value={data[name]} onChange={(e) => onChange(e)} placeholder={placeholder} />
+      </div>
+      <div>
+        {name === "email" ? emailErrMsg && <p>{emailErrMsg}</p> : null}
+        {name === "nickname" ? nicknameErrMsg && <p>{nicknameErrMsg}</p> : null}
+      </div>
     </InputWrap>
   );
 };
@@ -59,11 +37,20 @@ export default SignupInput;
 
 const InputWrap = styled.div`
   display: flex;
-  align-items: center;
+  align-items: unset;
+  flex-direction: column;
   justify-content: space-between;
-  flex-direction: row-reverse;
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   p {
     color: red;
+    font-size: 0.75rem;
+    padding-top: 5px;
+    left: 0;
   }
 `;
 

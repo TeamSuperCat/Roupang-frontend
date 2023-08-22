@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "./CustomButton";
-import axiosClient from "../../api/axios";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 // type PlaceholderInput = {
 //   enteredNameIsValid: boolean;
@@ -65,30 +65,22 @@ const LoginInput = () => {
   // 4. 전송버튼
   const handleLoginSubmit = async () => {
     if (isValidEmail(email) && isValidPassword(password)) {
-      interface Data {
-        email: string;
-        password: string;
-      }
       const data = {
         email,
         password,
       };
 
-      await axiosClient
-        .post<Data>(`/member/login`, data, {
-          withCredentials: true,
-        })
+      axios
+        .post("http://3.12.151.96:8080/api/v1/member/login", data)
         .then((res) => {
-          console.log(res);
           const accessToken = res.headers["authorization"];
           localStorage.setItem("accessToken", accessToken);
-          // navigate("/");
+          navigate("/");
         })
         .catch((err) => {
-          if (err.code === "ERR_BAD_REQUEST") {
+          if (err) {
             console.log(err.response.data.msg);
           }
-          console.log(err);
         });
 
       // try {

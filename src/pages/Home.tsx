@@ -5,19 +5,6 @@ import { useEffect } from "react";
 import { getAllCategorys } from "../slice/mainSlice";
 import Loading from "../components/Loading/Loading";
 
-interface ItemData {
-  category_name: string;
-  description: string;
-  description_img: string;
-  options: string | null;
-  price: number;
-  product_idx: number;
-  product_img: string;
-  product_name: string;
-  sales_end_date: string;
-  stock: number;
-}
-
 const Home = () => {
   const dispatch = useAppDispatch();
 
@@ -35,9 +22,15 @@ const Home = () => {
       ) : (
         <>
           <MainCarousel />
-          {AllCategory.filter((category) => category.length > 0).map((category, index) => (
-            <CategoryCarousel key={index} data={category} />
-          ))}
+          {AllCategory.filter((category) => category.length > 0).map(
+            (category, index) => (
+              <CategoryCarousel
+                key={index}
+                data={category}
+                category={index + 1}
+              />
+            )
+          )}
         </>
       )}
     </>

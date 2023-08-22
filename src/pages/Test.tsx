@@ -3,7 +3,7 @@ import useGetUrl from "../hooks/useGetUrls";
 
 function Test() {
   const [urls, setUrls] = useState<string[]>([]);
-  const { ref, onChange, isLoading, isError } = useGetUrl(setUrls);
+  const { ref, onChange, isLoading } = useGetUrl(setUrls);
 
   console.log(urls);
 

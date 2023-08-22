@@ -22,6 +22,8 @@ const LoginInput = ({
   onBlur,
   ref,
 }: PlaceholderInput) => {
+  // 에러 메시지를 보여주는 경우, true -> 메시지 노출
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameIsTouched;
   return (
     <>
       <Input
@@ -33,6 +35,9 @@ const LoginInput = ({
         onBlur={onBlur}
         ref={ref}
       />
+      {nameInputIsInvalid && (
+        <p className="error-text">값은 빈 값이 아니어야 합니다.</p>
+      )}
     </>
   );
 };

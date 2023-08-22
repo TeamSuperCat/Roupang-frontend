@@ -28,7 +28,6 @@ const MainCarousel: React.FC = () => {
           spaceBetween={50}
           slidesPerView={1}
           onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => ""}
         >
           {mainimagelist.map((item, index) => {
             return (
@@ -67,27 +66,27 @@ const CarouselImgDiv = styled.div`
   }
 `;
 
-const Infomation = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-`;
+// const Infomation = styled.div`
+//   width: 100%;
+//   height: 100%;
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+// `;
 
-const InfomationLeft = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 50%;
-  height: 100%;
-  background-color: #62ff4dba;
-`;
-const InfomationRight = styled.div`
-  width: 50%;
-  height: 100%;
-`;
+// const InfomationLeft = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex-direction: column;
+//   width: 50%;
+//   height: 100%;
+//   background-color: #62ff4dba;
+// `;
+// const InfomationRight = styled.div`
+//   width: 50%;
+//   height: 100%;
+// `;
 const StyledSwiper = styled(Swiper)`
   .swiper-button-prev {
     &::after {

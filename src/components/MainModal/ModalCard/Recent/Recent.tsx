@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import ProductModalCard from "./ProductModalCard";
 
-const products = [];
+// const products = [];
 
 function Recent() {
   return (

@@ -1,21 +1,32 @@
-import React from "react";
 import styled from "styled-components";
+import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
+import { getCateItems } from "../../slice/ItemSlice";
 
 const MainListControl = () => {
+  const itemCount = useAppSelector((state) => state.item.items.length);
+  const categoryId = useAppSelector((state) => state.item.categorynum);
+  const dispatch = useAppDispatch();
+
+  console.log(categoryId);
+
+  const handleGetCateItems = (category: string) => {
+    dispatch(getCateItems({ categoryId, category }));
+  };
+
   return (
     <ControlWrapper>
       <div className="item_quantity_info">
         <img src="/img/item.svg" alt="item" />
         <div>
-          총 <span>0</span> 개의 상품이 있습니다.
+          총 <span>{itemCount}</span> 개의 상품이 있습니다.
         </div>
       </div>
       <div>
         <ul className="item_selected_list">
-          <li>신상품</li>
-          <li>인기순</li>
-          <li>낮은가격</li>
-          <li>높은가격</li>
+          <li onClick={() => handleGetCateItems("")}>최신순</li>
+          <li onClick={() => handleGetCateItems("priceDesc")}>높은가격</li>
+          <li onClick={() => handleGetCateItems("priceAsc")}>낮은가격</li>
+          <li>판매순</li>
         </ul>
       </div>
     </ControlWrapper>

@@ -30,6 +30,7 @@ const userProfileInfoProps = [
 const defaultProfilePath = "default_profile.png";
 
 interface Data {
+  [key: string]: string | undefined;
   email: string;
   nickname: string;
   phoneNumber: string | undefined;

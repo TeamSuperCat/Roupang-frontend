@@ -9,6 +9,7 @@ type inputProps = {
   dupCheck: boolean;
   placeholder: string | undefined;
   data: {
+    [key: string]: string | undefined;
     email: string;
     password: string;
     passwordCheck: string;

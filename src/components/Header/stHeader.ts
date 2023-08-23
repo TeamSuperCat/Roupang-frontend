@@ -25,6 +25,9 @@ export const HeaderTopbox = styled.div`
   justify-content: space-between;
   align-items: center;
   transition: all ease-in-out 0.2s;
+  @media (max-width: 840px) {
+    display: none;
+  }
   div {
     font-weight: 500;
     font-size: 14px;
@@ -135,7 +138,7 @@ export const HeaderTopbox = styled.div`
       display: none;
       position: absolute;
       bottom: -135px;
-      left: -7px;
+      left: 9px;
       padding-top: 20px;
       z-index: 2;
       .mypage_drop_menu {
@@ -209,6 +212,9 @@ export const HeaderMiddlebox = styled.div`
   .header_carousel {
     width: 240px;
     height: 120px;
+    @media (max-width: 840px) {
+      display: none;
+    }
     .swiper {
       width: 240px;
       height: 120px;
@@ -218,6 +224,7 @@ export const HeaderMiddlebox = styled.div`
       display: none;
     }
   }
+  .header_hamburger_menu_info,
   .header_myinfo {
     img {
       transition: all 0.2s;
@@ -230,13 +237,44 @@ export const HeaderMiddlebox = styled.div`
   .swiper-slide {
     cursor: pointer;
   }
+  .header_hamburger_menu_info {
+    @media (min-width: 841px) {
+      display: none;
+    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    @media (max-width: 550px) {
+      gap: 10px;
+    }
+    div,
+    &_box {
+      cursor: pointer;
+      &:hover .header_search_ex {
+        display: block;
+      }
+      img {
+        width: 35px;
+        height: 35px;
+        @media (max-width: 550px) {
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+  }
+
   .header_mainlogo {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
     img {
-      width: 170px;
+      width: 160px;
+      @media (max-width: 550px) {
+        width: 120px;
+      }
     }
   }
   .header_myinfo {
@@ -244,10 +282,17 @@ export const HeaderMiddlebox = styled.div`
     justify-content: center;
     align-items: center;
     gap: 15px;
+    @media (max-width: 550px) {
+      gap: 10px;
+    }
     div,
     .header_cartimg {
       width: 35px;
       height: 35px;
+      @media (max-width: 550px) {
+        width: 25px;
+        height: 25px;
+      }
     }
     .header_search_box {
       cursor: pointer;
@@ -258,9 +303,9 @@ export const HeaderMiddlebox = styled.div`
         display: none;
         position: absolute;
         font-size: 11px;
-        left: -13px;
+        left: 0px;
         bottom: -10px;
-        width: 60px;
+        width: 44px;
         height: 30px;
         border-radius: 10px;
         text-align: center;
@@ -273,7 +318,7 @@ export const HeaderMiddlebox = styled.div`
           content: "";
           position: absolute;
           top: -10px;
-          right: 25px;
+          right: 17px;
           border-left: 5px solid transparent;
           border-right: 5px solid transparent;
           border-bottom: 10px solid #444;
@@ -330,6 +375,14 @@ export const HeaderMiddlebox = styled.div`
         line-height: 20px;
         color: #fff;
         font-size: 12px;
+        @media (max-width: 550px) {
+          width: 16px;
+          height: 16px;
+          right: 0px;
+          top: -4px;
+          font-size: 11px;
+          line-height: 16px;
+        }
       }
       .header_cart_ex {
         display: none;
@@ -367,7 +420,7 @@ export const HeaderBottonbox = styled.div`
   align-items: center;
   position: relative;
   transition: all ease-in-out 0.2s;
-  @media (max-width: 780px) {
+  @media (max-width: 840px) {
     display: none;
   }
   ul {
@@ -381,9 +434,6 @@ export const HeaderBottonbox = styled.div`
       padding: 19px 20px 15px;
       @media (max-width: 950px) {
         font-size: 16px;
-      }
-      @media (max-width: 840px) {
-        font-size: 14px;
       }
       &:hover {
         transition: all 0.2s;

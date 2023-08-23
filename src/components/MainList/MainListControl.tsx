@@ -1,5 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
-import { getCateItems, getSortType } from "../../slice/ItemSlice";
+import {
+  getCateItems,
+  getSortType,
+  getSearchItems,
+} from "../../slice/ItemSlice";
 import { useState, useEffect } from "react";
 import { ControlWrapper } from "./stMainListControl";
 
@@ -7,6 +11,7 @@ const MainListControl = () => {
   const itemCount = useAppSelector((state) => state.item.Totalitems);
   const categoryId = useAppSelector((state) => state.item.categorynum);
   const filtersort = useAppSelector((state) => state.item.catesort);
+  const searchkey = useAppSelector((state) => state.item.keyword);
   const dispatch = useAppDispatch();
 
   const [isfilterType, setIsfilterTpye] = useState("");
@@ -16,9 +21,13 @@ const MainListControl = () => {
   }, [filtersort]);
 
   const handleGetCateItems = (category: string) => {
-    dispatch(getCateItems({ categoryId, category }));
-    dispatch(getSortType(category));
     setIsfilterTpye(category);
+    dispatch(getSortType(category));
+    if (searchkey) {
+      dispatch(getSearchItems({ keyword: searchkey, sorttype: category }));
+    } else {
+      dispatch(getCateItems({ categoryId, category }));
+    }
   };
 
   return (
@@ -34,7 +43,7 @@ const MainListControl = () => {
           <li onClick={() => handleGetCateItems("")}>최신순</li>
           <li onClick={() => handleGetCateItems("priceDesc")}>높은가격</li>
           <li onClick={() => handleGetCateItems("priceAsc")}>낮은가격</li>
-          <li>판매순</li>
+          <li onClick={() => handleGetCateItems("sales")}>판매순</li>
         </ul>
       </div>
     </ControlWrapper>

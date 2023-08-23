@@ -14,19 +14,27 @@ const MainList = () => {
   const catetype = useAppSelector((state) => state.item.categorynum);
   const sorttype = useAppSelector((state) => state.item.catesort);
   const itemCount = useAppSelector((state) => state.item.Totalitems);
+  const searchkey = useAppSelector((state) => state.item.keyword);
   const [isCooltime, setIsCooltime] = useState(false);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const fetchItems = async ({ pageParam = 0 }) => {
-    try {
-      const response = await axiosClient.get(
-        `/products/category/${catetype}?page=${pageParam}&size=8&order=${sorttype}`
-      );
+    let url;
+    let responsePage1Url;
 
-      if (pageParam === 0) {
-        const responsePage1 = await axiosClient.get(
-          `/products/category/${catetype}?page=1&size=8&order=${sorttype}`
-        );
+    if (searchkey) {
+      url = `/products/search?keyword=${searchkey}&page=${pageParam}&size=8&order=${sorttype}`;
+      responsePage1Url = `/products/search?keyword=${searchkey}&page=1&size=8&order=${sorttype}`;
+    } else {
+      url = `/products/category/${catetype}?page=${pageParam}&size=8&order=${sorttype}`;
+      responsePage1Url = `/products/category/${catetype}?page=1&size=8&order=${sorttype}`;
+    }
+
+    try {
+      const response = await axiosClient.get(url);
+
+      if (pageParam === 0 && !response.data.last) {
+        const responsePage1 = await axiosClient.get(responsePage1Url);
         const combinedData = [
           ...response.data.content,
           ...responsePage1.data.content,
@@ -50,7 +58,7 @@ const MainList = () => {
 
   useEffect(() => {
     queryClient.removeQueries(["infiniteData"]);
-  }, [catetype, sorttype]);
+  }, [catetype, sorttype, searchkey]);
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
@@ -62,6 +70,8 @@ const MainList = () => {
         }
         return lastPage.last ? undefined : lastPage.number + 1;
       },
+      staleTime: 1000 * 60 * 10,
+      cacheTime: 1000 * 60 * 60,
     });
 
   useEffect(() => {
@@ -97,6 +107,9 @@ const MainList = () => {
 
   const allData = data?.pages?.map((page) => page.content).flat() || [];
   const displayData = allData.length > 12 ? allData : items;
+
+  console.log(allData, "데이따");
+  console.log(items);
   return (
     <>
       {LoadingData ? (

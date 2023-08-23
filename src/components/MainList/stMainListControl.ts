@@ -51,6 +51,10 @@ export const ControlWrapper = styled.div<filterTypeProps>`
         color: ${({ $isfilterType }) =>
           $isfilterType === "priceAsc" ? "#50d2ba" : "#a1a1a1"};
       }
+      &:nth-child(4) {
+        color: ${({ $isfilterType }) =>
+          $isfilterType === "sales" ? "#50d2ba" : "#a1a1a1"};
+      }
       &:hover {
         transition: all 0.2s;
         color: #50d2ba;

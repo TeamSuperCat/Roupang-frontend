@@ -28,18 +28,36 @@ export const getCateItems = createAsyncThunk(
   }
 );
 
+export const getSearchItems = createAsyncThunk(
+  "item/getSearchItems",
+  async ({
+    keyword,
+    sorttype = "",
+  }: {
+    keyword: string;
+    sorttype?: string;
+  }) => {
+    const response = await axiosClient.get(
+      `/products/search?keyword=${keyword}&page=0&size=12&order=${sorttype}`
+    );
+    return response.data;
+  }
+);
+
 const initialState: {
   items: ItemData[];
   isLoading: boolean;
   categorynum: string;
   catesort: string;
   Totalitems: number;
+  keyword: string;
 } = {
   items: [],
   isLoading: true,
   categorynum: "",
   catesort: "",
   Totalitems: 0,
+  keyword: "",
 };
 
 const itemSlice = createSlice({
@@ -52,6 +70,9 @@ const itemSlice = createSlice({
     getSortType: (state, action: PayloadAction<string>) => {
       state.catesort = action.payload;
     },
+    getKeyword: (state, action: PayloadAction<string>) => {
+      state.keyword = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,6 +83,7 @@ const itemSlice = createSlice({
         state.items = action.payload.content;
         state.Totalitems = action.payload.totalElements;
         state.catesort = "";
+        state.keyword = "";
         state.isLoading = false;
       })
       .addCase(getItems.rejected, (state, action) => {
@@ -79,10 +101,22 @@ const itemSlice = createSlice({
       .addCase(getCateItems.rejected, (state, action) => {
         console.log(action.error, "실패");
         state.isLoading = false;
+      })
+      .addCase(getSearchItems.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getSearchItems.fulfilled, (state, action) => {
+        state.items = action.payload.content;
+        state.Totalitems = action.payload.totalElements;
+        state.isLoading = false;
+      })
+      .addCase(getSearchItems.rejected, (state, action) => {
+        console.log(action.error, "실패");
+        state.isLoading = false;
       });
   },
 });
 
-export const { getCatenum, getSortType } = itemSlice.actions;
+export const { getCatenum, getSortType, getKeyword } = itemSlice.actions;
 
 export default itemSlice.reducer;

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
 const BASE_URL = "/api";
-const token: string | null = localStorage.getItem("token");
+const token: string | null = localStorage.getItem("accessToken");
 
 if (token) {
   axios.defaults.headers.common["Authorization"] = `${token}`;
@@ -20,9 +20,13 @@ axiosClient.interceptors.response.use((response) => {
 });
 
 axiosClient.interceptors.request.use((config) => {
-  config.headers["Content-Type"] = "application/json; charset=utf-8";
-  if (token) {
-    config.headers["Authorization"] = `${token}`;
+  if (config.url === "https://api.cloudinary.com/v1_1/ji/image/upload") {
+    delete config.headers["Authorization"];
+  } else {
+    config.headers["Content-Type"] = "application/json; charset=utf-8";
+    if (token) {
+      config.headers["Authorization"] = `${token}`;
+    }
   }
   return config;
 });

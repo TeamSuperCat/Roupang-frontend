@@ -1,5 +1,5 @@
 import axiosClient from "../../api/axios";
-import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import useGetUrl from "../../hooks/useGetUrls";
@@ -7,11 +7,11 @@ import useGetUrl from "../../hooks/useGetUrls";
 interface Product {
   produtcName: string;
   description: string;
-  categoryIdx: number;
+  // categoryIdx: number;
   price: number;
   stock: number;
-  productImg: string;
-  descriptionImg: string;
+  productImg: string | File;
+  descriptionImg: string | File;
   salesEndDate: string;
   // options:string[],
 }
@@ -27,31 +27,25 @@ interface MenuSellerProductsProps {
 
 const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
   const [productImgUrls, setProductImgUrls] = useState<string[]>([]);
-  const { ref: productImgRef, onChange: productImgOnChange } =
-    useGetUrl(setProductImgUrls);
+  const { ref: productImgRef, onChange: productImgOnChange } = useGetUrl(setProductImgUrls);
 
   const [descriptionImgUrls, setDescriptionImgUrls] = useState<string[]>([]);
-  const { ref: descriptionImgRef, onChange: descriptionImgOnChange } =
-    useGetUrl(setDescriptionImgUrls);
+  const { ref: descriptionImgRef, onChange: descriptionImgOnChange } = useGetUrl(setDescriptionImgUrls);
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [product, setProduct] = useState<Product>({
     produtcName: "",
     description: "",
-    categoryIdx: 0,
+    // categoryIdx: 0,
     price: 0,
     stock: 0,
-    productImg: "",
-    descriptionImg: "",
+    productImg: "default_profile.png",
+    descriptionImg: "default_profile.png",
     salesEndDate: "",
     // options:string[],
   });
 
-  const handleInputChange = (
-    event: ChangeEvent<
-      HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
-    >
-  ) => {
+  const handleInputChange = (event: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setProduct((prevProduct) => ({
       ...prevProduct,
@@ -63,6 +57,21 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
     const file = event.target.files?.[0];
     if (file === undefined) return;
 
+    const { name, value } = event.target;
+    console.log(name);
+    console.log(value);
+    // Blob 객체로 변환
+    const blob = new Blob([file], { type: file.type });
+
+    // 임시 URL 생성
+    const tempURL = URL.createObjectURL(blob);
+    console.log(tempURL);
+    if (name === "productImg") {
+      setProduct((prev) => ({ ...prev, productImg: tempURL }));
+    } else if (name === "descriptionImg") {
+      setProduct((prev) => ({ ...prev, descriptionImg: tempURL }));
+    }
+    console.log(file);
     // setProduct((prevProduct) => ({
     //   ...prevProduct,
     //   mainImage: file,
@@ -78,32 +87,22 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
   //   }
   // };
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    // const formData = new FormData();
-    // formData.append("category", product.category);
-    // formData.append("name", product.name);
-    // formData.append("description", product.description);
-    // formData.append("price", product.price.toString());
-    // formData.append("stock", product.stock.toString());
-    // if (product.mainImage) {
-    //   formData.append("mainImage", product.mainImage);
-    // }
-    // if (product.images) {
-    //   product.images.forEach((image) => {
-    //     formData.append("images", image);
-    //   });
-    // }
 
     try {
       await productImgOnChange();
       await descriptionImgOnChange();
+      console.log(productImgUrls);
+      console.log(descriptionImgUrls);
+
       setProduct((prev) => ({ ...prev, productImg: productImgUrls[0] }));
       setProduct((prev) => ({
         ...prev,
         descriptionImg: descriptionImgUrls[0],
       }));
+      console.log(product);
+
       await axiosClient
         .post("/seller/products/register", product)
         .then((res) => {
@@ -135,8 +134,9 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
   }, []);
 
   useEffect(() => {
+    console.log(productImgUrls, descriptionImgUrls);
     return () => {};
-  }, []);
+  }, [productImgUrls, descriptionImgUrls]);
 
   /**
    * file url 로 변환 후 저장
@@ -187,10 +187,10 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
       <form onSubmit={handleSubmit}>
         <h3>상품등록</h3>
         <FormItem>
-          <label htmlFor="category">상품분류</label>
+          <label htmlFor='category'>상품분류</label>
           <select
-            name="category"
-            id="category"
+            name='category'
+            id='category'
             // value={product.category}
             onChange={handleInputChange}
           >
@@ -210,75 +210,51 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
             <option value="하우스/안전용품">하우스/안전용품</option> */}
           </select>
         </FormItem>
-        <FormItem className="width_full">
-          <label htmlFor="name">상품명</label>
+        <FormItem className='width_full'>
+          <label htmlFor='name'>상품명</label>
           <input
-            type="text"
-            id="name"
-            name="produtcName"
+            type='text'
+            id='name'
+            name='produtcName'
             value={product.produtcName}
             onChange={handleInputChange}
             //   onBlur={nameInputBlurHandler}
           />
         </FormItem>
-        <FormItem className="width_full">
-          <label htmlFor="description">상세설명</label>
+        <FormItem className='width_full'>
+          <label htmlFor='description'>상세설명</label>
           {/* <input type="text" id="description" /> */}
-          <textarea
-            name="description"
-            value={product.description}
-            onChange={handleInputChange}
-          />
+          <textarea name='description' value={product.description} onChange={handleInputChange} />
         </FormItem>
         <FormItem>
-          <label htmlFor="image">대표이미지</label>
-          <input
-            type="file"
-            id="image"
-            name="productImg" // ref로 처리?
-            ref={productImgRef}
-            value={product.productImg}
-            accept="image/*"
-            onChange={handleMainImageChange}
-          />
+          <label htmlFor='image'>대표이미지</label>
+          <input type='file' accept='image/*' name='productImg' ref={productImgRef} onChange={handleMainImageChange} />
         </FormItem>
         <FormItem>
-          <label htmlFor="image">상세이미지</label>
+          <label htmlFor='image'>상세이미지</label>
           <input
-            type="file"
-            id="image" // ref로 처리?
+            type='file'
+            accept='image/*'
+            name='descriptionImg'
             ref={descriptionImgRef}
-            accept="image/*"
             multiple
             onChange={handleMainImageChange}
           />
         </FormItem>
         <FormItem>
-          <label htmlFor="price">판매가(원)</label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            value={product.price}
-            onChange={handleInputChange}
-          />
+          <label htmlFor='price'>판매가(원)</label>
+          <input type='number' id='price' name='price' value={product.price} onChange={handleInputChange} />
         </FormItem>
         <FormItem>
-          <label htmlFor="stock">재고수량</label>
-          <input
-            type="number"
-            id="stock"
-            name="stock"
-            value={product.stock}
-            onChange={handleInputChange}
-          />
+          <label htmlFor='stock'>재고수량</label>
+          <input type='number' id='stock' name='stock' value={product.stock} onChange={handleInputChange} />
         </FormItem>
         <FormItem>
-          <label htmlFor="sales-end-date">판매 종료일</label>
+          <label htmlFor='sales-end-date'>판매 종료일</label>
           <input
-            type="date"
-            id="salesEndDate"
-            name="salesEndDate"
+            type='date'
+            id='salesEndDate'
+            name='salesEndDate'
             value={product.salesEndDate}
             onChange={handleInputChange}
           />
@@ -317,9 +293,9 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
               <td>1</td>
               <td>P000000R</td>
               <td>
-                <div className="product_name">
-                  <div className="product_name_img_wrap">
-                    <img src="/img/thumbnail.jpg" alt="상품썸네일" />
+                <div className='product_name'>
+                  <div className='product_name_img_wrap'>
+                    <img src='/img/thumbnail.jpg' alt='상품썸네일' />
                   </div>
                   <span>공간활용 고양이 윈도우 해먹 창틀해먹 고양이선반</span>
                 </div>
@@ -328,7 +304,7 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
               <td>8000</td>
               <td>
                 <button>
-                  <Link to="/selleredit">수정</Link>
+                  <Link to='/selleredit'>수정</Link>
                 </button>
               </td>
               <td>
@@ -381,8 +357,7 @@ const FormItem = styled.div`
     resize: none;
     box-sizing: border-box;
     padding: 5px 10px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px,
-      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     border-radius: 5px;
   }
   label {
@@ -395,8 +370,7 @@ const FormItem = styled.div`
     justify-content: flex-end;
     border: none;
     padding: 0 5px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px,
-      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     border-radius: 5px;
     option {
       background-color: #fff;
@@ -410,8 +384,7 @@ const FormItem = styled.div`
     box-sizing: border-box;
     border: none;
     padding: 0 10px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     border-radius: 5px;
   }
   input[type="file"] {
@@ -426,8 +399,7 @@ const FormItem = styled.div`
     padding: 5px 10px;
     font-weight: 600;
     border: none;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     transition: all ease-in-out 0.2s;
     &:hover {
       color: #fff;
@@ -463,8 +435,7 @@ const ProductsLists = styled.section`
       font-weight: 600;
       background-color: #fff;
       border: none;
-      box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-        rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
       border-radius: 5px;
       /* color: #757575; */
       transition: all ease-in-out 0.2s;
@@ -506,8 +477,7 @@ const ButtonEditWarp = styled.div`
     font-size: 16px;
     font-weight: 600;
     border: none;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px,
-      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     height: 50px;
     width: 100px;
     border-radius: 10px;

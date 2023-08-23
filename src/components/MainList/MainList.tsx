@@ -13,8 +13,8 @@ const MainList = () => {
   const LoadingData = useAppSelector((state) => state.item.isLoading);
   const catetype = useAppSelector((state) => state.item.categorynum);
   const sorttype = useAppSelector((state) => state.item.catesort);
+  const itemCount = useAppSelector((state) => state.item.Totalitems);
   const [isCooltime, setIsCooltime] = useState(false);
-
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const fetchItems = async ({ pageParam = 0 }) => {
@@ -27,12 +27,20 @@ const MainList = () => {
         const responsePage1 = await axiosClient.get(
           `/products/category/${catetype}?page=1&size=8&order=${sorttype}`
         );
+        const combinedData = [
+          ...response.data.content,
+          ...responsePage1.data.content,
+        ];
+        const uniqueData = Array.from(
+          new Set(combinedData.map((item) => item.product_idx))
+        ).map((product_idx) => {
+          return combinedData.find((item) => item.product_idx === product_idx);
+        });
         return {
           ...response.data,
-          content: [...response.data.content, ...responsePage1.data.content],
+          content: uniqueData,
         };
       }
-
       return response.data;
     } catch (error) {
       console.error("실패했다요", error);
@@ -48,7 +56,10 @@ const MainList = () => {
     useInfiniteQuery({
       queryKey: ["infiniteData"],
       queryFn: fetchItems,
-      getNextPageParam: (lastPage) => {
+      getNextPageParam: (lastPage, allPages) => {
+        if (allPages.length === 1 && lastPage.number === 0) {
+          return 2;
+        }
         return lastPage.last ? undefined : lastPage.number + 1;
       },
     });
@@ -61,7 +72,8 @@ const MainList = () => {
           first.isIntersecting &&
           hasNextPage &&
           !isCooltime &&
-          !isFetchingNextPage
+          !isFetchingNextPage &&
+          itemCount !== allData.length
         ) {
           setIsCooltime(true);
           fetchNextPage();
@@ -85,7 +97,6 @@ const MainList = () => {
 
   const allData = data?.pages?.map((page) => page.content).flat() || [];
   const displayData = allData.length > 12 ? allData : items;
-
   return (
     <>
       {LoadingData ? (

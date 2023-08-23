@@ -108,13 +108,13 @@ const DetailDescription = () => {
       for (let i = 0; i < optionName.length; i++) {
         //옵션을 선택을안하면 "" 빈칸이 찍힙니다
         if (option[optionName[i]] === "") {
-          console.log("옵션을 선택해주세요");
+          alert("옵션을 선택해주세요");
           return;
         }
       }
       console.log("장바구니에 담을수있겠어요");
     } else {
-      console.log("옵션을 선택해주세요");
+      alert("옵션을 선택해주세요");
       return;
     }
     axiosClient

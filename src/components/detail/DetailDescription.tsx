@@ -29,10 +29,10 @@ interface DetailDescriptionBoxProps {
 const DetailDescription = () => {
   const { productid } = useParams();
 
-  const [isMoreView, setIsMoreView] = useState(false);
-  const [productAmount, setProductAmount] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAmountInputBox, setIsAmountInputbox] = useState(false);
+  const [isMoreView, setIsMoreView] = useState<boolean>(false);
+  const [productAmount, setProductAmount] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAmountInputBox, setIsAmountInputbox] = useState<boolean>(false);
   const [data, setData] = useState({
     stock: 0,
     product_name: "",
@@ -61,13 +61,13 @@ const DetailDescription = () => {
   }, [product_id]);
 
   const productAmountUp = () => {
-    if (productAmount < data.stock) {
+    if (Number(productAmount) < data.stock) {
       setIsAmountInputbox(false);
       setProductAmount((prev) => prev + 1);
     }
   };
   const productAmountDown = () => {
-    if (productAmount > 1) {
+    if (Number(productAmount) > 1) {
       setIsAmountInputbox(false);
       setProductAmount((prev) => prev - 1);
     }
@@ -84,16 +84,17 @@ const DetailDescription = () => {
   const enterKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     // console.log(event);
     if (event.key === "Enter") {
+      const inputValue = (event.target as HTMLInputElement).value;
       setIsAmountInputbox((prev) => !prev);
-      if (event.target.value === "") {
+      if (inputValue === "") {
         setProductAmount(1);
         return;
-      } else if (event.target.value < 1) {
+      } else if (Number(inputValue) < 1) {
         setProductAmount(1);
-      } else if (event.target.value >= data.stock) {
+      } else if (Number(inputValue) >= data.stock) {
         setProductAmount(data.stock);
       } else {
-        setProductAmount(event.target.value);
+        setProductAmount(Number(inputValue));
       }
     }
   };
@@ -103,7 +104,7 @@ const DetailDescription = () => {
       setProductAmount(1);
       return;
     } else {
-      setProductAmount(event.target.value);
+      setProductAmount(Number(event.target.value));
     }
   };
 
@@ -111,6 +112,25 @@ const DetailDescription = () => {
   const shopingCartButton = () => {
     // const token: string | null = localStorage.getItem("access_token");
     // const parsetoken = JSON.parse(token);
+
+    console.log("장바구니에 넣어주세용");
+    //선택된 옵션들 입니다
+    const optionName = Object.keys(option);
+
+    //선택된옵션갯수 === 실제옵션갯수
+    if (optionName.length === data.options.length) {
+      for (let i = 0; i < optionName.length; i++) {
+        //옵션을 선택을안하면 "" 빈칸이 찍힙니다
+        if (option[optionName[i]] === "") {
+          console.log("옵션을 선택해주세요");
+          return;
+        }
+      }
+      console.log("장바구니에 담을수있겠어요");
+    } else {
+      console.log("옵션을 선택해주세요");
+      return;
+    }
     axiosClient
       .post(
         `/cart`,
@@ -155,31 +175,14 @@ const DetailDescription = () => {
   //구매하기
   //구매하기 api로 보낸다
   //데이터는 제품아이디, 수량, 가격
-  const buyButton = () => {
-    let token = localStorage.getItem("userinfo");
-    const request = fetch(`http://localhost:8080/products/${product_id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        product_idx: productid,
-        amount: productAmount,
-      }),
-    })
-      .then()
-      .catch(() => {
-        console.log("구매하기 응안돼");
-      });
-  };
+  const buyButton = () => {};
 
   //선택한 옵션으로 중복되지않게 옵션을만듬
   const finalSelectionOptions = (optiondata: string, optionType: string) => {
     setOption({ ...option, [optionType]: optiondata });
   };
 
-  console.log(option);
+  // console.log(option);
 
   return (
     <>
@@ -325,7 +328,7 @@ const DetailDescription = () => {
         </DescriptionBox>
       </Container>
 
-      <DetailDescriptionBox $isMoreView={isMoreView}>
+      <DetailDescriptionBox isMoreView={isMoreView}>
         <DescriptionImage src={responseProductData.description_img} alt="" />
       </DetailDescriptionBox>
       <MoreViewButtonBox>
@@ -435,26 +438,6 @@ const HartIcon = styled.div`
 
 const ShareIcon = styled.div`
   margin-left: 1rem;
-`;
-
-const ProductOption = styled.div`
-  padding: 1rem;
-  border: 1px solid black;
-  margin-bottom: 1rem;
-`;
-
-const OptionSelect = styled.div`
-  font-size: 1.2rem;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-`;
-const OptionList = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid gray;
-  margin-bottom: 0.2rem;
-  padding: 0.5rem;
 `;
 
 const ShopingCartButton = styled.div`
@@ -590,8 +573,8 @@ const DetailDescriptionBox = styled.div<DetailDescriptionBoxProps>`
   display: block;
   position: relative;
   width: 100%;
-  height: ${({ $isMoreView }) => ($isMoreView ? "auto" : "1500px")};
-  overflow: ${({ $isMoreView }) => ($isMoreView ? "visible" : "hidden")};
+  height: ${({ isMoreView }) => (isMoreView ? "auto" : "1500px")};
+  overflow: ${({ isMoreView }) => (isMoreView ? "visible" : "hidden")};
 `;
 
 const DescriptionImage = styled.img`

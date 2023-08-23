@@ -196,6 +196,12 @@ const Signup = () => {
   };
 
   useEffect(() => {
+    const isLogin = !!localStorage.getItem("accessToken");
+    if (isLogin) navigate("/");
+    return () => {};
+  }, []);
+
+  useEffect(() => {
     return () => {};
   }, [data]);
 

@@ -29,15 +29,14 @@ export const HeaderTopbox = styled.div`
       margin-right: 8px;
     }
   }
-
+  .header_logout_info,
   .header_login_info,
   .header_mypage_info,
   .header_board_info {
     &:hover {
       img {
         transition: all 0.2s;
-        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg)
-          brightness(85%) contrast(92%);
+        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg) brightness(85%) contrast(92%);
       }
     }
     a {
@@ -45,11 +44,12 @@ export const HeaderTopbox = styled.div`
     }
   }
 
+  .header_logout_info,
   .header_login_info {
     display: flex;
     gap: 8px;
     position: relative;
-    .header_login,
+    .header_logout .header_login,
     .header_join {
       cursor: pointer;
       font-family: "Jost", sans-serif;
@@ -57,6 +57,7 @@ export const HeaderTopbox = styled.div`
     &:hover .header_login {
       color: #50d2ba;
     }
+    .header_logout:hover,
     .header_login:hover,
     .header_join:hover {
       transition: all 0.2s;
@@ -191,8 +192,7 @@ export const HeaderMiddlebox = styled.div`
     img {
       transition: all 0.2s;
       &:hover {
-        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg)
-          brightness(85%) contrast(92%);
+        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg) brightness(85%) contrast(92%);
       }
     }
   }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -14,6 +14,8 @@ import { getCatenum } from "../../slice/ItemSlice";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
+  // const isLogin = useAppSelector((state) => state.user.isLogin);
+  const isLogin = !!localStorage.getItem("accessToken");
 
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -28,28 +30,51 @@ const Header = () => {
     navigate("/main");
   };
 
+  const logoutHandler = () => {
+    localStorage.removeItem("accessToken");
+  };
+
+  useEffect(() => {
+    console.log(isLogin);
+    return () => {};
+  }, [isLogin]);
+
   return (
     <>
       <HeaderWrapper>
         <HeaderTopbox>
           <div className='header_support_info'>/ 고객 지원센터 | 012-3456-7890</div>
           <div className='header_mymenu_info'>
-            <div className='header_login_info'>
-              <div className='header_login' onClick={() => navigate("/login")}>
-                로그인
-              </div>
-              <div>/</div>
-              <div className='header_join' onClick={() => navigate("/signup")}>
-                회원가입
-              </div>
-              <div className='header_login_drop'>
-                <ul className='login_drop_menu'>
-                  <li onClick={() => navigate("/mypage")}>내 정보 수정</li>
-                  <li onClick={() => navigate("/login")}>로그인</li>
-                  <li onClick={() => navigate("/signup")}>회원가입</li>
-                </ul>
-              </div>
-            </div>
+            {/* {isLogin ? ( */}
+            {isLogin ? (
+              <>
+                <div className='header_logout_info'>
+                  <div className='header_logout' onClick={logoutHandler}>
+                    로그아웃
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className='header_login_info'>
+                  <div className='header_login' onClick={() => navigate("/login")}>
+                    로그인
+                  </div>
+                  <div>/</div>
+                  <div className='header_join' onClick={() => navigate("/signup")}>
+                    회원가입
+                  </div>
+                  <div className='header_login_drop'>
+                    <ul className='login_drop_menu'>
+                      <li onClick={() => navigate("/mypage")}>내 정보 수정</li>
+                      <li onClick={() => navigate("/login")}>로그인</li>
+                      <li onClick={() => navigate("/signup")}>회원가입</li>
+                    </ul>
+                  </div>
+                </div>
+              </>
+            )}
+
             <div className='header_mypage_info' onClick={() => navigate("/mypage")}>
               <img src='/img/mypage.svg' alt='mypage' />
               <div className='header_mypage'>마이페이지</div>

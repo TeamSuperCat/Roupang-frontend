@@ -6,7 +6,7 @@ export const getAllCategorys = createAsyncThunk<ItemData[][], void>(
   "main/getAllCategorys",
   async () => {
     const getCategoryUrl = (categoryId: number) =>
-      `/products/category/${categoryId}?page=0&size=5&order=`;
+      `/products/category/${categoryId}?page=0&size=10&order=`;
     const categoryIds = [1, 2, 3, 4, 5, 6, 7];
     const responses = await Promise.all(
       categoryIds.map((id) => axiosClient.get(getCategoryUrl(id)))

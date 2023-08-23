@@ -1,11 +1,11 @@
 import axios, { AxiosInstance } from "axios";
 
 const BASE_URL = `${import.meta.env.VITE_API_SERVER}`;
-const token: string | null = localStorage.getItem("token");
+// const token: string | null = localStorage.getItem("token");
 
-if (token) {
-  axios.defaults.headers.common["Authorization"] = `${token}`;
-}
+// if (token) {
+//   axios.defaults.headers.common["Authorization"] = `${token}`;
+// }
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -18,7 +18,7 @@ axiosClient.interceptors.response.use((response) => {
 // axiosClient.interceptors.request.use((config) => {
 //   config.headers["Content-Type"] = "application/json; charset=utf-8";
 //   if (token) {
-//     config.headers["Authorization"] = `Bearer ${token}`;
+//     config.headers["Authorization"] = `${token}`;
 //   }
 //   return config;
 // });

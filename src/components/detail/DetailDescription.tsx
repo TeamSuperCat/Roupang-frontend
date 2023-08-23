@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
 import descImage from "../../assets/test/descImage.jpg";
@@ -6,7 +6,6 @@ import styled from "styled-components";
 import axiosClient from "../../api/axios";
 import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
-import { DataRouterContext } from "react-router/dist/lib/context";
 import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
 import CartModal from "./CartModal";
@@ -25,22 +24,23 @@ const responseProductData = {
 interface DetailDescriptionBoxProps {
   isMoreView?: boolean;
 }
-interface OptionType {
-  s?: any;
-}
 
 ///컴포넌트시작
 const DetailDescription = () => {
   const { productid } = useParams();
-  console.log("제품ID", productid);
-  const [isOption, setIsOption] = useState(false);
-  const [isCheck, setIsCheck] = useState(false);
+
   const [isMoreView, setIsMoreView] = useState(false);
   const [productAmount, setProductAmount] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState({});
+  const [isAmountInputBox, setIsAmountInputbox] = useState(false);
+  const [data, setData] = useState({
+    stock: 0,
+    product_name: "",
+    price: 0,
+    options: [],
+  });
   const [option, setOption] = useState([]);
-  const [optionValue, setOptionValue] = useState([]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -62,11 +62,13 @@ const DetailDescription = () => {
 
   const productAmountUp = () => {
     if (productAmount < data.stock) {
+      setIsAmountInputbox(false);
       setProductAmount((prev) => prev + 1);
     }
   };
   const productAmountDown = () => {
     if (productAmount > 1) {
+      setIsAmountInputbox(false);
       setProductAmount((prev) => prev - 1);
     }
   };
@@ -75,17 +77,47 @@ const DetailDescription = () => {
     setIsMoreView((prev) => !prev);
   };
 
+  const enterAmount = () => {
+    setIsAmountInputbox((prev) => !prev);
+  };
+  const enterKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // console.log(event);
+
+    if (event.key === "Enter") {
+      setIsAmountInputbox((prev) => !prev);
+      if (event.target.value === "") {
+        setProductAmount(0);
+        return;
+      } else {
+        setProductAmount(event.target.value);
+      }
+    }
+  };
+
   //장바구니에 넣기
   //장바구니 api로 보낸다
   //데이터는 제품아이디, 수량, 가격 ,옵션
 
   const shopingCartButton = () => {
+    // const token: string | null = localStorage.getItem("access_token");
+    // const parsetoken = JSON.parse(token);
+
     axiosClient
-      .post(`/cart`, {
-        amount: productAmount,
-        productIdx: productid,
-        options: option,
-      })
+      .post(
+        `/cart`,
+        {
+          amount: productAmount,
+          productIdx: productid,
+          options: JSON.stringify(option),
+        },
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW1iZXJUb2tlbiIsImlkeCI6MzAsImVtYWlsIjoiZ2t3bHN0bkBna3dsc3RuLmNvbSIsIm5pY2tuYW1lIjoi7ZWY7KeE7IiYIiwicGhvbmVfbnVtYmVyIjoiMDEwNzc3MTc0NDUiLCJhZGRyZXNzIjoi7J247LKc67aA7Y-JIiwibWVtYmVyX2ltZyI6ImRlZmF1bHRfcHJvZmlsZS5wbmciLCJjcmVhdGVkX2F0IjoiMjAyMy0wOC0yMiAxMzowNjozNyIsInVwZGF0ZWRfYXQiOiIyMDIzLTA4LTIyIDEzOjA2OjM3IiwidXNlcl9wb2ludCI6MCwiaWF0IjoxNjkyNzEzNjY3LCJleHAiOjE2OTI3MTcyNjd9.JkFlnYqKN5lfEU5AWMBmtpH6_nDDZSqpvlIZQPlzpsM",
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((res) => {
         console.log(res);
         console.log("응잘되");
@@ -138,6 +170,8 @@ const DetailDescription = () => {
     setOption({ ...option, [optionType]: optiondata });
   };
 
+  console.log(option);
+
   return (
     <>
       <Container>
@@ -172,7 +206,7 @@ const DetailDescription = () => {
 
           <ProductPriceDiv>
             <div>
-              {isLoading ? "" : parseInt(data.price * 1.18)} 원
+              {isLoading ? "" : parseInt((data.price * 1.18).toString())} 원
               <span style={{ marginLeft: "1rem" }}>소비자가</span>
             </div>
             <div>
@@ -209,13 +243,29 @@ const DetailDescription = () => {
 
           {/* 수량표시하는곳 */}
           <ProductCounter>
-            <Amount>수량</Amount>
-            <DivFlex>
-              <MinusButton onClick={productAmountDown}>-</MinusButton>
-              <ProductAmount>{productAmount}</ProductAmount>
-              <PlusButton onClick={productAmountUp}>+</PlusButton>
-            </DivFlex>
-            <Amount>재고 : {data.stock}</Amount>
+            {isAmountInputBox ? (
+              <>
+                <Amount>수량</Amount>
+                <DivFlex>
+                  <MinusButton onClick={productAmountDown}>-</MinusButton>
+                  <AmountInputbox type="number" onKeyDown={enterKeydown} />
+                  <PlusButton onClick={productAmountUp}>+</PlusButton>
+                </DivFlex>
+                <Amount>재고 : {data.stock}</Amount>
+              </>
+            ) : (
+              <>
+                <Amount>수량</Amount>
+                <DivFlex>
+                  <MinusButton onClick={productAmountDown}>-</MinusButton>
+                  <ProductAmount onClick={enterAmount}>
+                    {productAmount}
+                  </ProductAmount>
+                  <PlusButton onClick={productAmountUp}>+</PlusButton>
+                </DivFlex>
+                <Amount>재고 : {data.stock}</Amount>
+              </>
+            )}
           </ProductCounter>
 
           {/* 장바구니 구매하기버튼 시작 */}
@@ -260,7 +310,7 @@ const DetailDescription = () => {
         </DescriptionBox>
       </Container>
 
-      <DetailDescriptionBox isMoreView={isMoreView}>
+      <DetailDescriptionBox $isMoreView={isMoreView}>
         <DescriptionImage src={responseProductData.description_img} alt="" />
       </DetailDescriptionBox>
       <MoreViewButtonBox>
@@ -480,6 +530,16 @@ const ProductCounter = styled.div`
 `;
 
 const Amount = styled.div``;
+const AmountInputbox = styled.input`
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+`;
 const ProductAmount = styled.div`
   font-size: 1.1rem;
   font-weight: bold;
@@ -512,8 +572,8 @@ const DetailDescriptionBox = styled.div<DetailDescriptionBoxProps>`
   display: block;
   position: relative;
   width: 100%;
-  height: ${({ isMoreView }) => (isMoreView ? "auto" : "1500px")};
-  overflow: ${({ isMoreView }) => (isMoreView ? "visible" : "hidden")};
+  height: ${({ $isMoreView }) => ($isMoreView ? "auto" : "1500px")};
+  overflow: ${({ $isMoreView }) => ($isMoreView ? "visible" : "hidden")};
 `;
 
 const DescriptionImage = styled.img`

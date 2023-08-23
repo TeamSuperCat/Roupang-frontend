@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+// @media (max-width: 1300px) {
+//   max-width: 1000px;
+// }
+// @media (max-width: 1150px) {
+//   max-width: 840px;
+// }
+// @media (max-width: 950px) {
+//   max-width: 90%;
+// }
+
 export const HeaderWrapper = styled.header`
   width: 100%;
   height: auto;
@@ -9,26 +19,32 @@ export const HeaderWrapper = styled.header`
 export const HeaderTopbox = styled.div`
   width: 100%;
   height: 40px;
+  color: #333;
   background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all ease-in-out 0.2s;
   div {
     font-weight: 500;
     font-size: 14px;
+    @media (max-width: 950px) {
+      font-size: 12px;
+    }
   }
   .header_support_info {
     padding-left: 5px;
   }
   .header_mymenu_info {
     display: flex;
-    gap: 20px;
+    gap: 5px;
     img {
       width: 17px;
       height: 17px;
       margin-right: 8px;
     }
   }
+
   .header_logout_info,
   .header_login_info,
   .header_mypage_info,
@@ -36,7 +52,8 @@ export const HeaderTopbox = styled.div`
     &:hover {
       img {
         transition: all 0.2s;
-        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg) brightness(85%) contrast(92%);
+        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg)
+          brightness(85%) contrast(92%);
       }
     }
     a {
@@ -47,12 +64,17 @@ export const HeaderTopbox = styled.div`
   .header_logout_info,
   .header_login_info {
     display: flex;
-    gap: 8px;
+    gap: 5px;
     position: relative;
-    .header_logout .header_login,
+    align-items: center;
+
+    .header_logout,
+    .header_login,
     .header_join {
       cursor: pointer;
       font-family: "Jost", sans-serif;
+      padding: 5px 10px;
+      /* background-color: aliceblue; */
     }
     &:hover .header_login {
       color: #50d2ba;
@@ -98,6 +120,10 @@ export const HeaderTopbox = styled.div`
     display: flex;
     cursor: pointer;
     position: relative;
+    align-items: center;
+    padding: 5px 10px;
+    /* background-color: aliceblue; */
+
     &:hover .header_mypage {
       transition: all 0.2s;
       color: #50d2ba;
@@ -134,6 +160,10 @@ export const HeaderTopbox = styled.div`
     display: flex;
     cursor: pointer;
     position: relative;
+    align-items: center;
+    padding: 5px 10px;
+    /* background-color: aliceblue; */
+
     &:hover .header_board {
       transition: all 0.2s;
       color: #50d2ba;
@@ -192,7 +222,8 @@ export const HeaderMiddlebox = styled.div`
     img {
       transition: all 0.2s;
       &:hover {
-        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg) brightness(85%) contrast(92%);
+        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg)
+          brightness(85%) contrast(92%);
       }
     }
   }
@@ -203,7 +234,7 @@ export const HeaderMiddlebox = styled.div`
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-
+    z-index: 3;
     img {
       width: 170px;
     }
@@ -218,12 +249,12 @@ export const HeaderMiddlebox = styled.div`
       width: 35px;
       height: 35px;
     }
-    .header_userbox {
+    .header_search_box {
       cursor: pointer;
-      &:hover .header_user_ex {
+      &:hover .header_search_ex {
         display: block;
       }
-      .header_user_ex {
+      .header_search_ex {
         display: none;
         position: absolute;
         font-size: 11px;
@@ -289,16 +320,16 @@ export const HeaderMiddlebox = styled.div`
       }
       .header_cart_count {
         position: absolute;
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
         border-radius: 50px;
-        right: -10px;
-        top: -12px;
+        right: -8px;
+        top: -6px;
         background-color: var(--primary-color);
         text-align: center;
-        line-height: 24px;
+        line-height: 20px;
         color: #fff;
-        font-size: 13px;
+        font-size: 12px;
       }
       .header_cart_ex {
         display: none;
@@ -335,6 +366,10 @@ export const HeaderBottonbox = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  transition: all ease-in-out 0.2s;
+  @media (max-width: 780px) {
+    display: none;
+  }
   ul {
     list-style-type: none;
     display: flex;
@@ -344,26 +379,15 @@ export const HeaderBottonbox = styled.div`
       font-weight: 600;
       cursor: pointer;
       padding: 19px 20px 15px;
-      border-bottom: 4px solid transparent;
+      @media (max-width: 950px) {
+        font-size: 16px;
+      }
+      @media (max-width: 840px) {
+        font-size: 14px;
+      }
       &:hover {
         transition: all 0.2s;
         color: var(--primary-color);
-        border-bottom: 4px solid var(--primary-color);
-      }
-    }
-  }
-  .header_search_box {
-    position: absolute;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    img {
-      width: 100%;
-      height: 100%;
-      &:hover {
-        filter: invert(80%) sepia(68%) saturate(363%) hue-rotate(105deg)
-          brightness(85%) contrast(92%);
       }
     }
   }

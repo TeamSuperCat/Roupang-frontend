@@ -1,12 +1,14 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
 import descImage from "../../assets/test/descImage.jpg";
 import styled from "styled-components";
+import axiosClient from "../../api/axios";
 import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
-
-const optionData = [{ option: "이건 개" }, { option: "이건 고양이" }, { option: "이건 닭" }, { option: "이건 토끼" }];
+import loadingImage from "../../assets/test/loading.gif";
+import Option from "./Option";
+import CartModal from "./CartModal";
 
 const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
@@ -26,31 +28,47 @@ interface DetailDescriptionBoxProps {
 ///컴포넌트시작
 const DetailDescription = () => {
   const { productid } = useParams();
-  console.log("제품ID", productid);
-  const [isOption, setIsOption] = useState(false);
-  const [, setIsCheck] = useState(false);
-  const [isMoreView, setIsMoreView] = useState(false);
-  const [OptionValue, setOptionValue] = useState("옵션선택");
-  const [productAmount, setProductAmount] = useState(1);
 
-  const optionClcikHandler = () => {
-    console.log(isOption);
-    setIsOption((prev) => !prev);
+  const [isMoreView, setIsMoreView] = useState(false);
+  const [productAmount, setProductAmount] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAmountInputBox, setIsAmountInputbox] = useState(false);
+  const [data, setData] = useState({
+    stock: 0,
+    product_name: "",
+    price: 0,
+    options: [],
+  });
+  const [option, setOption] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
   };
-  const optionCheckHandler = (event: React.MouseEvent<HTMLDivElement>, data: string) => {
-    console.log(event);
-    setIsCheck((prev) => !prev);
-    setOptionValue(data);
-    setIsOption((prev) => !prev);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
+  const product_id: number = 1;
+
+  useEffect(() => {
+    // axiosClient.get(`products/${product_id}`).then((res) => {
+    axiosClient.get(`products/65`).then((res) => {
+      setData(res.data);
+      setIsLoading(false);
+    });
+  }, [product_id]);
 
   const productAmountUp = () => {
-    if (productAmount < responseProductData.stock) {
+    if (productAmount < data.stock) {
+      setIsAmountInputbox(false);
       setProductAmount((prev) => prev + 1);
     }
   };
   const productAmountDown = () => {
     if (productAmount > 1) {
+      setIsAmountInputbox(false);
       setProductAmount((prev) => prev - 1);
     }
   };
@@ -58,14 +76,67 @@ const DetailDescription = () => {
   const ProductInformationMoreViewHandler = () => {
     setIsMoreView((prev) => !prev);
   };
-  console.log(isMoreView);
+
+  const enterAmount = () => {
+    setIsAmountInputbox((prev) => !prev);
+  };
+
+  const enterKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // console.log(event);
+    if (event.key === "Enter") {
+      setIsAmountInputbox((prev) => !prev);
+      if (event.target.value === "") {
+        setProductAmount(1);
+        return;
+      } else if (event.target.value < 1) {
+        setProductAmount(1);
+      } else if (event.target.value >= data.stock) {
+        setProductAmount(data.stock);
+      } else {
+        setProductAmount(event.target.value);
+      }
+    }
+  };
+  const amountInputboxBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    setIsAmountInputbox((prev) => !prev);
+    if (event.target.value === "") {
+      setProductAmount(1);
+      return;
+    } else {
+      setProductAmount(event.target.value);
+    }
+  };
 
   //장바구니에 넣기
-  //장바구니 api로 보낸다
-  //데이터는 제품아이디, 수량, 가격
   const shopingCartButton = () => {
-    // const token = localStorage.getItem("userinfo");
-    // const request = fetch("http://localhost:8080/api/v1/cart/items", {
+    // const token: string | null = localStorage.getItem("access_token");
+    // const parsetoken = JSON.parse(token);
+    axiosClient
+      .post(
+        `/cart`,
+        {
+          amount: productAmount,
+          productIdx: productid,
+          options: JSON.stringify(option),
+        },
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW1iZXJUb2tlbiIsImlkeCI6MzAsImVtYWlsIjoiZ2t3bHN0bkBna3dsc3RuLmNvbSIsIm5pY2tuYW1lIjoi7ZWY7KeE7IiYIiwicGhvbmVfbnVtYmVyIjoiMDEwNzc3MTc0NDUiLCJhZGRyZXNzIjoi7J247LKc67aA7Y-JIiwibWVtYmVyX2ltZyI6ImRlZmF1bHRfcHJvZmlsZS5wbmciLCJjcmVhdGVkX2F0IjoiMjAyMy0wOC0yMiAxMzowNjozNyIsInVwZGF0ZWRfYXQiOiIyMDIzLTA4LTIyIDEzOjA2OjM3IiwidXNlcl9wb2ludCI6MCwiaWF0IjoxNjkyNzEzNjY3LCJleHAiOjE2OTI3MTcyNjd9.JkFlnYqKN5lfEU5AWMBmtpH6_nDDZSqpvlIZQPlzpsM",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        console.log("응잘되");
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("응안돼");
+      });
+
+    // const request = fetch("v1/cart/items", {
     //   method: "PATCH",
     //   headers: {
     //     "Content-Type": "application/json",
@@ -81,39 +152,57 @@ const DetailDescription = () => {
     //     console.log("장바구니 응안돼");
     //   });
   };
-
   //구매하기
   //구매하기 api로 보낸다
   //데이터는 제품아이디, 수량, 가격
   const buyButton = () => {
-    // const token = localStorage.getItem("userinfo");
-    // const request = fetch("http://localhost:8080/api/v1/cart/items", {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: JSON.stringify({
-    //     product_idx: productid,
-    //     amount: productAmount,
-    //   }),
-    // })
-    //   .then()
-    //   .catch(() => {
-    //     console.log("구매하기 응안돼");
-    //   });
+    let token = localStorage.getItem("userinfo");
+    const request = fetch(`http://localhost:8080/products/${product_id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        product_idx: productid,
+        amount: productAmount,
+      }),
+    })
+      .then()
+      .catch(() => {
+        console.log("구매하기 응안돼");
+      });
   };
+
+  //선택한 옵션으로 중복되지않게 옵션을만듬
+  const finalSelectionOptions = (optiondata: string, optionType: string) => {
+    setOption({ ...option, [optionType]: optiondata });
+  };
+
+  console.log(option);
 
   return (
     <>
       <Container>
-        <Imagemox>
-          <img src={responseProductData.product_img} alt='dd' />
-        </Imagemox>
+        {isLoading ? (
+          <ImageBox>
+            <img src={loadingImage} alt="dd" />
+          </ImageBox>
+        ) : (
+          <ImageBox>
+            <img src={responseProductData.product_img} alt="dd" />
+          </ImageBox>
+        )}
+
         <DescriptionBox>
           <ProductTitleDiv>
-            <DivFlex className='설명제목'>
-              <ProductTitle>{responseProductData.product_name}</ProductTitle>
+            <DivFlex className="설명제목">
+              {isLoading ? (
+                <ProductTitle></ProductTitle>
+              ) : (
+                <ProductTitle>{data.product_name}</ProductTitle>
+              )}
+
               <DivFlex>
                 <HartIcon>❤️</HartIcon>
                 <ShareIcon>🔨</ShareIcon>
@@ -126,11 +215,12 @@ const DetailDescription = () => {
 
           <ProductPriceDiv>
             <div>
-              {parseInt((responseProductData.price * 1.18).toString())} 원
+              {isLoading ? "" : parseInt((data.price * 1.18).toString())} 원
               <span style={{ marginLeft: "1rem" }}>소비자가</span>
             </div>
             <div>
-              {responseProductData.price} 원<span style={{ marginLeft: "1rem" }}>루팡가</span>
+              {isLoading ? "" : data.price} 원
+              <span style={{ marginLeft: "1rem" }}>루팡가</span>
             </div>
             <div></div>
             <HoverContainer>
@@ -148,33 +238,49 @@ const DetailDescription = () => {
           </ProductPriceDiv>
 
           {/* 옵션 선택구간 */}
-          <ProductOption>
-            <OptionSelect onClick={optionClcikHandler}>
-              <div>{OptionValue}</div>
-              <div>▿</div>
-            </OptionSelect>
-          </ProductOption>
-          {isOption &&
-            optionData.map((data, index) => {
-              return (
-                <OptionList>
-                  <div key={index} onClick={(event) => optionCheckHandler(event, data.option)}>
-                    {data.option}
-                  </div>
+          {data.options ? (
+            data.options.map((item: any, index: number) => (
+              <Option
+                key={index}
+                option={item}
+                finalSelectionOptions={finalSelectionOptions}
+              />
+            ))
+          ) : (
+            <></>
+          )}
 
-                  <div></div>
-                </OptionList>
-              );
-            })}
           {/* 수량표시하는곳 */}
           <ProductCounter>
-            <Amount>수량</Amount>
-            <DivFlex>
-              <MinusButton onClick={productAmountDown}>-</MinusButton>
-              <ProductAmount>{productAmount}</ProductAmount>
-              <PlusButton onClick={productAmountUp}>+</PlusButton>
-            </DivFlex>
-            <Amount>재고 : {responseProductData.stock}</Amount>
+            {isAmountInputBox ? (
+              <>
+                <Amount>수량</Amount>
+                <DivFlex>
+                  <MinusButton onClick={productAmountDown}>-</MinusButton>
+                  <AmountInputbox
+                    type="number"
+                    onKeyDown={enterKeydown}
+                    onBlur={amountInputboxBlur}
+                    placeholder="수량을 입력해주세요"
+                    autoFocus
+                  />
+                  <PlusButton onClick={productAmountUp}>+</PlusButton>
+                </DivFlex>
+                <Amount>재고 : {data.stock}</Amount>
+              </>
+            ) : (
+              <>
+                <Amount>수량</Amount>
+                <DivFlex>
+                  <MinusButton onClick={productAmountDown}>-</MinusButton>
+                  <ProductAmount onClick={enterAmount}>
+                    {productAmount}
+                  </ProductAmount>
+                  <PlusButton onClick={productAmountUp}>+</PlusButton>
+                </DivFlex>
+                <Amount>재고 : {data.stock}</Amount>
+              </>
+            )}
           </ProductCounter>
 
           {/* 장바구니 구매하기버튼 시작 */}
@@ -185,6 +291,13 @@ const DetailDescription = () => {
                 <ShopingCartFill />
               </ShopingCartButton>
             </ShopingCartContainer>
+
+            <CartModal isOpen={isModalOpen} onClose={closeModal}>
+              <h2>장바구니에 담으시겠어요?</h2>
+              <p>{data.product_name}</p>
+
+              <p>이곳에 모달에 표시할 내용을 넣어주세요.</p>
+            </CartModal>
 
             <BuyContainer>
               <BuyButton onClick={buyButton}>
@@ -198,17 +311,22 @@ const DetailDescription = () => {
             <div>
               <img
                 src={Kakaopaymenticon}
-                alt=''
+                alt=""
                 onClick={() =>
-                  kakaoPaymentfunction(responseProductData.product_name, productAmount, responseProductData.price)
+                  kakaoPaymentfunction(
+                    responseProductData.product_name,
+                    productAmount,
+                    responseProductData.price
+                  )
                 }
               />
             </div>
           </SimplePayment>
         </DescriptionBox>
       </Container>
-      <DetailDescriptionBox isMoreView={isMoreView}>
-        <DescriptionImage src={responseProductData.description_img} alt='' />
+
+      <DetailDescriptionBox $isMoreView={isMoreView}>
+        <DescriptionImage src={responseProductData.description_img} alt="" />
       </DetailDescriptionBox>
       <MoreViewButtonBox>
         {isMoreView ? (
@@ -239,7 +357,10 @@ const Container = styled.div`
   justify-content: center;
   margin: auto;
 `;
-const Imagemox = styled.div`
+const ImageBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 5px;
   width: 500px;
   height: 500px;
@@ -424,6 +545,19 @@ const ProductCounter = styled.div`
 `;
 
 const Amount = styled.div``;
+const AmountInputbox = styled.input`
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+`;
 const ProductAmount = styled.div`
   font-size: 1.1rem;
   font-weight: bold;
@@ -456,8 +590,8 @@ const DetailDescriptionBox = styled.div<DetailDescriptionBoxProps>`
   display: block;
   position: relative;
   width: 100%;
-  height: ${({ isMoreView }) => (isMoreView ? "auto" : "1500px")};
-  overflow: ${({ isMoreView }) => (isMoreView ? "visible" : "hidden")};
+  height: ${({ $isMoreView }) => ($isMoreView ? "auto" : "1500px")};
+  overflow: ${({ $isMoreView }) => ($isMoreView ? "visible" : "hidden")};
 `;
 
 const DescriptionImage = styled.img`

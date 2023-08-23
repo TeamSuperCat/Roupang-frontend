@@ -1,0 +1,211 @@
+{
+  "result": true,
+  "msg": "물품 조회에 성공하였습니다.",
+  "data": {
+    "product_idx": 1,
+    "product_name": "상품명",
+    "price": 1000,
+    "stock": -540,
+    "description": "상품한줄설명",
+    "description_img": "상품설명이미지",
+    "category_name": "카테고리",
+    "product_img": "대표이미지URL",
+    "sales_end_date": "2025-06-13",
+    "options": [
+      {
+        "optionTypeIdx": 1,
+        "optionTypeNameIdx": 1,
+        "optionTypeName": "크기",
+        "optionDetails": [
+          {
+            "optionDetailIdx": 1,
+            "optionDetailName": "S"
+          },
+          {
+            "optionDetailIdx": 2,
+            "optionDetailName": "M"
+          },
+          {
+            "optionDetailIdx": 3,
+            "optionDetailName": "L"
+          }
+        ]
+      },
+      {
+        "optionTypeIdx": 2,
+        "optionTypeNameIdx": 3,
+        "optionTypeName": "색상",
+        "optionDetails": [
+          {
+            "optionDetailIdx": 4,
+            "optionDetailName": "Red"
+          },
+          {
+            "optionDetailIdx": 5,
+            "optionDetailName": "Blue"
+          }
+        ]
+      }
+    ]
+  }
+}
+
+
+
+
+{
+  "category_idx": 2,
+  "description": "손이자꾸가",
+  "description_img": "delicious cat food.png",
+  "price": 250000,
+  "product_img": "cat.png",
+  "product_name": "마약간식",
+  "sales_end_date": "2024-09-01",
+  "stock": 128,
+  "options1": ,
+  "options2": ,
+  "options3": ,
+  "options4": ,
+  "options5": ,
+  "options6": ,
+  "options7": ,
+  "options8": 
+}
+======================================
+{
+  "options": [
+    {
+      "optionDetailNames": [
+        "500g, 1kg"
+      ],
+      "optionTypeName": "무게"
+    },
+  {
+      "optionDetailNames": [
+        “스카이 블루", "로즈", "골드”
+      ],
+      "optionTypeName": “색상”
+    },
+  ]
+}
+
+
+
+
+
+
+=====================================
+============상품등록시-옵션O==================
+{
+  "category_idx": 2,
+  "description": "손이자꾸가",
+  "description_img": "delicious cat food.png",
+  "options": [
+    {
+      "optionDetailNames": [
+        "500g", "1kg"
+      ],
+      "optionTypeName": "무게"
+    },
+  {
+      "optionDetailNames": [
+        “스카이 블루", "로즈", "골드”
+      ],
+      "optionTypeName": “색상”
+    },
+  ],
+  "price": 250000,
+  "product_img": "cat.png",
+  "product_name": "마약간식",
+  "sales_end_date": "2024-09-01",
+  "stock": 128,
+  "isOptionTrue": 1
+}
+
+=====================================
+============상품등록시-옵션X==================
+{
+  "category_idx": 2,
+  "description": "손이자꾸가",
+  "description_img": "delicious cat food.png",
+  "options": [],
+  "price": 250000,
+  "product_img": "cat.png",
+  "product_name": "마약간식",
+  "sales_end_date": "2024-09-01",
+  "stock": 128,
+  "isOptionTrue": 0
+}
+
+
+
+
+=====================================
+============상품정보 가져올시-옵션X==================
+
+{
+  "result": true,
+  "msg": "요청이 정상적으로 처리되었습니다.",
+  "data": {
+      "productIdx": 13,
+      "options": []  
+    }
+}
+
+
+=====================================
+============상품정보 가져올시-옵션O==================
+{
+  "result": true,
+  "msg": "요청이 정상적으로 처리되었습니다.",
+  "data": {
+      "productIdx": 13,
+      "options": [
+          {
+              "optionTypeIdx": 7,
+              "optionTypeNameIdx": 3,
+              "optionTypeName": "색상",
+              "optionDetails": [
+                  {
+                      "optionDetailIdx": 4,
+                      "optionDetailName": "Red"
+                  },
+                  {
+                      "optionDetailIdx": 5,
+                      "optionDetailName": "Blue"
+                  }
+              ]
+          },
+          {
+              "optionTypeIdx": 8,
+              "optionTypeNameIdx": 1,
+              "optionTypeName": "크기",
+              "optionDetails": [
+                  {
+                      "optionDetailIdx": 1,
+                      "optionDetailName": "S"
+                  },
+                  {
+                      "optionDetailIdx": 2,
+                      "optionDetailName": "M"
+                  }
+              ]
+          },
+          {
+              "optionTypeIdx": 32,
+              "optionTypeNameIdx": 4,
+              "optionTypeName": "사료 형태",
+              "optionDetails": [
+                  {
+                      "optionDetailIdx": 60,
+                      "optionDetailName": "습식"
+                  },
+                  {
+                      "optionDetailIdx": 61,
+                      "optionDetailName": "건식"
+                  }
+              ]
+          }
+      ]
+  }
+}

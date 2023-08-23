@@ -118,13 +118,17 @@ const Signup = () => {
     } else if (name === "phoneNumber") {
       //전화번호 유효성 검사
       const regex = /^[0-9]{10,11}$/;
-      regex.test(value) ? setIsValidPhoneNumber(true) : setIsValidPhoneNumber(false);
+      regex.test(value)
+        ? setIsValidPhoneNumber(true)
+        : setIsValidPhoneNumber(false);
     }
 
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const checkEmailDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const checkEmailDuplicate = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
 
     const regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
@@ -153,7 +157,9 @@ const Signup = () => {
       });
   };
 
-  const checkNicknameDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const checkNicknameDuplicate = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
     await axiosClient
       .post<Data>("/member/check", {
@@ -178,7 +184,14 @@ const Signup = () => {
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("bfr", data);
-    if (isUniqueEmail && isValidEmail && isSamePassword && isValidPassword && isUniqueNickname && isValidPhoneNumber) {
+    if (
+      isUniqueEmail &&
+      isValidEmail &&
+      isSamePassword &&
+      isValidPassword &&
+      isUniqueNickname &&
+      isValidPhoneNumber
+    ) {
       console.log("일치", data);
       await onChange();
       setData((prev) => ({ ...prev, memberImg: urls[0] }));
@@ -231,13 +244,17 @@ const Signup = () => {
               <PreviewDiv>
                 {urls[0] ? (
                   urls.map((url) =>
-                    isLoading ? <div>이미지 url 변환중....</div> : <img key={url} src={url} alt='url' />
+                    isLoading ? (
+                      <div>이미지 url 변환중....</div>
+                    ) : (
+                      <img key={url} src={url} alt="url" />
+                    )
                   )
                 ) : (
-                  <img src={tempImg ? tempImg : submitUrl.current} alt='url' />
+                  <img src={tempImg ? tempImg : submitUrl.current} alt="url" />
                 )}
               </PreviewDiv>
-              <input type='file' ref={ref} onChange={onFileChange} hidden />
+              <input type="file" ref={ref} onChange={onFileChange} hidden />
               <ProfileUpload
                 onClick={() => {
                   ref && ref.current?.click();
@@ -258,16 +275,14 @@ const Signup = () => {
                   emailErrMsg={emailErrMsg}
                   nicknameErrMsg={nicknameErrMsg}
                   onChange={inputChangeHandler}
+                  checkEmailDuplicate={checkEmailDuplicate}
+                  checkNicknameDuplicate={checkNicknameDuplicate}
                 />
               ))}
             </InputDiv>
           </FormInnerDiv>
-          <button onClick={checkEmailDuplicate}>이메일중복확인</button>
-          <button onClick={checkNicknameDuplicate}>닉네임중복확인</button>
           <SignupButton>회원가입</SignupButton>
         </SignupForm>
-
-        <div></div>
       </SignupContainer>
     </>
   );
@@ -278,23 +293,34 @@ export default Signup;
 const Heading = styled.h1`
   display: flex;
   justify-content: center;
-  font-size: 2rem;
-  margin: 3%;
-  padding-bottom: 2%;
-  border-bottom: 1px solid #605e49;
+  margin: 20px 0;
+  padding: 20px 0;
+  font-size: 20px;
+  font-weight: 600;
 `;
 
 const SignupContainer = styled.div`
-  width: 690px;
+  width: 668px;
   margin: 0 auto;
   display: flex;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
   border-radius: 10px;
-  gap: 20px;
+  gap: 40px;
   padding: 60px 40px 40px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 24px;
+  @media (max-width: 950px) {
+    width: 480px;
+    box-sizing: border-box;
+    padding: 40px 0px 40px;
+    justify-content: center;
+  }
+  @media (max-width: 550px) {
+    width: 90%;
+  }
 `;
 
 const SignupForm = styled.form`
@@ -304,13 +330,24 @@ const SignupForm = styled.form`
 `;
 
 const FormInnerDiv = styled.div`
-  width: 690px;
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 40px;
+  @media (max-width: 950px) {
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
-const Profile = styled.div``;
+const Profile = styled.div`
+  @media (max-width: 950px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+  }
+`;
 
 const PreviewDiv = styled.div`
   width: 100%;
@@ -319,16 +356,24 @@ const PreviewDiv = styled.div`
   overflow: hidden;
   display: flex;
   align-items: center;
-
   box-sizing: border-box;
   border-radius: 10px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  @media (max-width: 950px) {
+    width: 54%;
+    height: 45%;
+    margin: 0 auto;
+  }
   img {
     width: 100%;
     height: auto;
     border-radius: 10px;
+    @media (max-width: 950px) {
+      width: 100%;
+      height: 100%;
+    }
   }
 `;
 
@@ -344,27 +389,35 @@ const ProfileUpload = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-
   box-sizing: border-box;
   border-radius: 10px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   cursor: pointer;
+  @media (max-width: 950px) {
+    background-color: #605e49;
+    color: #fff;
+  }
+  &:hover {
+    background-color: #605e49;
+    color: #fff;
+  }
 `;
 
 const InputDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-width: 100%;
 `;
 
 const SignupButton = styled.button`
-  background-color: #605e49;
+  background-color: var(--primary-down-color);
   color: #fff;
   font-weight: 600;
   font-size: 16px;
   border: 1px solid transparent;
-
   width: 460px;
   height: 50px;
   margin: 40px 0 15px 0;
@@ -373,4 +426,11 @@ const SignupButton = styled.button`
   align-items: center;
   border-radius: 10px;
   cursor: pointer;
+  @media (max-width: 950px) {
+    width: 120px;
+  }
+  @media (max-width: 550px) {
+    height: 40px;
+    font-size: 13px;
+  }
 `;

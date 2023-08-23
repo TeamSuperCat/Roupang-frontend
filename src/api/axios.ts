@@ -1,11 +1,11 @@
 import axios, { AxiosInstance } from "axios";
 
-const BASE_URL = "/api";
+const BASE_URL = `${import.meta.env.VITE_API_SERVER}`;
 const token: string | null = localStorage.getItem("accessToken");
 
-if (token) {
-  axios.defaults.headers.common["Authorization"] = `${token}`;
-}
+// if (token) {
+//   axios.defaults.headers.common["Authorization"] = `${token}`;
+// }
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,

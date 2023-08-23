@@ -52,12 +52,21 @@ const FooterEl = styled.div`
   @media (max-width: 950px) {
     max-width: 90%;
   }
+  @media (max-width: 550px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+  }
 
   & > div > img {
     filter: invert(500%) sepia(500%) saturate(0%) hue-rotate(0deg)
       brightness(500%) contrast(500%);
-    width: 150px;
     cursor: pointer;
+    width: 150px;
+    @media (max-width: 550px) {
+      width: 120px;
+    }
     &:hover {
       filter: invert(500%) sepia(500%) saturate(0%) hue-rotate(0deg)
         brightness(100%) contrast(0%);
@@ -69,11 +78,43 @@ const LogoWrap = styled.div`
   display: flex;
   color: white;
   width: 150px;
+  @media (max-width: 550px) {
+    width: 120px;
+    gap: 25%;
+    justify-content: center;
+  }
 
   & > a {
     font-size: 30px;
     margin-right: 20px;
     transition: all ease-in-out 0.2s;
+    @media (max-width: 550px) {
+      font-size: 22px;
+      margin: 0;
+      animation: wave 0.9s ease-in-out infinite;
+
+      @keyframes wave {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      &:nth-child(0) {
+        animation-delay: 0s;
+      }
+      &:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+      &:nth-child(2) {
+        animation-delay: 0.4s;
+      }
+      &:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+    }
     &:hover {
       color: rgba(128, 128, 128, 0.4);
     }

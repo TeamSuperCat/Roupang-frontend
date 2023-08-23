@@ -15,8 +15,10 @@ const MainList = () => {
   const sorttype = useAppSelector((state) => state.item.catesort);
   const itemCount = useAppSelector((state) => state.item.Totalitems);
   const searchkey = useAppSelector((state) => state.item.keyword);
-  const [isCooltime, setIsCooltime] = useState(false);
+  const queryreset = useAppSelector((state) => state.item.queryreset);
   const loadMoreRef = useRef<HTMLDivElement>(null);
+  const [shouldFetch, setShouldFetch] = useState(true);
+  const [allData, setAllData] = useState<ItemData[]>([]);
 
   const fetchItems = async ({ pageParam = 0 }) => {
     let url;
@@ -58,12 +60,20 @@ const MainList = () => {
 
   useEffect(() => {
     queryClient.removeQueries(["infiniteData"]);
-  }, [catetype, sorttype, searchkey]);
+    queryClient.invalidateQueries(["infiniteData"]);
+    setAllData([]);
+    if (queryreset) {
+      setShouldFetch(false);
+    } else {
+      setShouldFetch(true);
+    }
+  }, [catetype, sorttype, searchkey, queryreset]);
 
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
       queryKey: ["infiniteData"],
       queryFn: fetchItems,
+      enabled: shouldFetch,
       getNextPageParam: (lastPage, allPages) => {
         if (allPages.length === 1 && lastPage.number === 0) {
           return 2;
@@ -81,15 +91,10 @@ const MainList = () => {
         if (
           first.isIntersecting &&
           hasNextPage &&
-          !isCooltime &&
           !isFetchingNextPage &&
           itemCount !== allData.length
         ) {
-          setIsCooltime(true);
           fetchNextPage();
-          setTimeout(() => {
-            setIsCooltime(false);
-          }, 1500);
         }
       },
       { threshold: 0.25 }
@@ -105,7 +110,11 @@ const MainList = () => {
     };
   }, [hasNextPage, fetchNextPage, sorttype]);
 
-  const allData = data?.pages?.map((page) => page.content).flat() || [];
+  useEffect(() => {
+    const newData = data?.pages?.map((page) => page.content).flat() || [];
+    setAllData(newData);
+  }, [data]);
+
   const displayData = allData.length > 12 ? allData : items;
 
   console.log(allData, "데이따");

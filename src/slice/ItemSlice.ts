@@ -51,6 +51,7 @@ const initialState: {
   catesort: string;
   Totalitems: number;
   keyword: string;
+  queryreset: number;
 } = {
   items: [],
   isLoading: true,
@@ -58,6 +59,7 @@ const initialState: {
   catesort: "",
   Totalitems: 0,
   keyword: "",
+  queryreset: 0,
 };
 
 const itemSlice = createSlice({
@@ -73,6 +75,9 @@ const itemSlice = createSlice({
     getKeyword: (state, action: PayloadAction<string>) => {
       state.keyword = action.payload;
     },
+    chechControl: (state) => {
+      state.queryreset = Math.random();
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -84,6 +89,7 @@ const itemSlice = createSlice({
         state.Totalitems = action.payload.totalElements;
         state.catesort = "";
         state.keyword = "";
+        state.queryreset = 0;
         state.isLoading = false;
       })
       .addCase(getItems.rejected, (state, action) => {
@@ -96,6 +102,7 @@ const itemSlice = createSlice({
       .addCase(getCateItems.fulfilled, (state, action) => {
         state.items = action.payload.content;
         state.Totalitems = action.payload.totalElements;
+        state.queryreset = 0;
         state.isLoading = false;
       })
       .addCase(getCateItems.rejected, (state, action) => {
@@ -108,15 +115,21 @@ const itemSlice = createSlice({
       .addCase(getSearchItems.fulfilled, (state, action) => {
         state.items = action.payload.content;
         state.Totalitems = action.payload.totalElements;
+        state.queryreset = 0;
         state.isLoading = false;
       })
       .addCase(getSearchItems.rejected, (state, action) => {
         console.log(action.error, "실패");
+        state.keyword = "";
+        state.items = [];
+        state.Totalitems = 0;
+        state.queryreset = Math.random();
         state.isLoading = false;
       });
   },
 });
 
-export const { getCatenum, getSortType, getKeyword } = itemSlice.actions;
+export const { getCatenum, getSortType, getKeyword, chechControl } =
+  itemSlice.actions;
 
 export default itemSlice.reducer;

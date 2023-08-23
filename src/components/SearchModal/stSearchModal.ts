@@ -65,8 +65,12 @@ export const SearchModalWrapper = styled.div`
       width: 70px;
       height: 70px;
       position: absolute;
-      right: 0px;
+      right: 20px;
       cursor: pointer;
+      &:hover {
+        filter: invert(96%) sepia(43%) saturate(291%) hue-rotate(86deg)
+          brightness(101%) contrast(93%);
+      }
     }
   }
   .search_input_recent {

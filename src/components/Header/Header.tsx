@@ -142,15 +142,26 @@ const Header = () => {
             </Swiper>
           </div>
 
+          <div className="header_hamburger_menu_info">
+            <div className="header_hamburger_menu_box">
+              <img
+                src="/img/hamburger_menu.svg"
+                alt="hamburgermenu"
+                onClick={modalOpen}
+              />
+            </div>
+          </div>
+
           <div className="header_mainlogo">
             <Link to="/">
               <img src="/img/roupang.svg" alt="mainlogo" />
             </Link>
           </div>
+
           <div className="header_myinfo">
             <div className="header_search_box">
               <img src="/img/search.svg" alt="search" onClick={modalOpen} />
-              <div className="header_search_ex">마이페이지</div>
+              <div className="header_search_ex">검색</div>
             </div>
             <div className="header_clockbox">
               <img src="/img/clock.svg" alt="time" />

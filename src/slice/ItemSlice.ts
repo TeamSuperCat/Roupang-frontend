@@ -4,7 +4,7 @@ import axiosClient from "../api/axios";
 
 export const getItems = createAsyncThunk(
   "item/getItems",
-  async (categoryId: string) => {
+  async (categoryId: string | number) => {
     const response = await axiosClient.get(
       `/products/category/${categoryId}?page=0&size=5&order=`
     );
@@ -18,7 +18,7 @@ export const getCateItems = createAsyncThunk(
     categoryId,
     category,
   }: {
-    categoryId: string;
+    categoryId: string | number;
     category: string;
   }) => {
     const response = await axiosClient.get(
@@ -31,7 +31,7 @@ export const getCateItems = createAsyncThunk(
 const initialState: {
   items: ItemData[];
   isLoading: boolean;
-  categorynum: string;
+  categorynum: string | number;
 } = {
   items: [],
   isLoading: true,
@@ -42,7 +42,7 @@ const itemSlice = createSlice({
   name: "item",
   initialState,
   reducers: {
-    getCatenum: (state, action: PayloadAction<string>) => {
+    getCatenum: (state, action: PayloadAction<string | number>) => {
       state.categorynum = action.payload;
     },
   },

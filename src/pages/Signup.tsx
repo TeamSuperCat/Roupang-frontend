@@ -66,7 +66,10 @@ const Signup = () => {
   const [tempImg, setTempImg] = useState("");
 
   const [isUniqueEmail, setIsUniqueEmail] = useState(false);
-  const [isUniqueNinkname, setIsUniqueNinkname] = useState(false);
+  const [isUniqueNickname, setIsUniqueNickname] = useState(false);
+  const [emailErrMsg, setEmailErrMsg] = useState("");
+  const [nicknameErrMsg, setNicknameErrMsg] = useState("");
+
   const [isSamePassword, setIsSamePassword] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
@@ -124,17 +127,27 @@ const Signup = () => {
   const checkEmailDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    const regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+    if (!regex.test(data.email)) {
+      setEmailErrMsg("올바른 이메일 형식으로 입력해주세요.");
+      return;
+    }
+    setEmailErrMsg("");
+
     await axiosClient
-      .post<Data>(`/member/check`, {
+      .post<Data>("/member/check", {
         email: data.email,
       })
       .then((res) => {
         if (res) {
+          console.log(res.data);
           setIsUniqueEmail(true);
         }
       })
       .catch((err) => {
         if (err.code === "ERR_BAD_REQUEST") {
+          console.log(err.response.data.msg);
+          setEmailErrMsg(err.response.data.msg);
           setIsUniqueEmail(false);
         }
       });
@@ -143,17 +156,21 @@ const Signup = () => {
   const checkNicknameDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     await axiosClient
-      .post<Data>(`/member/check`, {
+      .post<Data>("/member/check", {
         nickname: data.nickname,
       })
       .then((res) => {
         if (res) {
-          setIsUniqueNinkname(true);
+          console.log(res.data);
+          setNicknameErrMsg("");
+          setIsUniqueNickname(true);
         }
       })
       .catch((err) => {
         if (err.code === "ERR_BAD_REQUEST") {
-          setIsUniqueNinkname(false);
+          console.log(err.response.data.msg);
+          setNicknameErrMsg(err.response.data.msg);
+          setIsUniqueNickname(false);
         }
       });
   };
@@ -161,15 +178,13 @@ const Signup = () => {
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("bfr", data);
-    if (isUniqueEmail && isValidEmail && isSamePassword && isValidPassword && isUniqueNinkname && isValidPhoneNumber) {
+    if (isUniqueEmail && isValidEmail && isSamePassword && isValidPassword && isUniqueNickname && isValidPhoneNumber) {
       console.log("일치", data);
       await onChange();
       setData((prev) => ({ ...prev, memberImg: urls[0] }));
       console.log("마지막", data);
       await axiosClient
-        .post<Data>(`/member/register`, data, {
-          withCredentials: true,
-        })
+        .post<Data>("/member/register", data)
         .then((res) => {
           console.log(res);
           navigate("/login");
@@ -238,9 +253,10 @@ const Signup = () => {
                   name={elem.name}
                   type={elem.type}
                   text={elem.text}
-                  dupCheck={elem.dupCheck}
                   placeholder={elem.placeholder}
                   data={data}
+                  emailErrMsg={emailErrMsg}
+                  nicknameErrMsg={nicknameErrMsg}
                   onChange={inputChangeHandler}
                 />
               ))}

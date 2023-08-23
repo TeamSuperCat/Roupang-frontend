@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-const BASE_URL = `${import.meta.env.VITE_API_SERVER}`;
+const BASE_URL = "/api";
 const token: string | null = localStorage.getItem("token");
 
 if (token) {
@@ -12,6 +12,10 @@ const axiosClient: AxiosInstance = axios.create({
 });
 
 axiosClient.interceptors.response.use((response) => {
+  if (response.headers["authorization"]) {
+    const accessToken = response.headers["authorization"];
+    localStorage.setItem("accessToken", accessToken);
+  }
   return response.data;
 });
 

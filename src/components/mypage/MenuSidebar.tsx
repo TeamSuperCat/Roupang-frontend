@@ -6,7 +6,6 @@ interface SidebarProps {
 }
 
 const MenuSidebar = ({ setCurrentPage, isSeller }: SidebarProps) => {
-
   return (
     // <div>
     <SideMenu>
@@ -14,20 +13,10 @@ const MenuSidebar = ({ setCurrentPage, isSeller }: SidebarProps) => {
       <SideMenuList>
         <div onClick={() => setCurrentPage("menuProfile")}>내 정보</div>
         <div onClick={() => setCurrentPage("menuCart")}>장바구니</div>
-        {/* <div onClick={() => setCurrentPage("menuRegisterSeller")}>
-            판매자 등록
-          </div>
-          <div onClick={() => setCurrentPage("menuSellerProducts")}>
-            물품등록(작업중)
-          </div> */}
-        {!isSeller ? (
-          <div onClick={() => setCurrentPage("menuSellerProducts")}>
-            물품등록
-          </div>
+        {isSeller ? (
+          <div onClick={() => setCurrentPage("menuSellerProducts")}>물품등록</div>
         ) : (
-          <div onClick={() => setCurrentPage("menuRegisterSeller")}>
-            판매자 등록
-          </div>
+          <div onClick={() => setCurrentPage("menuRegisterSeller")}>판매자 등록</div>
         )}
       </SideMenuList>
     </SideMenu>
@@ -39,8 +28,7 @@ export default MenuSidebar;
 
 const SideMenu = styled.div`
   width: 170px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-top: none;
   height: 100vh;
   margin-bottom: -50px;

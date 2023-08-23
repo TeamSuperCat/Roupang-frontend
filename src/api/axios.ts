@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
 const BASE_URL = "/api";
-const token: string | null = localStorage.getItem("token");
+const token: string | null = localStorage.getItem("accessToken");
 
 if (token) {
   axios.defaults.headers.common["Authorization"] = `${token}`;
@@ -19,13 +19,17 @@ axiosClient.interceptors.response.use((response) => {
   return response.data;
 });
 
-// axiosClient.interceptors.request.use((config) => {
-//   config.headers["Content-Type"] = "application/json; charset=utf-8";
-//   if (token) {
-//     config.headers["Authorization"] = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+axiosClient.interceptors.request.use((config) => {
+  if (config.url === "https://api.cloudinary.com/v1_1/ji/image/upload") {
+    delete config.headers["Authorization"];
+  } else {
+    config.headers["Content-Type"] = "application/json; charset=utf-8";
+    if (token) {
+      config.headers["Authorization"] = `${token}`;
+    }
+  }
+  return config;
+});
 
 // 사용할 컴포넌트에서 import axiosClient from './axiosClient' 해서
 // axiosClient.메소드('경로') 해서 사용 baseURL 은 이미 설정되어 있으므로 URI 만 붙여서 사용해야함

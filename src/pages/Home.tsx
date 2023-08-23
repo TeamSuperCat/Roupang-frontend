@@ -24,7 +24,11 @@ const Home = () => {
           <MainCarousel />
           {AllCategory.filter((category) => category.length > 0).map(
             (category, index) => (
-              <CategoryCarousel key={index} data={category} />
+              <CategoryCarousel
+                key={index}
+                data={category}
+                category={index + 1}
+              />
             )
           )}
         </>

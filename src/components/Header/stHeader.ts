@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const HeaderWrapper = styled.header`
   width: 100%;
   height: auto;
-  margin: 0 auto;
+  margin: 0 auto 50px;
   z-index: -2;
 `;
 export const HeaderTopbox = styled.div`
@@ -40,6 +40,9 @@ export const HeaderTopbox = styled.div`
           brightness(85%) contrast(92%);
       }
     }
+    a {
+      text-decoration: none;
+    }
   }
 
   .header_login_info {
@@ -50,7 +53,6 @@ export const HeaderTopbox = styled.div`
     .header_join {
       cursor: pointer;
       font-family: "Jost", sans-serif;
-      font-weight: bold;
     }
     &:hover .header_login {
       color: #50d2ba;
@@ -83,6 +85,9 @@ export const HeaderTopbox = styled.div`
             transition: all 0.3s;
             background-color: #333;
             color: #fff;
+          }
+          a {
+            text-decoration: none;
           }
         }
       }
@@ -198,6 +203,10 @@ export const HeaderMiddlebox = styled.div`
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+
+    img {
+      width: 170px;
+    }
   }
   .header_myinfo {
     display: flex;
@@ -285,7 +294,7 @@ export const HeaderMiddlebox = styled.div`
         border-radius: 50px;
         right: -10px;
         top: -12px;
-        background-color: gray;
+        background-color: var(--primary-color);
         text-align: center;
         line-height: 24px;
         color: #fff;
@@ -323,20 +332,23 @@ export const HeaderBottonbox = styled.div`
   width: 100%;
   height: 50px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   position: relative;
   ul {
     list-style-type: none;
     display: flex;
-    gap: 40px;
+    gap: 10px;
     li {
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 18px;
+      font-weight: 600;
       cursor: pointer;
+      padding: 19px 20px 15px;
+      border-bottom: 4px solid transparent;
       &:hover {
         transition: all 0.2s;
-        color: #50d2ba;
+        color: var(--primary-color);
+        border-bottom: 4px solid var(--primary-color);
       }
     }
   }

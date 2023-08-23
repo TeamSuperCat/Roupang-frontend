@@ -20,13 +20,7 @@ const MenuSidebar = ({ setCurrentPage, isSeller }: SidebarProps) => {
       <SideMenuList>
         <div onClick={() => setCurrentPage("menuProfile")}>내 정보</div>
         <div onClick={() => setCurrentPage("menuCart")}>장바구니</div>
-        {/* <div onClick={() => setCurrentPage("menuRegisterSeller")}>
-            판매자 등록
-          </div>
-          <div onClick={() => setCurrentPage("menuSellerProducts")}>
-            물품등록(작업중)
-          </div> */}
-        {!isSeller ? (
+        {isSeller ? (
           <div onClick={() => setCurrentPage("menuSellerProducts")}>
             물품등록
           </div>

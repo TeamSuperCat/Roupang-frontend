@@ -65,23 +65,38 @@ const Mypage = () => {
       });
   };
 
+  const getUserInfo = async () => {
+    await axiosClient
+      .get("/mypage")
+      .then((res) => {
+        console.log(res);
+        if (res) {
+          setIsSeller(true);
+        }
+        // setData(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const signupSeller = async () => {
+    await axiosClient
+      .post("/seller/signup")
+      .then((res) => {
+        console.log(res);
+        if (res) {
+          setIsSeller(true);
+        }
+        // setData(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     //get user & get cart
-    const getUserInfo = async () => {
-      await axiosClient
-        .get("/mypage")
-        .then((res) => {
-          console.log(res);
-          if (res.data.isSeller) {
-            setIsSeller(true);
-          }
-          setData(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
     getUserInfo();
     getCartItems();
     return () => {};
@@ -90,9 +105,9 @@ const Mypage = () => {
   useEffect(() => {
     // if user is seller
     // 통신 되면 지워도 됨
-    setIsSeller(true);
+    // setIsSeller(true);
     return () => {};
-  }, []);
+  }, [isSeller]);
 
   useEffect(() => {
     // init items
@@ -136,6 +151,8 @@ const Mypage = () => {
    */
   return (
     <>
+      <button onClick={getUserInfo}>getUserInfo</button>
+      <button onClick={signupSeller}>SignupSeller</button>
       <Heading>This is MYpage.</Heading>
       <Container>
         <MypageDiv>

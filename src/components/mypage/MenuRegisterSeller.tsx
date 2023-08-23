@@ -8,17 +8,20 @@ interface RegisterSellerProps {
 
 const MenuRegisterSeller = ({ setIsSeller }: RegisterSellerProps) => {
   const sellerSignup = async () => {
-    await axiosClient
-      .post("seller/signup")
-      .then((res) => {
-        console.log(res.data.msg); // 판매자로 등록되었습니다.
-        setIsSeller(true); // user정보 다시 불러오지 않고 프론트에서 처리
-      })
-      .catch((err) => {
-        console.log(err); // errorMessage
-      }); //저는 잠시 튀김우동을 먹겠습니다. 요
+    try {
+      await axiosClient
+        .post("seller/signup")
+        .then((res) => {
+          console.log(res); // 판매자로 등록되었습니다.
+          setIsSeller(true); // user정보 다시 불러오지 않고 프론트에서 처리
+        })
+        .catch((err) => {
+          console.log(err); // errorMessage
+        });
+    } catch (error) {
+      console.log(`Error >>${error}`);
+    }
   };
-  // ㅋㅋㅋㅋ
   return (
     <Container>
       <p>판매자로 등록하시겠습니까?</p>
@@ -30,8 +33,7 @@ const MenuRegisterSeller = ({ setIsSeller }: RegisterSellerProps) => {
 export default MenuRegisterSeller;
 
 const Container = styled.div`
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   width: 630px;
   height: 190px;
   display: flex;

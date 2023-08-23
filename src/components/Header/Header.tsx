@@ -25,7 +25,6 @@ const Header = () => {
   const handleCategorySelect = (category: string): void => {
     dispatch(getItems(category));
     dispatch(getCatenum(category));
-
     navigate("/main");
   };
 

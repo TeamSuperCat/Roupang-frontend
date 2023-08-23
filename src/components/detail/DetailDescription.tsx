@@ -80,28 +80,37 @@ const DetailDescription = () => {
   const enterAmount = () => {
     setIsAmountInputbox((prev) => !prev);
   };
+
   const enterKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     // console.log(event);
-
     if (event.key === "Enter") {
       setIsAmountInputbox((prev) => !prev);
       if (event.target.value === "") {
-        setProductAmount(0);
+        setProductAmount(1);
         return;
+      } else if (event.target.value < 1) {
+        setProductAmount(1);
+      } else if (event.target.value >= data.stock) {
+        setProductAmount(data.stock);
       } else {
         setProductAmount(event.target.value);
       }
     }
   };
+  const amountInputboxBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    setIsAmountInputbox((prev) => !prev);
+    if (event.target.value === "") {
+      setProductAmount(1);
+      return;
+    } else {
+      setProductAmount(event.target.value);
+    }
+  };
 
   //장바구니에 넣기
-  //장바구니 api로 보낸다
-  //데이터는 제품아이디, 수량, 가격 ,옵션
-
   const shopingCartButton = () => {
     // const token: string | null = localStorage.getItem("access_token");
     // const parsetoken = JSON.parse(token);
-
     axiosClient
       .post(
         `/cart`,
@@ -248,7 +257,13 @@ const DetailDescription = () => {
                 <Amount>수량</Amount>
                 <DivFlex>
                   <MinusButton onClick={productAmountDown}>-</MinusButton>
-                  <AmountInputbox type="number" onKeyDown={enterKeydown} />
+                  <AmountInputbox
+                    type="number"
+                    onKeyDown={enterKeydown}
+                    onBlur={amountInputboxBlur}
+                    placeholder="수량을 입력해주세요"
+                    autoFocus
+                  />
                   <PlusButton onClick={productAmountUp}>+</PlusButton>
                 </DivFlex>
                 <Amount>재고 : {data.stock}</Amount>
@@ -531,6 +546,9 @@ const ProductCounter = styled.div`
 
 const Amount = styled.div``;
 const AmountInputbox = styled.input`
+  &:focus {
+    outline: none;
+  }
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;

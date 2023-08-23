@@ -8,7 +8,6 @@ import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
 import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
-import CartModal from "./CartModal";
 
 const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
@@ -20,10 +19,6 @@ const responseProductData = {
   product_img: image,
   sales_end_date: "2023-08-15",
 };
-
-interface DetailDescriptionBoxProps {
-  isMoreView?: boolean;
-}
 
 ///컴포넌트시작
 const DetailDescription = () => {
@@ -39,22 +34,13 @@ const DetailDescription = () => {
     price: 0,
     options: [],
   });
-  const [option, setOption] = useState([]);
+  const [option, setOption] = useState<Record<string, string>>({});
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  const product_id: number = 1;
+  const product_id: string | undefined = productid;
 
   useEffect(() => {
-    // axiosClient.get(`products/${product_id}`).then((res) => {
-    axiosClient.get(`products/65`).then((res) => {
+    axiosClient.get(`products/${product_id}`).then((res) => {
+      // axiosClient.get(`products/65`).then((res) => {
       setData(res.data);
       setIsLoading(false);
     });
@@ -178,8 +164,13 @@ const DetailDescription = () => {
   const buyButton = () => {};
 
   //선택한 옵션으로 중복되지않게 옵션을만듬
-  const finalSelectionOptions = (optiondata: string, optionType: string) => {
-    setOption({ ...option, [optionType]: optiondata });
+  const finalSelectionOptions = (
+    optiondata: string | null,
+    optionType: string | null
+  ) => {
+    if (optionType !== null && optiondata !== null) {
+      setOption({ ...option, [optionType]: optiondata });
+    }
   };
 
   // console.log(option);
@@ -295,13 +286,6 @@ const DetailDescription = () => {
               </ShopingCartButton>
             </ShopingCartContainer>
 
-            <CartModal isOpen={isModalOpen} onClose={closeModal}>
-              <h2>장바구니에 담으시겠어요?</h2>
-              <p>{data.product_name}</p>
-
-              <p>이곳에 모달에 표시할 내용을 넣어주세요.</p>
-            </CartModal>
-
             <BuyContainer>
               <BuyButton onClick={buyButton}>
                 <Content>구매하기</Content>
@@ -328,7 +312,7 @@ const DetailDescription = () => {
         </DescriptionBox>
       </Container>
 
-      <DetailDescriptionBox isMoreView={isMoreView}>
+      <DetailDescriptionBox $isMoreView={isMoreView}>
         <DescriptionImage src={responseProductData.description_img} alt="" />
       </DetailDescriptionBox>
       <MoreViewButtonBox>
@@ -569,12 +553,12 @@ const MinusButton = styled.div`
   cursor: pointer;
 `;
 
-const DetailDescriptionBox = styled.div<DetailDescriptionBoxProps>`
+const DetailDescriptionBox = styled.div<{ $isMoreView?: boolean }>`
   display: block;
   position: relative;
   width: 100%;
-  height: ${({ isMoreView }) => (isMoreView ? "auto" : "1500px")};
-  overflow: ${({ isMoreView }) => (isMoreView ? "visible" : "hidden")};
+  height: ${({ $isMoreView }) => ($isMoreView ? "auto" : "1500px")};
+  overflow: ${({ $isMoreView }) => ($isMoreView ? "visible" : "hidden")};
 `;
 
 const DescriptionImage = styled.img`

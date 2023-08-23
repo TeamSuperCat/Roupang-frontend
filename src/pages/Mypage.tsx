@@ -7,6 +7,7 @@ import MenuCart from "../components/mypage/MenuCart";
 import MenuRegisterSeller from "../components/mypage/MenuRegisterSeller";
 import MenuSellerProducts from "../components/mypage/MenuSellerProducts";
 import { useAppSelector } from "../hooks/useDispatch";
+import { useNavigate } from "react-router";
 
 interface Data {
   [key: string]: string | undefined;
@@ -26,6 +27,7 @@ type Item = {
 };
 
 const Mypage = () => {
+  const navigate = useNavigate();
   const [isSeller, setIsSeller] = useState(false);
   const isLogin = useAppSelector((state) => state.user.isLogin);
 
@@ -126,6 +128,11 @@ const Mypage = () => {
     getCartItems();
     return () => {};
   }, []);
+
+  useEffect(() => {
+    if (!isLogin) return navigate("/");
+    return () => {};
+  }, [isLogin]);
 
   useEffect(() => {
     // if user is seller

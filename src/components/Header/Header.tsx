@@ -17,6 +17,7 @@ import { AppDispatch } from "../../store/store";
 import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
 import { getCatenum } from "../../slice/ItemSlice";
 import { login, logout } from "../../slice/userSlice";
+import axiosClient from "../../api/axios";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
@@ -47,11 +48,16 @@ const Header = () => {
     return () => {};
   }, []);
 
+  const Testyo = async () => {
+    const testdata = await axiosClient.get("/cart");
+    console.log(testdata);
+  };
+
   return (
     <>
       <HeaderWrapper>
         <HeaderTopbox>
-          <div className="header_support_info">
+          <div className="header_support_info" onClick={Testyo}>
             / 고객 지원센터 | 012-3456-7890
           </div>
           <div className="header_mymenu_info">

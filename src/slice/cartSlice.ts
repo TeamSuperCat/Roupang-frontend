@@ -15,7 +15,7 @@ declare interface CartState {
   order: OrderItem[];
   isLoading: boolean;
 }
-interface OrderItem {
+export interface OrderItem {
   amount: number;
   optionDetail: string;
   productIdx: number;

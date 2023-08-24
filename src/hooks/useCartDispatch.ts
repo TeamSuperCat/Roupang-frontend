@@ -20,6 +20,7 @@ export const useCartDispatch = () => {
   const dispatch = useAppDispatch();
   const items = useAppSelector((state) => state.cart.items);
   const selectedItems = useAppSelector((state) => state.cart.selectedItems);
+  const ordered = useAppSelector((state) => state.cart.order);
   const navigate = useNavigate();
 
   //장바구니 전체 선택, 혹은 현재 전체 선택되어있다면 전체 해제합니다.
@@ -98,5 +99,6 @@ export const useCartDispatch = () => {
     selectClear,
     goOrder,
     SelectgoOrder,
+    ordered,
   };
 };

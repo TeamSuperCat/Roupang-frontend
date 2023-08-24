@@ -9,6 +9,7 @@ import {
   decrementQuantity,
   selectAllItems,
   deselectAllItems,
+  getCartItems,
 } from "../../slice/cartSlice";
 
 export const useCartDispatch = () => {
@@ -30,6 +31,10 @@ export const useCartDispatch = () => {
     } else {
       dispatch(selectItem(itemToSelect));
     }
+  };
+
+  const getCartlisting = () => {
+    dispatch(getCartItems());
   };
 
   const handleDelete = (id: number) => {
@@ -68,5 +73,6 @@ export const useCartDispatch = () => {
     handleDeleteSelected,
     plusQuantity,
     minusQuantity,
+    getCartlisting,
   };
 };

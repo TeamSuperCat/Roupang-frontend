@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 import useGetUrl from "../hooks/useGetUrls";
 import axiosClient from "../api/axios";
 import { useNavigate } from "react-router";
+import { useAppSelector } from "../hooks/useDispatch";
 
 const signupInputProps = [
   {
@@ -60,6 +61,8 @@ interface Data {
 }
 const Signup = () => {
   const navigate = useNavigate();
+  const isLogin = useAppSelector((state) => state.user.isLogin);
+
   const [urls, setUrls] = useState<string[]>([]);
   const { ref, onChange, isLoading } = useGetUrl(setUrls);
   const submitUrl = useRef<string>(defaultProfilePath);
@@ -118,17 +121,13 @@ const Signup = () => {
     } else if (name === "phoneNumber") {
       //전화번호 유효성 검사
       const regex = /^[0-9]{10,11}$/;
-      regex.test(value)
-        ? setIsValidPhoneNumber(true)
-        : setIsValidPhoneNumber(false);
+      regex.test(value) ? setIsValidPhoneNumber(true) : setIsValidPhoneNumber(false);
     }
 
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const checkEmailDuplicate = async (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const checkEmailDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     const regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
@@ -157,9 +156,7 @@ const Signup = () => {
       });
   };
 
-  const checkNicknameDuplicate = async (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const checkNicknameDuplicate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     await axiosClient
       .post<Data>("/member/check", {
@@ -184,14 +181,7 @@ const Signup = () => {
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("bfr", data);
-    if (
-      isUniqueEmail &&
-      isValidEmail &&
-      isSamePassword &&
-      isValidPassword &&
-      isUniqueNickname &&
-      isValidPhoneNumber
-    ) {
+    if (isUniqueEmail && isValidEmail && isSamePassword && isValidPassword && isUniqueNickname && isValidPhoneNumber) {
       console.log("일치", data);
       await onChange();
       setData((prev) => ({ ...prev, memberImg: urls[0] }));
@@ -209,10 +199,9 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    const isLogin = !!localStorage.getItem("accessToken");
     if (isLogin) navigate("/");
     return () => {};
-  }, []);
+  }, [isLogin]);
 
   useEffect(() => {
     return () => {};
@@ -250,17 +239,13 @@ const Signup = () => {
               <PreviewDiv>
                 {urls[0] ? (
                   urls.map((url) =>
-                    isLoading ? (
-                      <div>이미지 url 변환중....</div>
-                    ) : (
-                      <img key={url} src={url} alt="url" />
-                    )
+                    isLoading ? <div>이미지 url 변환중....</div> : <img key={url} src={url} alt='url' />
                   )
                 ) : (
-                  <img src={tempImg ? tempImg : submitUrl.current} alt="url" />
+                  <img src={tempImg ? tempImg : submitUrl.current} alt='url' />
                 )}
               </PreviewDiv>
-              <input type="file" ref={ref} onChange={onFileChange} hidden />
+              <input type='file' ref={ref} onChange={onFileChange} hidden />
               <ProfileUpload
                 onClick={() => {
                   ref && ref.current?.click();
@@ -315,8 +300,7 @@ const SignupContainer = styled.div`
   border-radius: 10px;
   gap: 40px;
   padding: 60px 40px 40px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 24px;
   @media (max-width: 950px) {
     width: 480px;
@@ -365,8 +349,7 @@ const PreviewDiv = styled.div`
   box-sizing: border-box;
   border-radius: 10px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   @media (max-width: 950px) {
     width: 54%;
     height: 45%;
@@ -398,8 +381,7 @@ const ProfileUpload = styled.div`
   box-sizing: border-box;
   border-radius: 10px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   cursor: pointer;
   @media (max-width: 950px) {
     background-color: #605e49;

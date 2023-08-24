@@ -48,7 +48,6 @@ const Header = () => {
         <HeaderTopbox>
           <div className='header_support_info'>/ 고객 지원센터 | 012-3456-7890</div>
           <div className='header_mymenu_info'>
-            {/* {isLogin ? ( */}
             {isLogin ? (
               <>
                 <div className='header_logout_info'>

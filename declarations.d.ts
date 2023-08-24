@@ -11,4 +11,5 @@ declare interface ItemData {
   product_name: string;
   sales_end_date: string;
   stock: number;
+  id?: any;
 }

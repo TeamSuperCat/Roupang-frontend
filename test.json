@@ -209,3 +209,42 @@
       ]
   }
 }
+
+
+===
+{
+categoryIdx: "2",
+description:"고양이씻자",
+descriptionImg:"blob:http://localhost:5173/5cf3ff09-62fc-4da4-a986-ff571cf35e43",
+existsOption:true,
+options:
+Array(2)
+0
+: 
+{optionDetailNames: '옵션', optionTypeName: '값'}
+1
+: 
+{optionDetailNames: '옵션', optionTypeName: '값'}
+length
+: 
+2
+[[Prototype]]
+: 
+Array(0)
+price
+: 
+"10000"
+productImg
+: 
+"blob:http://localhost:5173/469f2c0a-5c21-4bb2-963f-c5a1374ec759"
+productName
+: 
+"고양이목욕"
+salesEndDate
+: 
+"2023-08-25"
+stock
+: 
+"1000"
+
+}

@@ -44,7 +44,7 @@ const cartSlice = createSlice({
       const id = action.payload;
       state.items = state.items.filter((item) => item.id !== id);
     },
-    selectItem: (state, action: PayloadAction<Item>) => {
+    selectItem: (state, action: PayloadAction<Item | ItemData>) => {
       const newItem = action.payload;
       const existingItem = state.items.find((item) => item.id === newItem.id);
       if (existingItem && !state.selectedItems.includes(existingItem)) {

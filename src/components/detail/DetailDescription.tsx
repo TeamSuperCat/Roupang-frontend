@@ -8,6 +8,8 @@ import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
 import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
+import { useSelector, useDispatch } from "react-redux";
+import { selectItem } from "../../slice/cartSlice";
 
 const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
@@ -37,6 +39,9 @@ const DetailDescription = () => {
     description_img: "",
   });
   const [option, setOption] = useState<Record<string, string>>({});
+  const RTKitems = useSelector((state: any) => state.cart.items);
+
+  const dispatch = useDispatch();
 
   const product_id: string | undefined = productid;
 
@@ -169,20 +174,22 @@ const DetailDescription = () => {
       .then((res) => {
         console.log(res);
         console.log("응잘되");
-        console.log(res.data.purchaseItemResponseList[0]);
 
-        const Purchasecompleted: ItemData{
+        const Purchasecompleted: ItemData = {
           category_name: "몰루",
           description: res.data.purchaseItemResponseList[0].description,
           description_img: "ㅇㅇ",
           options: res.data.purchaseItemResponseList[0].option,
-          price: res.data.purchaseItemResponseList[0].allprice,
+          price: res.data.purchaseItemResponseList[0].allPrice,
           product_idx: Number(productid),
           product_img: res.data.purchaseItemResponseList[0].productImg,
           product_name: res.data.purchaseItemResponseList[0].productName,
-          sales_end_date: '',
-          stock: 1
-        }
+          sales_end_date: "",
+          stock: 1,
+        };
+        dispatch(selectItem(Purchasecompleted));
+
+        console.log("Purchasecompleted", Purchasecompleted);
 
         // navigate("/order");
       })
@@ -191,6 +198,7 @@ const DetailDescription = () => {
         console.log("응안돼");
       });
   };
+  console.log(RTKitems);
 
   //선택한 옵션으로 중복되지않게 옵션을만듬
   const finalSelectionOptions = (

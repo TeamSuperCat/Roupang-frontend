@@ -6,6 +6,13 @@ interface SidebarProps {
 }
 
 const MenuSidebar = ({ setCurrentPage, isSeller }: SidebarProps) => {
+  // const registerSeller = () => {
+  // to be seller
+  // modal 띄운다
+  // 확인 누르면 seller가 됨
+  // 메뉴가 seller용으로 보임
+  // };
+
   return (
     // <div>
     <SideMenu>
@@ -14,9 +21,13 @@ const MenuSidebar = ({ setCurrentPage, isSeller }: SidebarProps) => {
         <div onClick={() => setCurrentPage("menuProfile")}>내 정보</div>
         <div onClick={() => setCurrentPage("menuCart")}>장바구니</div>
         {isSeller ? (
-          <div onClick={() => setCurrentPage("menuSellerProducts")}>물품등록</div>
+          <div onClick={() => setCurrentPage("menuSellerProducts")}>
+            물품등록
+          </div>
         ) : (
-          <div onClick={() => setCurrentPage("menuRegisterSeller")}>판매자 등록</div>
+          <div onClick={() => setCurrentPage("menuRegisterSeller")}>
+            판매자 등록
+          </div>
         )}
       </SideMenuList>
     </SideMenu>
@@ -28,7 +39,8 @@ export default MenuSidebar;
 
 const SideMenu = styled.div`
   width: 170px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-top: none;
   height: 100vh;
   margin-bottom: -50px;

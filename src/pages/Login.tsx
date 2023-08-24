@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LoginInput from "../components/login/LoginInput";
 import { styled } from "styled-components";
 import OAuthButton from "../components/login/OAuthButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppSelector } from "../hooks/useDispatch";
 
 // const InputPropsValue = [
 //   {
@@ -32,7 +33,8 @@ const buttonItems = [
 // }
 
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const isLogin = useAppSelector((state) => state.user.isLogin);
   // const [enteredNameIsTouched, setEnteredNameIsTouched] = useState(false);
   // const [enteredNameIsValid, setEnteredNameIsValid] = useState(false);
   // const [data, setData] = useState<Data>({
@@ -122,6 +124,12 @@ const Login = () => {
   //   }
   // };
 
+  useEffect(() => {
+    // const isLogin = !!localStorage.getItem("accessToken");
+    if (isLogin) navigate("/");
+    return () => {};
+  }, [isLogin]);
+
   return (
     <Container>
       <Form onSubmit={loginHandler}>
@@ -145,7 +153,7 @@ const Login = () => {
       </Form>
 
       <LinkWrap>
-        <Link to="/signup">회원가입하기</Link>
+        <Link to='/signup'>회원가입하기</Link>
         {/* <Link to="/findpassword">비밀번호찾기</Link> */}
       </LinkWrap>
 

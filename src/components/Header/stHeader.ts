@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+// @media (max-width: 1300px) {
+//   max-width: 1000px;
+// }
+// @media (max-width: 1150px) {
+//   max-width: 840px;
+// }
+// @media (max-width: 950px) {
+//   max-width: 90%;
+// }
+
 export const HeaderWrapper = styled.header`
   width: 100%;
   height: auto;
@@ -9,20 +19,28 @@ export const HeaderWrapper = styled.header`
 export const HeaderTopbox = styled.div`
   width: 100%;
   height: 40px;
+  color: #333;
   background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all ease-in-out 0.2s;
+  @media (max-width: 840px) {
+    display: none;
+  }
   div {
     font-weight: 500;
     font-size: 14px;
+    @media (max-width: 950px) {
+      font-size: 12px;
+    }
   }
   .header_support_info {
     padding-left: 5px;
   }
   .header_mymenu_info {
     display: flex;
-    gap: 20px;
+    gap: 5px;
     img {
       width: 17px;
       height: 17px;
@@ -30,6 +48,7 @@ export const HeaderTopbox = styled.div`
     }
   }
 
+  .header_logout_info,
   .header_login_info,
   .header_mypage_info,
   .header_board_info {
@@ -45,18 +64,25 @@ export const HeaderTopbox = styled.div`
     }
   }
 
+  .header_logout_info,
   .header_login_info {
     display: flex;
-    gap: 8px;
+    gap: 5px;
     position: relative;
+    align-items: center;
+
+    .header_logout,
     .header_login,
     .header_join {
       cursor: pointer;
       font-family: "Jost", sans-serif;
+      padding: 5px 10px;
+      /* background-color: aliceblue; */
     }
     &:hover .header_login {
       color: #50d2ba;
     }
+    .header_logout:hover,
     .header_login:hover,
     .header_join:hover {
       transition: all 0.2s;
@@ -97,6 +123,10 @@ export const HeaderTopbox = styled.div`
     display: flex;
     cursor: pointer;
     position: relative;
+    align-items: center;
+    padding: 5px 10px;
+    /* background-color: aliceblue; */
+
     &:hover .header_mypage {
       transition: all 0.2s;
       color: #50d2ba;
@@ -108,7 +138,7 @@ export const HeaderTopbox = styled.div`
       display: none;
       position: absolute;
       bottom: -135px;
-      left: -7px;
+      left: 9px;
       padding-top: 20px;
       z-index: 2;
       .mypage_drop_menu {
@@ -133,6 +163,10 @@ export const HeaderTopbox = styled.div`
     display: flex;
     cursor: pointer;
     position: relative;
+    align-items: center;
+    padding: 5px 10px;
+    /* background-color: aliceblue; */
+
     &:hover .header_board {
       transition: all 0.2s;
       color: #50d2ba;
@@ -178,6 +212,9 @@ export const HeaderMiddlebox = styled.div`
   .header_carousel {
     width: 240px;
     height: 120px;
+    @media (max-width: 840px) {
+      display: none;
+    }
     .swiper {
       width: 240px;
       height: 120px;
@@ -187,6 +224,7 @@ export const HeaderMiddlebox = styled.div`
       display: none;
     }
   }
+  .header_hamburger_menu_info,
   .header_myinfo {
     img {
       transition: all 0.2s;
@@ -199,13 +237,44 @@ export const HeaderMiddlebox = styled.div`
   .swiper-slide {
     cursor: pointer;
   }
+  .header_hamburger_menu_info {
+    @media (min-width: 841px) {
+      display: none;
+    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    @media (max-width: 550px) {
+      gap: 10px;
+    }
+    div,
+    &_box {
+      cursor: pointer;
+      &:hover .header_search_ex {
+        display: block;
+      }
+      img {
+        width: 35px;
+        height: 35px;
+        @media (max-width: 550px) {
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+  }
+
   .header_mainlogo {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-
+    z-index: 3;
     img {
-      width: 170px;
+      width: 160px;
+      @media (max-width: 550px) {
+        width: 120px;
+      }
     }
   }
   .header_myinfo {
@@ -213,23 +282,30 @@ export const HeaderMiddlebox = styled.div`
     justify-content: center;
     align-items: center;
     gap: 15px;
+    @media (max-width: 550px) {
+      gap: 10px;
+    }
     div,
     .header_cartimg {
       width: 35px;
       height: 35px;
+      @media (max-width: 550px) {
+        width: 25px;
+        height: 25px;
+      }
     }
-    .header_userbox {
+    .header_search_box {
       cursor: pointer;
-      &:hover .header_user_ex {
+      &:hover .header_search_ex {
         display: block;
       }
-      .header_user_ex {
+      .header_search_ex {
         display: none;
         position: absolute;
         font-size: 11px;
-        left: -13px;
+        left: 0px;
         bottom: -10px;
-        width: 60px;
+        width: 44px;
         height: 30px;
         border-radius: 10px;
         text-align: center;
@@ -242,7 +318,7 @@ export const HeaderMiddlebox = styled.div`
           content: "";
           position: absolute;
           top: -10px;
-          right: 25px;
+          right: 17px;
           border-left: 5px solid transparent;
           border-right: 5px solid transparent;
           border-bottom: 10px solid #444;
@@ -289,16 +365,24 @@ export const HeaderMiddlebox = styled.div`
       }
       .header_cart_count {
         position: absolute;
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
         border-radius: 50px;
-        right: -10px;
-        top: -12px;
+        right: -8px;
+        top: -6px;
         background-color: var(--primary-color);
         text-align: center;
-        line-height: 24px;
+        line-height: 20px;
         color: #fff;
-        font-size: 13px;
+        font-size: 12px;
+        @media (max-width: 550px) {
+          width: 16px;
+          height: 16px;
+          right: 0px;
+          top: -4px;
+          font-size: 11px;
+          line-height: 16px;
+        }
       }
       .header_cart_ex {
         display: none;
@@ -335,6 +419,10 @@ export const HeaderBottonbox = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  transition: all ease-in-out 0.2s;
+  @media (max-width: 840px) {
+    display: none;
+  }
   ul {
     list-style-type: none;
     display: flex;
@@ -344,23 +432,13 @@ export const HeaderBottonbox = styled.div`
       font-weight: 600;
       cursor: pointer;
       padding: 19px 20px 15px;
-      border-bottom: 4px solid transparent;
+      @media (max-width: 950px) {
+        font-size: 16px;
+      }
       &:hover {
         transition: all 0.2s;
         color: var(--primary-color);
-        border-bottom: 4px solid var(--primary-color);
       }
-    }
-  }
-  .header_search_box {
-    position: absolute;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    img {
-      width: 100%;
-      height: 100%;
     }
   }
 `;

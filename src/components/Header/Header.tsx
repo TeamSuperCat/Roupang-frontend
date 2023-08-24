@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -9,11 +9,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { HeaderWrapper, HeaderTopbox, HeaderMiddlebox, HeaderBottonbox } from "./stHeader";
 import { getItems } from "../../slice/ItemSlice";
 import { AppDispatch } from "../../store/store";
-import { useAppDispatch } from "../../hooks/useDispatch";
+import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
 import { getCatenum } from "../../slice/ItemSlice";
+import { login, logout } from "../../slice/userSlice";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
+  const isLogin = useAppSelector((state) => state.user.isLogin);
 
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -25,9 +27,20 @@ const Header = () => {
   const handleCategorySelect = (category: string): void => {
     dispatch(getItems(category));
     dispatch(getCatenum(category));
-
     navigate("/main");
   };
+
+  const logoutHandler = () => {
+    dispatch(logout(false));
+    localStorage.removeItem("accessToken");
+  };
+
+  useEffect(() => {
+    console.log(isLogin);
+    const hasToken = !!localStorage.getItem("accessToken");
+    if (hasToken) dispatch(login(true));
+    return () => {};
+  }, []);
 
   return (
     <>
@@ -35,22 +48,36 @@ const Header = () => {
         <HeaderTopbox>
           <div className='header_support_info'>/ 고객 지원센터 | 012-3456-7890</div>
           <div className='header_mymenu_info'>
-            <div className='header_login_info'>
-              <div className='header_login' onClick={() => navigate("/login")}>
-                로그인
-              </div>
-              <div>/</div>
-              <div className='header_join' onClick={() => navigate("/signup")}>
-                회원가입
-              </div>
-              <div className='header_login_drop'>
-                <ul className='login_drop_menu'>
-                  <li onClick={() => navigate("/mypage")}>내 정보 수정</li>
-                  <li onClick={() => navigate("/login")}>로그인</li>
-                  <li onClick={() => navigate("/signup")}>회원가입</li>
-                </ul>
-              </div>
-            </div>
+            {/* {isLogin ? ( */}
+            {isLogin ? (
+              <>
+                <div className='header_logout_info'>
+                  <div className='header_logout' onClick={logoutHandler}>
+                    로그아웃
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className='header_login_info'>
+                  <div className='header_login' onClick={() => navigate("/login")}>
+                    로그인
+                  </div>
+                  {/* <div>/</div> */}
+                  <div className='header_join' onClick={() => navigate("/signup")}>
+                    회원가입
+                  </div>
+                  <div className='header_login_drop'>
+                    <ul className='login_drop_menu'>
+                      <li onClick={() => navigate("/mypage")}>내 정보 수정</li>
+                      <li onClick={() => navigate("/login")}>로그인</li>
+                      <li onClick={() => navigate("/signup")}>회원가입</li>
+                    </ul>
+                  </div>
+                </div>
+              </>
+            )}
+
             <div className='header_mypage_info' onClick={() => navigate("/mypage")}>
               <img src='/img/mypage.svg' alt='mypage' />
               <div className='header_mypage'>마이페이지</div>
@@ -102,15 +129,22 @@ const Header = () => {
             </Swiper>
           </div>
 
+          <div className='header_hamburger_menu_info'>
+            <div className='header_hamburger_menu_box'>
+              <img src='/img/hamburger_menu.svg' alt='hamburgermenu' onClick={modalOpen} />
+            </div>
+          </div>
+
           <div className='header_mainlogo'>
             <Link to='/'>
               <img src='/img/roupang.svg' alt='mainlogo' />
             </Link>
           </div>
+
           <div className='header_myinfo'>
-            <div className='header_userbox' onClick={() => navigate("/mypage")}>
-              <img src='/img/user.svg' alt='user' />
-              <div className='header_user_ex'>마이페이지</div>
+            <div className='header_search_box'>
+              <img src='/img/search.svg' alt='search' onClick={modalOpen} />
+              <div className='header_search_ex'>검색</div>
             </div>
             <div className='header_clockbox'>
               <img src='/img/clock.svg' alt='time' />
@@ -135,9 +169,9 @@ const Header = () => {
             <li onClick={() => handleCategorySelect("6")}>산책/놀이</li>
             <li onClick={() => handleCategorySelect("7")}>간식/영양제</li>
           </ul>
-          <div className='header_search_box'>
-            <img src='/img/search.svg' alt='search' onClick={modalOpen} />
-          </div>
+          {/* <div className="header_search_box">
+            <img src="/img/search.svg" alt="search" onClick={modalOpen} />
+          </div> */}
         </HeaderBottonbox>
       </HeaderWrapper>
 

@@ -6,11 +6,11 @@ export type TypeAddress = {
   rest?: string;
 };
 export interface EmailType {
-  forward: string;
-  backward: string;
+  forward?: string;
+  backward?: string;
 }
 export interface PhoneType extends EmailType {
-  prefix: string;
+  prefix?: string;
 }
 
 export interface FormDataType {

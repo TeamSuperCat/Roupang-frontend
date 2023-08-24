@@ -14,6 +14,13 @@ export const ControlWrapper = styled.div<filterTypeProps>`
   padding: 5px 0;
   border-top: 3px solid #f0f0f0;
   border-bottom: 1px solid #f0f0f0;
+  @media (max-width: 840px) {
+    margin-top: -50px;
+  }
+  @media (max-width: 600px) {
+    flex-direction: column;
+    padding-bottom: 10px;
+  }
   .item_quantity_info {
     display: flex;
     justify-content: center;
@@ -37,6 +44,9 @@ export const ControlWrapper = styled.div<filterTypeProps>`
     color: #a1a1a1;
     font-weight: bold;
     gap: 50px;
+    @media (max-width: 600px) {
+      gap: 40px;
+    }
     li {
       cursor: pointer;
       &:nth-child(1) {

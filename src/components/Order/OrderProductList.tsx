@@ -1,26 +1,31 @@
 import { styled } from "styled-components";
 import { RiCloseFill } from "react-icons/ri";
 
-function OrderProductList() {
+function OrderProductList({
+  allPrice,
+  amount,
+  description,
+  productImg,
+  productName,
+  option,
+}) {
   //TODO: 물품삭제 버튼에 클릭시 장바구니에서 삭제 및 주문에서 삭제
   //TODO: 아이템 타이틀 이미지 누르면 해당 상품 상세페이지로
 
   return (
     <ProductWrap>
-      <ProductImg src="https://puppydog.co.kr/web/product/tiny/202305/2ee89e2f44be1c0bf9e69db66370fba7.jpg" />
+      <ProductImg src={productImg} />
       <ProductDesc>
-        <ProductTitle>
-          버츠비 컨디셔너 수분케어 강이지미스트 보습제 펫
-        </ProductTitle>
-        <ProductOption>[옵션: 투명]</ProductOption>
-        <ProductAmount>수량: 2개</ProductAmount>
-        <ProductPrice>50,000원</ProductPrice>
+        <ProductTitle>{`${productName} ${description}`}</ProductTitle>
+        {option !== "" && <ProductOption>[옵션: {option}]</ProductOption>}
+        <ProductAmount>수량: {amount}개</ProductAmount>
+        <ProductPrice>{allPrice}원</ProductPrice>
       </ProductDesc>
-      <ProductBtnWrap>
+      {/* <ProductBtnWrap>
         <ProductBtn>
           <RiCloseFill />
         </ProductBtn>
-      </ProductBtnWrap>
+      </ProductBtnWrap> */}
     </ProductWrap>
   );
 }
@@ -36,6 +41,7 @@ const ProductWrap = styled.li`
 `;
 
 const ProductImg = styled.img`
+  height: 100px;
   width: 100%;
   border: 1px solid #999;
 `;
@@ -66,24 +72,24 @@ const ProductPrice = styled.div`
   font-weight: bold;
 `;
 
-const ProductBtnWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+// const ProductBtnWrap = styled.div`
+//   display: flex;
+//   flex-direction: column;
+// `;
 
-const ProductBtn = styled.button`
-  width: 25px;
-  height: 25px;
-  background-color: white;
-  outline: none;
-  border: 1px solid #999999;
-  cursor: pointer;
-  font-size: 20px;
-  display: grid;
-  place-content: center;
+// const ProductBtn = styled.button`
+//   width: 25px;
+//   height: 25px;
+//   background-color: white;
+//   outline: none;
+//   border: 1px solid #999999;
+//   cursor: pointer;
+//   font-size: 20px;
+//   display: grid;
+//   place-content: center;
 
-  &:hover {
-    background-color: black;
-    color: white;
-  }
-`;
+//   &:hover {
+//     background-color: black;
+//     color: white;
+//   }
+// `;

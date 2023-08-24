@@ -9,7 +9,7 @@ import kakaoPaymentfunction from "../../api/KakaoPayment";
 import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
 import { useSelector, useDispatch } from "react-redux";
-import { selectItem } from "../../slice/cartSlice";
+import { order } from "../../slice/immediatpaymentSlice";
 
 const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
@@ -40,7 +40,7 @@ const DetailDescription = () => {
     description_img: "",
   });
   const [option, setOption] = useState<Record<string, string>>({});
-  const RTKitems = useSelector((state: any) => state.cart.items);
+  const RTKitems = useSelector((state: any) => state);
 
   const dispatch = useDispatch();
 

@@ -16,9 +16,11 @@ import { getItems } from "../../slice/ItemSlice";
 import { AppDispatch } from "../../store/store";
 import { useAppDispatch } from "../../hooks/useDispatch";
 import { getCatenum } from "../../slice/ItemSlice";
+import HamburgerModal from "../HamburgerModal/HamburgerModal";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showHamburgerModal, setShowHamburgerModal] = useState(false);
   // const isLogin = useAppSelector((state) => state.user.isLogin);
   const isLogin = !!localStorage.getItem("accessToken");
 
@@ -27,6 +29,10 @@ const Header = () => {
 
   const modalOpen = () => {
     setShowModal(true);
+  };
+
+  const hamburgerModalOpen = () => {
+    setShowHamburgerModal(true);
   };
 
   const handleCategorySelect = (category: string): void => {
@@ -147,7 +153,7 @@ const Header = () => {
               <img
                 src="/img/hamburger_menu.svg"
                 alt="hamburgermenu"
-                onClick={modalOpen}
+                onClick={hamburgerModalOpen}
               />
             </div>
           </div>
@@ -196,6 +202,14 @@ const Header = () => {
       </HeaderWrapper>
 
       {showModal && <SearchModal setShowModal={setShowModal} />}
+      {showHamburgerModal && (
+        <HamburgerModal
+          setShowHamburgerModal={setShowHamburgerModal}
+          isLogin={isLogin}
+          logoutHandler={logoutHandler}
+          handleCategorySelect={handleCategorySelect}
+        />
+      )}
     </>
   );
 };

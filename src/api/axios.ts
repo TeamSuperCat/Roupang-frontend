@@ -1,7 +1,9 @@
 import axios, { AxiosInstance } from "axios";
 
 const BASE_URL = "/api";
-const token: string | null = localStorage.getItem("accessToken");
+const token =
+  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW1iZXJUb2tlbiIsImlkeCI6NzUsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsIm5pY2tuYW1lIjoi7YWM7Iqk7Yq47YWM7YWM7YWM7YWMIiwicGhvbmVfbnVtYmVyIjoiMDEyMzQ2NTQiLCJhZGRyZXNzIjoiZHNmZ2RmZ2RzZmciLCJtZW1iZXJfaW1nIjoiIiwiY3JlYXRlZF9hdCI6IjIwMjMtMDgtMjQgMTU6MjI6MjEiLCJ1cGRhdGVkX2F0IjoiMjAyMy0wOC0yNCAxNToyMjoyMSIsInVzZXJfcG9pbnQiOjAsImlhdCI6MTY5Mjg5MDU3MywiZXhwIjoxNjkyODk0MTczfQ.hbFLQ9heb2whLvGLIrq3qew6JbUzUXYKOcWMJ9IqWVY";
+// const token: string | null = localStorage.getItem("accessToken");
 
 // if (token) {
 //   axios.defaults.headers.common["Authorization"] = `${token}`;

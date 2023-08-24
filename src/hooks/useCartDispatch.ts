@@ -13,13 +13,14 @@ import {
   getCartItems,
   clearselectedItems,
   moveOrder,
+  OrderItem,
 } from "../slice/cartSlice";
 
 export const useCartDispatch = () => {
   const dispatch = useAppDispatch();
   const items = useAppSelector((state) => state.cart.items);
   const selectedItems = useAppSelector((state) => state.cart.selectedItems);
-  const ordered = useAppSelector((state) => state.cart.order);
+  const ordered: OrderItem[] = useAppSelector((state) => state.cart.order);
   const navigate = useNavigate();
 
   const handleSelectAll = (isChecked: boolean) => {

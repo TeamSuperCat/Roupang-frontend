@@ -153,14 +153,14 @@ const Login = () => {
       </Form>
 
       <LinkWrap>
-        <Link to='/signup'>회원가입하기</Link>
+        <Link to="/signup">회원가입하기</Link>
         {/* <Link to="/findpassword">비밀번호찾기</Link> */}
       </LinkWrap>
 
       {buttonItems
         .filter((item) => item.isOAuth)
-        .map((item) => (
-          <OAuthButton loginType={item} />
+        .map((item, i) => (
+          <OAuthButton key={i} loginType={item} />
         ))}
     </Container>
   );

@@ -16,7 +16,7 @@ declare interface CartState {
   isLoading: boolean;
 }
 
-interface OrderItem {
+export interface OrderItem {
   amount: number;
   optionDetail: string;
   productIdx: number;
@@ -34,7 +34,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     immediatPayment: (state, action) => {
-      state.order = action.payload;
+      state.order = [action.payload];
     },
     removeItem: (state, action: PayloadAction<number>) => {
       const id = action.payload;

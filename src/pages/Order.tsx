@@ -11,6 +11,7 @@ import OrderInfo from "../components/Order/OrderInfo";
 import axiosClient from "../api/axios";
 import { useQuery } from "@tanstack/react-query";
 import useOrder from "../hooks/useOrder";
+import { useCartDispatch } from "../hooks/useCartDispatch";
 
 const requestOrderInfo = async (orderList = "구매할물품") => {
   const response = await axiosClient.post("/order", orderList);
@@ -22,6 +23,9 @@ function Order() {
   const { data, isLoading } = useQuery(["order"], () =>
     requestOrderInfo("구매할물품의 상태정보")
   );
+
+  const { ordered } = useCartDispatch();
+  console.log(ordered);
 
   const {
     formState: { form },

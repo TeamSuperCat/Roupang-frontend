@@ -18,6 +18,7 @@ type inputProps = {
   data: {
     [key: string]: string | undefined;
     email: string;
+    nickname: string;
     phoneNumber: string | undefined;
     address: string;
   };

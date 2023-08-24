@@ -13,9 +13,10 @@ interface Product {
 
 const MenuSellerProducts = () => {
   const [sellerProducts, setSellerProducts] = useState<Product[]>([]);
-  const getSellerProducts = async () => {
+  const [page, setPage] = useState(0);
+  const getSellerProducts = async (page = 0) => {
     await axiosClient
-      .get(`/seller/products?page=0&size=5&order=`)
+      .get(`/seller/products?page=${page}&size=5&order=`)
       .then((res) => {
         console.log(res);
         const newData = [...res.data.content];
@@ -27,14 +28,14 @@ const MenuSellerProducts = () => {
   };
 
   useEffect(() => {
-    getSellerProducts();
+    getSellerProducts(page);
     return () => {};
-  }, []);
+  }, [page]);
 
   return (
     <Container>
-      <SellerRegisterProduct />
-      <SellerProductsList sellerProducts={sellerProducts} />
+      <SellerRegisterProduct getSellerProducts={getSellerProducts} />
+      <SellerProductsList sellerProducts={sellerProducts} page={page} setPage={setPage} />
     </Container>
   );
 };

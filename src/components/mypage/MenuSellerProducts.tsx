@@ -1,19 +1,26 @@
 import axiosClient from "../../api/axios";
-import { ChangeEvent, useState, useEffect, useRef } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import useGetUrl from "../../hooks/useGetUrls";
 
 interface Product {
-  produtcName: string;
-  description: string;
   categoryIdx: number;
-  price: number;
-  stock: number;
-  productImg: string | File;
+  description: string;
   descriptionImg: string | File;
+  existsOption: boolean;
+  options: Option[];
+  price: number;
+  productImg: string | File;
+  productName: string;
   salesEndDate: string;
-  // options:string[],
+  stock: number;
+}
+
+interface Option {
+  [key: string]: string | undefined;
+  optionDetailNames: string;
+  optionTypeName: string;
 }
 
 type Category = {
@@ -32,26 +39,51 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
   const [descriptionImgUrls, setDescriptionImgUrls] = useState<string[]>([]);
   const { ref: descriptionImgRef, onChange: descriptionImgOnChange } = useGetUrl(setDescriptionImgUrls);
 
-  const selectRef = useRef(0);
   const [categories, setCategories] = useState<Category[]>([]);
   const [product, setProduct] = useState<Product>({
-    produtcName: "",
-    description: "",
     categoryIdx: 0,
-    price: 0,
-    stock: 0,
+    productName: "",
+    description: "",
     productImg: "default_profile.png",
     descriptionImg: "default_profile.png",
+    price: 0,
+    stock: 0,
     salesEndDate: "",
-    // options:string[],
+    existsOption: false,
+    options: [
+      {
+        optionDetailNames: "",
+        optionTypeName: "",
+      },
+    ],
   });
+  const [option, setOption] = useState<Option>({
+    optionDetailNames: "",
+    optionTypeName: "",
+  });
+
+  const addOption = () => {
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      ["options"]: [...prevProduct.options, option],
+    }));
+  };
 
   const handleInputChange = (event: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
+    console.log(name, value);
+
+    if (name === "optionDetailNames" || name === "optionTypeName") {
+      if (name === undefined || value === undefined) return;
+      setOption((prevOption) => ({ ...prevOption, [name]: value }));
+      console.log(option);
+    } else {
+      addOption();
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        [name]: value,
+      }));
+    }
   };
 
   const handleMainImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -104,13 +136,7 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
       }));
       console.log(product);
 
-      if (selectRef.current === undefined) return console.log("selectRef.current undefined임");
-      // if (selectRef.current.value === null) return console.log("selectRef.current.value null");
-
-      const selectedCategory = selectRef.current;
-      console.log(selectedCategory);
-      // if (selectedCategory === null) return console.log("selectedCategory null임");
-      await setProduct((prev) => ({ ...prev, categoryIdx: +selectedCategory }));
+      // await setProduct((prev) => ({ ...prev, categoryIdx: s }));
 
       await axiosClient
         .post("/seller/products/register", product)
@@ -198,10 +224,9 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
         <FormItem>
           <label htmlFor='category'>상품분류</label>
           <select
-            name='category'
-            id='category'
+            name='categoryIdx'
+            id='categoryIdx'
             // value={product.categoryIdx}
-            ref={selectRef}
             onChange={handleInputChange}
           >
             {categories.map((category) => (
@@ -226,7 +251,7 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
             type='text'
             id='name'
             name='produtcName'
-            value={product.produtcName}
+            value={product.productName}
             onChange={handleInputChange}
             //   onBlur={nameInputBlurHandler}
           />
@@ -268,6 +293,24 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
             value={product.salesEndDate}
             onChange={handleInputChange}
           />
+        </FormItem>
+        <FormItem>
+          <label htmlFor='options'>상품 옵션</label>
+          <input
+            type='text'
+            id='optionDetailNames'
+            name='optionDetailNames'
+            value={option.optionDetailNames}
+            onChange={handleInputChange}
+          />
+          <input
+            type='text'
+            id='optionTypeName'
+            name='optionTypeName'
+            value={option.optionTypeName}
+            onChange={handleInputChange}
+          />
+          <button onClick={addOption}>옵션 추가</button>
         </FormItem>
         {/* <FormItem>
           <label htmlFor="product-options">물품 옵션</label>

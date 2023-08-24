@@ -133,7 +133,7 @@ const Mypage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLogin) return navigate("/");
+    if (!isLogin) return navigate("/login");
     return () => {};
   }, [isLogin]);
 

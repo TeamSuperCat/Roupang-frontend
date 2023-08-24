@@ -19,7 +19,7 @@ const localStorageSlice = createSlice({
     setData: (state, action: PayloadAction<number[]>) => {
       const newData = action.payload;
       state.data = [...newData];
-      localStorage.setItem("recent", JSON.stringify(state.data));
+      // localStorage.setItem("recent", JSON.stringify(state.data));
     },
   },
 });

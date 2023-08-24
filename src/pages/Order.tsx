@@ -2,7 +2,6 @@ import { styled } from "styled-components";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { PiHandbagSimple } from "react-icons/pi";
 import { RxPerson } from "react-icons/rx";
-import { Link } from "react-router-dom";
 import { useRouter } from "../hooks/useRouter";
 import OrderAccordion from "../components/Order/OrderAccordion";
 import ShipInfo from "../components/Order/ShipInfo";

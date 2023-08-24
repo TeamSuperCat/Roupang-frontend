@@ -16,7 +16,6 @@ declare interface ItemData {
 declare global {
   interface Window {
     daum?: any;
-    IMP: Iamport;
   }
 }
 

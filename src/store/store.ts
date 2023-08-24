@@ -8,22 +8,21 @@ import orderSlice from "../slice/orderSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "../slice/userSlice";
+import { combineReducers } from "redux";
 
 export const rootReducer = combineReducers({
-  reducer: {
-    modalReducer,
-    cart: cartReducer,
-    item: itemReducer,
-    main: mainReducer,
-    storage: storageSlice,
-    order: orderSlice,
-    user: userReducer,
-  },
+  modal: modalReducer,
+  cart: cartReducer,
+  item: itemReducer,
+  main: mainReducer,
+  storage: storageSlice,
+  order: orderSlice,
+  user: userReducer,
 });
 const persistConfig = {
   key: "reduxData",
   storage,
-  whitelist: ["cart", "item", "main"],
+  whitelist: ["cart", "item", "main", "modal", "order", "user", "storage"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -8,6 +8,9 @@ import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
 import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
+import { immediatPayment } from "../../slice/cartSlice";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../hooks/useDispatch";
 import { useSelector, useDispatch } from "react-redux";
 import { order } from "../../slice/immediatpaymentSlice";
 
@@ -21,9 +24,10 @@ const responseProductData = {
   product_img: image,
   sales_end_date: "2023-08-15",
 };
-
 ///컴포넌트시작
 const DetailDescription = () => {
+  const dispatch = useDispatch();
+  const OrderItem = useAppSelector((state) => state.cart.order);
   const { productid } = useParams();
   const navigate = useNavigate();
 
@@ -145,7 +149,7 @@ const DetailDescription = () => {
       });
   };
   //구매하기
-  const buyButton = () => {
+  const buyButton = async () => {
     const optionName = Object.keys(option);
     let 보낼객체형태임 = "";
     //선택된옵션갯수 === 실제옵션갯수
@@ -164,22 +168,14 @@ const DetailDescription = () => {
       return;
     }
 
-    axiosClient
-      .post("/order", [
-        {
-          amount: productAmount,
-          optionDetail: 보낼객체형태임,
-          productIdx: product_id,
-        },
-      ])
-      .then((res) => {
-        console.log(res);
-        console.log("응잘되");
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log("응안돼");
-      });
+    let payload = {
+      amount: productAmount,
+      optionDetail: 보낼객체형태임,
+      productIdx: product_id,
+    };
+    await dispatch(immediatPayment(payload));
+    console.log(OrderItem);
+    navigate("/order");
   };
   console.log(RTKitems);
 

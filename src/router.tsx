@@ -73,6 +73,7 @@ const routerData: RouterElement[] = [
         path: "cart",
         label: "Cart",
         element: <Cart />,
+        withAuth: true,
       },
       {
         id: 7,
@@ -91,12 +92,14 @@ const routerData: RouterElement[] = [
         path: "selleredit",
         label: "SellerEdit",
         element: <SellerEdit />,
+        withAuth: true,
       },
       {
         id: 14,
         path: "mypage",
         label: "Mypage",
         element: <Mypage />,
+        withAuth: true,
       },
     ],
   },
@@ -105,7 +108,7 @@ const routerData: RouterElement[] = [
     path: "/order",
     label: "Order",
     element: <Order />,
-    withAuth: false,
+    withAuth: true,
   },
   {
     id: 8,

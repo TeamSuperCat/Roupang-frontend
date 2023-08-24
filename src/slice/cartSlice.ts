@@ -12,8 +12,14 @@ export const getCartItems = createAsyncThunk<CartItem[], void>(
 declare interface CartState {
   items: CartItem[];
   selectedItems: CartItem[];
-  order: CartItem[];
+  order: OrderItem[];
   isLoading: boolean;
+}
+
+interface OrderItem {
+  amount: number;
+  optionDetail: string;
+  productIdx: number;
 }
 
 const initialState: CartState = {
@@ -27,6 +33,9 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    immediatPayment: (state, action) => {
+      state.order = action.payload;
+    },
     removeItem: (state, action: PayloadAction<number>) => {
       const id = action.payload;
       state.items = state.items.filter((item) => item.id !== id);
@@ -87,6 +96,16 @@ const cartSlice = createSlice({
       );
       state.selectedItems = [];
     },
+    clearselectedItems: (state) => {
+      state.selectedItems = [];
+    },
+    moveOrder: (state) => {
+      state.order = state.selectedItems.map((item) => ({
+        amount: item.amount,
+        optionDetail: item.optionDetail,
+        productIdx: item.productIdx,
+      }));
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -115,6 +134,9 @@ export const {
   decrementQuantity,
   removeAll,
   removeSelected,
+  clearselectedItems,
+  moveOrder,
+  immediatPayment,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

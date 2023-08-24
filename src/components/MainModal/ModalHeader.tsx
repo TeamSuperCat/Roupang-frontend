@@ -40,7 +40,7 @@ function ModalHeader({ category }: Props) {
       <div>{!category ? "값이 없음" : title[category].kor}</div>
       <i></i>
       <HeaderEng>{!category ? "값이 없음" : title[category].eng}</HeaderEng>
-      <MoreBtn>더보기</MoreBtn>
+      {/* <MoreBtn>더보기</MoreBtn> */}
     </MyShopHeader>
   );
 }
@@ -88,10 +88,10 @@ const HeaderEng = styled.div`
   color: rgba(128, 128, 128, 0.5);
 `;
 
-const MoreBtn = styled.p`
-  position: absolute;
-  right: 10px;
-  top: 27px;
-  font-size: 11px;
-  cursor: pointer;
-`;
+// const MoreBtn = styled.p`
+//   position: absolute;
+//   right: 10px;
+//   top: 27px;
+//   font-size: 11px;
+//   cursor: pointer;
+// `;

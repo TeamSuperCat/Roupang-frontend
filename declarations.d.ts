@@ -14,6 +14,13 @@ declare interface ItemData {
   id?: any;
 }
 
+declare global {
+  interface Window {
+    daum?: any;
+    IMP: Iamport;
+  }
+}
+
 declare interface CartItem {
   amount: number;
   categoryName: string;
@@ -29,3 +36,5 @@ declare interface CartItem {
   productStock: number;
   sellerIdx: number;
 }
+
+export {};

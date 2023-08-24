@@ -2,9 +2,26 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosClient from "../api/axios";
 
 export const getCartItems = createAsyncThunk<CartItem[], void>(
-  "item/getCartItems",
+  "cart/getCartItems",
   async () => {
     const response = await axiosClient.get<CartItem[]>(`/cart`);
+    return response.data;
+  }
+);
+export const AlldeleteCart = createAsyncThunk(
+  "cart/AlldeleteCart",
+  async () => {
+    const response = await axiosClient.delete(`/cart`);
+    return response.data;
+  }
+);
+export const selectdeleteCart = createAsyncThunk(
+  "cart/selectdeleteCart",
+  async (productIdx: number) => {
+    const response = await axiosClient.patch(`/cart`, {
+      productIdx,
+    });
+
     return response.data;
   }
 );
@@ -14,6 +31,7 @@ declare interface CartState {
   selectedItems: CartItem[];
   order: OrderItem[];
   isLoading: boolean;
+  liveview: number;
 }
 interface OrderItem {
   amount: number;
@@ -27,6 +45,7 @@ const initialState: CartState = {
   selectedItems: [],
   order: [], //결제화면에 보여줄 아이템들
   isLoading: false,
+  liveview: 0,
 };
 
 const cartSlice = createSlice({
@@ -112,6 +131,9 @@ const cartSlice = createSlice({
       const { amount, optionDetail, productIdx } = orderItem as OrderItem;
       state.order = [{ amount, optionDetail, productIdx }];
     },
+    cartHeaderview: (state, action) => {
+      state.liveview = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -120,10 +142,30 @@ const cartSlice = createSlice({
       })
       .addCase(getCartItems.fulfilled, (state, action) => {
         state.items = action.payload;
-        console.log(action.payload);
         state.isLoading = false;
       })
       .addCase(getCartItems.rejected, (state, action) => {
+        console.log(action.error, "실패");
+        state.isLoading = false;
+      })
+      .addCase(AlldeleteCart.pending, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(AlldeleteCart.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(AlldeleteCart.rejected, (state, action) => {
+        console.log(action.error, "실패");
+        state.isLoading = false;
+      })
+      .addCase(selectdeleteCart.pending, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(selectdeleteCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log(action.payload);
+      })
+      .addCase(selectdeleteCart.rejected, (state, action) => {
         console.log(action.error, "실패");
         state.isLoading = false;
       });
@@ -144,6 +186,7 @@ export const {
   moveOrder,
   immediatPayment,
   selectedOrder,
+  cartHeaderview,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

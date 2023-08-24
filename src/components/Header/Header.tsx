@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -18,22 +18,33 @@ import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
 import { getCatenum } from "../../slice/ItemSlice";
 import HamburgerModal from "../HamburgerModal/HamburgerModal";
 import { login, logout } from "../../slice/userSlice";
-import axiosClient from "../../api/axios";
+import { useCartDispatch } from "../../hooks/useCartDispatch";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const [showHamburgerModal, setShowHamburgerModal] = useState(false);
+  const [cartview, setCartview] = useState(0);
   const isLogin = useAppSelector((state) => state.user.isLogin);
+  const cartshowfirst = useAppSelector((state) => state.cart.liveview);
   const cartLength = useAppSelector((state) =>
     state.cart.items ? state.cart.items.length : 0
   );
 
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { getCartlisting } = useCartDispatch();
 
   const modalOpen = () => {
     setShowModal(true);
   };
+
+  useEffect(() => {
+    setCartview(cartLength);
+  }, [cartLength]);
+
+  useEffect(() => {
+    setCartview(cartshowfirst);
+  }, [cartshowfirst]);
 
   const hamburgerModalOpen = () => {
     setShowHamburgerModal(true);
@@ -48,25 +59,21 @@ const Header = () => {
   const logoutHandler = () => {
     dispatch(logout(false));
     localStorage.removeItem("accessToken");
+    window.location.href = "/";
   };
 
   useEffect(() => {
-    console.log(isLogin);
+    getCartlisting();
     const hasToken = !!localStorage.getItem("accessToken");
     if (hasToken) dispatch(login(true));
     return () => {};
   }, []);
 
-  const Testyo = async () => {
-    const testdata = await axiosClient.get("/cart");
-    console.log(testdata);
-  };
-
   return (
     <>
       <HeaderWrapper>
         <HeaderTopbox>
-          <div className="header_support_info" onClick={Testyo}>
+          <div className="header_support_info">
             / 고객 지원센터 | 012-3456-7890
           </div>
           <div className="header_mymenu_info">
@@ -190,7 +197,7 @@ const Header = () => {
             >
               <img className="header_cartimg" src="/img/cart.svg" alt="cart" />
               <span className="header_cart_count">
-                <span>{cartLength}</span>
+                <span>{cartview}</span>
               </span>
               <div className="header_cart_ex">장바구니</div>
             </div>

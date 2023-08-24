@@ -8,9 +8,9 @@ import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
 import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
-import { immediatPayment } from "../../slice/cartSlice";
-
-import { useDispatch } from "react-redux";
+import { immediatPayment, cartHeaderview } from "../../slice/cartSlice";
+import { useCartDispatch } from "../../hooks/useCartDispatch";
+import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
 
 const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
@@ -24,10 +24,9 @@ const responseProductData = {
 };
 ///컴포넌트시작
 const DetailDescription = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { productid } = useParams();
   const navigate = useNavigate();
-
   const [isMoreView, setIsMoreView] = useState<boolean>(false);
   const [productAmount, setProductAmount] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -41,6 +40,10 @@ const DetailDescription = () => {
     description_img: "",
   });
   const [option, setOption] = useState<Record<string, string>>({});
+  const { getCartlisting } = useCartDispatch();
+  const cartLength = useAppSelector((state) =>
+    state.cart.items ? state.cart.items.length : 0
+  );
 
   const product_id: string | undefined = productid;
 
@@ -100,7 +103,7 @@ const DetailDescription = () => {
   };
 
   //장바구니에 넣기
-  const shopingCartButton = () => {
+  const shopingCartButton = async () => {
     //선택된 옵션들 입니다
     const optionName = Object.keys(option);
     let 보낼객체형태임 = "";
@@ -120,7 +123,7 @@ const DetailDescription = () => {
       return;
     }
 
-    axiosClient
+    await axiosClient
       .post(
         `/cart`,
 
@@ -132,10 +135,12 @@ const DetailDescription = () => {
       )
       .then((res) => {
         alert("장바구니 완료 쇼핑을 계쏙 하쎄용");
+        dispatch(cartHeaderview(cartLength + 1));
       })
       .catch((error) => {
         alert("에러입니다!");
       });
+    getCartlisting();
   };
   //구매하기
   const buyButton = async () => {

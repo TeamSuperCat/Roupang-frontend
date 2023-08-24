@@ -1,8 +1,11 @@
+import { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 interface SellerProductsListProps {
   sellerProducts: Product[];
+  page: number;
+  setPage: (page: number) => void;
 }
 
 interface Product {
@@ -12,12 +15,19 @@ interface Product {
   product_name: string;
 }
 
-const SellerProductsList = ({ sellerProducts }: SellerProductsListProps) => {
+const SellerProductsList = ({ sellerProducts, page, setPage }: SellerProductsListProps) => {
   const discountRate = 0.01;
+  const getProductsHandler = (e: SyntheticEvent) => {
+    console.log(e);
+    setPage(page + 1);
+  };
   return (
     <div>
       <ProductsLists>
-        <h3>상품목록</h3>
+        <ProductsListHeader>
+          <h3>상품목록</h3>
+          <h2 onClickCapture={getProductsHandler}>상품 목록 불러오기</h2>
+        </ProductsListHeader>
         <table>
           <thead>
             <tr>
@@ -42,7 +52,7 @@ const SellerProductsList = ({ sellerProducts }: SellerProductsListProps) => {
                       <div className='product_name_img_wrap'>
                         <img src={product.product_img} alt={product.product_name} />
                       </div>
-                      <span>{product.description}</span>
+                      <span>{product.product_name}</span>
                     </div>
                   </td>
                   <td>{product.price}</td>
@@ -66,6 +76,11 @@ const SellerProductsList = ({ sellerProducts }: SellerProductsListProps) => {
 };
 
 export default SellerProductsList;
+
+const ProductsListHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const ProductsLists = styled.section`
   font-size: 16px;

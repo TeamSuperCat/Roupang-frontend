@@ -12,16 +12,16 @@ function OrderInfo() {
         </InfoWrap>
         <InfoWrap>
           <InfoTitle>배송비</InfoTitle>
-          <InfoPrice>+3,000원</InfoPrice>
+          <InfoPrice>+0원</InfoPrice>
         </InfoWrap>
         <InfoWrap>
-          <InfoTitle>할인/부가결제</InfoTitle>
+          <InfoTitle>포인트사용</InfoTitle>
           <InfoPrice style={{ color: "red" }}>-2,000원</InfoPrice>
         </InfoWrap>
       </PriceInfoWrap>
       <AmountWrap>
         <AmountText>최종 결제 금액</AmountText>
-        <Amount>34,500원</Amount>
+        <Amount>29,500원</Amount>
       </AmountWrap>
     </ContentsWrap>
   );

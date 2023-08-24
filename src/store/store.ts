@@ -1,23 +1,29 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit"; // combineReducers 추가
+import { configureStore } from "@reduxjs/toolkit"; // combineReducers 추가
 import cartReducer from "../slice/cartSlice";
 import modalReducer from "../slice/modalSlice";
 import itemReducer from "../slice/ItemSlice";
 import mainReducer from "../slice/mainSlice";
-import storage from "redux-persist/lib/storage";
+import storageSlice from "../slice/storageSlice";
+import orderSlice from "../slice/orderSlice";
 import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import userReducer from "../slice/userSlice";
+import { combineReducers } from "redux";
 
+export const rootReducer = combineReducers({
+  modalReducer,
+  cart: cartReducer,
+  item: itemReducer,
+  main: mainReducer,
+  storage: storageSlice,
+  order: orderSlice,
+  user: userReducer,
+});
 const persistConfig = {
   key: "reduxData",
   storage,
   whitelist: ["cart", "item", "main"],
 };
-
-const rootReducer = combineReducers({
-  modalReducer,
-  cart: cartReducer,
-  item: itemReducer,
-  main: mainReducer,
-});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

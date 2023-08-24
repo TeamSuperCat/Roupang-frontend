@@ -1,13 +1,21 @@
 import { styled } from "styled-components";
+import useOrder from "../../hooks/useOrder";
 
 function OrderDisCount() {
   //TODO 포인트 사용시 금액 변화 및 표시
+  // TODO 전액 사용 버튼 눌렀을때 물건 값 만큼 포인트를 보유하고 있으면
+  // 물건값 만큼 보유 잔액 표시를 차감하고 적용금액에 표시하고 인풋에 포인트를 넣어준다
+  // 포인트 인풋에 온체인지를 걸어서 쓴 포인트 만큼 보유 잔액 차감하면서 적용금액 올려주기
+
+  const {
+    pointState: { point, handlePoint },
+  } = useOrder();
 
   return (
     <ContentsWrap>
       <InputWrap>
         <InputInner>
-          <InputText>적립금</InputText>
+          <InputText>보유 포인트</InputText>
           <InputRight>
             <PointInput type="number" />
             <InputBtn>전액 사용</InputBtn>
@@ -16,11 +24,11 @@ function OrderDisCount() {
       </InputWrap>
       <PointLeftWrap>
         <PointText>보유 잔액</PointText>
-        <span>2,000원</span>
+        <span>{point}원</span>
       </PointLeftWrap>
       <AmountWrap>
         <AmoutText>적용금액</AmoutText>
-        <Amount>0원</Amount>
+        <Amount>{point}원</Amount>
       </AmountWrap>
     </ContentsWrap>
   );
@@ -41,7 +49,7 @@ const InputWrap = styled.div`
 const InputInner = styled.div`
   display: grid;
   padding: 20px;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 90px 1fr;
   align-items: center;
 `;
 

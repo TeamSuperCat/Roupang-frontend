@@ -1,13 +1,12 @@
-import React from "react";
 import styled from "styled-components";
 import ModalMenu from "./ModalMenu";
 import useToggleModal from "../../hooks/useHandleModal";
 import MenuBtn from "./MenuBtn";
 import { RxCross2 } from "react-icons/rx";
 import ModalHeader from "./ModalHeader";
-import MyShop from "./ModalCard/UserStatus/MyShop";
+import MyShop from "../MainModal/ModalCard/UserStatus/MyShop";
 import { useEffect, useState } from "react";
-import Recent from "./ModalCard/Recent/Recent";
+import Recent from "../MainModal/ModalCard/Recent/Recent";
 
 interface IModalCard {
   $isOpen: boolean;
@@ -64,7 +63,7 @@ function MainModal() {
       </ModalContent>
       <ModalMenu onClick={switchCategory} category={category} />
       <BtnWrap onClick={toggleModal}>
-        <MenuBtn text="닫기">
+        <MenuBtn text='닫기'>
           <RxCross2 />
         </MenuBtn>
       </BtnWrap>

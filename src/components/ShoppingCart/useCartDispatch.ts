@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
 import {
   removeItem,
@@ -9,22 +10,16 @@ import {
   decrementQuantity,
   selectAllItems,
   deselectAllItems,
+  getCartItems,
+  clearselectedItems,
+  moveOrder,
 } from "../../slice/cartSlice";
-
-type Item = {
-  id: number;
-  name: string;
-  imageUrl?: string;
-  quantity: number;
-  price: number;
-  stock: number;
-};
 
 export const useCartDispatch = () => {
   const dispatch = useAppDispatch();
-
   const items = useAppSelector((state) => state.cart.items);
   const selectedItems = useAppSelector((state) => state.cart.selectedItems);
+  const navigate = useNavigate();
 
   const handleSelectAll = (isChecked: boolean) => {
     if (isChecked) {
@@ -34,12 +29,20 @@ export const useCartDispatch = () => {
     }
   };
 
-  const handleItemSelect = (itemToSelect: Item) => {
+  const handleItemSelect = (itemToSelect: CartItem) => {
     if (selectedItems.some((item) => item.id === itemToSelect.id)) {
       dispatch(deselectItem(itemToSelect.id));
     } else {
       dispatch(selectItem(itemToSelect));
     }
+  };
+
+  const selectClear = () => {
+    dispatch(clearselectedItems());
+  };
+
+  const getCartlisting = () => {
+    dispatch(getCartItems());
   };
 
   const handleDelete = (id: number) => {
@@ -56,16 +59,21 @@ export const useCartDispatch = () => {
 
   const plusQuantity = (id: number) => {
     const item = items.find((item) => item.id === id);
-    if (item && item.quantity < item.stock) {
+    if (item && item.amount < item.productStock) {
       dispatch(incrementQuantity(id));
     }
   };
 
   const minusQuantity = (id: number) => {
     const item = items.find((item) => item.id === id);
-    if (item && item.quantity > 1) {
+    if (item && item.amount > 1) {
       dispatch(decrementQuantity(id));
     }
+  };
+
+  const goOrder = () => {
+    dispatch(moveOrder());
+    navigate("/order");
   };
 
   return {
@@ -78,5 +86,8 @@ export const useCartDispatch = () => {
     handleDeleteSelected,
     plusQuantity,
     minusQuantity,
+    getCartlisting,
+    selectClear,
+    goOrder,
   };
 };

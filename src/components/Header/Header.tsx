@@ -14,7 +14,7 @@ import {
 } from "./stHeader";
 import { getItems } from "../../slice/ItemSlice";
 import { AppDispatch } from "../../store/store";
-import { useAppDispatch } from "../../hooks/useDispatch";
+import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
 import { getCatenum } from "../../slice/ItemSlice";
 import HamburgerModal from "../HamburgerModal/HamburgerModal";
 
@@ -42,23 +42,30 @@ const Header = () => {
   };
 
   const logoutHandler = () => {
+    dispatch(logout(false));
     localStorage.removeItem("accessToken");
   };
 
   useEffect(() => {
     console.log(isLogin);
+    const hasToken = !!localStorage.getItem("accessToken");
+    if (hasToken) dispatch(login(true));
     return () => {};
-  }, [isLogin]);
+  }, []);
+
+  const Testyo = async () => {
+    const testdata = await axiosClient.get("/cart");
+    console.log(testdata);
+  };
 
   return (
     <>
       <HeaderWrapper>
         <HeaderTopbox>
-          <div className="header_support_info">
+          <div className="header_support_info" onClick={Testyo}>
             / 고객 지원센터 | 012-3456-7890
           </div>
           <div className="header_mymenu_info">
-            {/* {isLogin ? ( */}
             {isLogin ? (
               <>
                 <div className="header_logout_info">
@@ -179,7 +186,7 @@ const Header = () => {
             >
               <img className="header_cartimg" src="/img/cart.svg" alt="cart" />
               <span className="header_cart_count">
-                <span>0</span>
+                <span>{cartLength}</span>
               </span>
               <div className="header_cart_ex">장바구니</div>
             </div>

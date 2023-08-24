@@ -181,7 +181,7 @@ const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 60px 40px 40px;
+  padding: 60px 40px;
 `;
 
 const UserProfile = styled.div``;
@@ -245,7 +245,7 @@ const Profile = styled.div`
 const PreviewDiv = styled.div`
   width: 100%;
   height: 80%;
-  margin: 15% auto 10%;
+  margin: 10% auto 10%;
   overflow: hidden;
   display: flex;
   align-items: center;

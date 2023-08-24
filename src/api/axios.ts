@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-const BASE_URL = '/api';
+const BASE_URL = "/api";
 const token: string | null = localStorage.getItem("accessToken");
 
 // if (token) {

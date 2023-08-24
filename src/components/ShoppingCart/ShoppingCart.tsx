@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect } from "react";
 import CartItem from "./CartItem";
 import { CartWrapper } from "./StCart";
-import { useCartDispatch } from "./useCartDispatch";
+import { useCartDispatch } from "../../hooks/useCartDispatch";
 import { useAppSelector } from "../../hooks/useDispatch";
 import Loading from "../Loading/Loading";
 

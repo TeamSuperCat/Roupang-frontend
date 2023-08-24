@@ -10,8 +10,6 @@ const MainList = () => {
 
   useEffect(() => {}, []);
 
-  console.log(items);
-
   return (
     <>
       {LoadingData ? (

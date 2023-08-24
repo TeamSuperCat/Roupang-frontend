@@ -12,3 +12,12 @@ declare interface ItemData {
   sales_end_date: string;
   stock: number;
 }
+
+declare global {
+  interface Window {
+    daum?: any;
+    IMP: Iamport;
+  }
+}
+
+export {};

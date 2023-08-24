@@ -5,27 +5,49 @@ import { RxPerson } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { useRouter } from "../hooks/useRouter";
 import OrderAccordion from "../components/Order/OrderAccordion";
-// import { useState } from "react";
 import ShipInfo from "../components/Order/ShipInfo";
 import OrderList from "../components/Order/OrderList";
 import OrderDisCount from "../components/Order/OrderDisCount";
 import OrderInfo from "../components/Order/OrderInfo";
-import OrderBenefit from "../components/Order/OrderBenefit";
+import axiosClient from "../api/axios";
+import { useQuery } from "@tanstack/react-query";
+import useOrder from "../hooks/useOrder";
 
-// type InfoType = "member" | "new";
+const requestOrderInfo = async (orderList = "구매할물품") => {
+  const response = await axiosClient.post("/order", orderList);
+  return response.data;
+};
 
 function Order() {
-  // const [shipment, setShipment] = useState<InfoType>("member");
   const { routeTo } = useRouter();
+  const { data, isLoading } = useQuery(["order"], () =>
+    requestOrderInfo("구매할물품의 상태정보")
+  );
+
+  const {
+    formState: { form },
+    addressState: { updateAddress },
+    phoneState: { updatePhone },
+    emailState: { updateEmail },
+    pointState: { handlePoint },
+  } = useOrder();
+  // 페이지 진입하면 useQuery로 구매할 상품정보 불러온다음
+  // /order POST로 전역에 저장된 구매할 물품정보 받아서 보내준다
+  // 거기서 포인트 정보를 뽑아서 orderslice 에 포인트 상태 저장
+  // 사용자 정보도 상태 저장
+  // 결제 버튼 눌렀을때 /order/payment에 formdata 보내줌
+
+  const requestPayment = () => {
+    axiosClient.post("/order/payment");
+    // 성공 실패에 따라 행동정의 필요
+  };
 
   return (
     <OrderLayout>
       <OrderHeader>
         <OrderNav>
           <NavBtn onClick={() => routeTo(-1)}>
-            <Link to="">
-              <IoArrowBackOutline />
-            </Link>
+            <IoArrowBackOutline />
           </NavBtn>
           <NavTitle>roupang</NavTitle>
           <NavRightWrap>
@@ -50,15 +72,15 @@ function Order() {
         <OrderAccordion title={"주문상품"}>
           <OrderList />
         </OrderAccordion>
-        <OrderAccordion title={"할인/부가결제"}>
+        <OrderAccordion title={"포인트 사용"}>
           <OrderDisCount />
         </OrderAccordion>
         <OrderAccordion title={"결제정보"}>
           <OrderInfo />
         </OrderAccordion>
-        <OrderAccordion title={"적립혜택"}>
+        {/* <OrderAccordion title={"적립혜택"}>
           <OrderBenefit />
-        </OrderAccordion>
+        </OrderAccordion> */}
       </FormWrap>
       <BtnWrap>
         <PurchaseBtn>32,500원 결제하기</PurchaseBtn>

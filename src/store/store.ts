@@ -3,6 +3,8 @@ import cartReducer from "../slice/cartSlice";
 import modalReducer from "../slice/modalSlice";
 import itemReducer from "../slice/ItemSlice";
 import mainReducer from "../slice/mainSlice";
+import storageSlice from "../slice/storageSlice";
+import orderSlice from "../slice/orderSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
     cart: cartReducer,
     item: itemReducer,
     main: mainReducer,
+    storage: storageSlice,
+    order: orderSlice,
   },
 });
 

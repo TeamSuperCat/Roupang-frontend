@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "../hooks/useRouter";
 import { AdminRole, User } from "../types/user";
+import jwtDecode from "jwt-decode";
 
 interface GeneralLayoutProps {
   children: React.ReactNode;
@@ -16,6 +17,11 @@ const AuthComponents: React.FC<GeneralLayoutProps> = ({
 
   const fetchUserProfile = () => {
     const 로그인여부 = "쿠키 존재 여부나 백엔드에 로그인 확인 요청";
+
+    const token =
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW1iZXJUb2tlbiIsImlkeCI6NDgsImVtYWlsIjoidGVzdDIyIiwibmlja25hbWUiOiJ0ZXN0IiwicGhvbmVfbnVtYmVyIjoiMTIzMTIzNDEiLCJhZGRyZXNzIjoi44WB44S044WHIiwibWVtYmVyX2ltZyI6ImFzZCIsImNyZWF0ZWRfYXQiOiIyMDIzLTA4LTIzIDE0OjU5OjM4IiwidXBkYXRlZF9hdCI6IjIwMjMtMDgtMjMgMTQ6NTk6MzgiLCJ1c2VyX3BvaW50IjowLCJpYXQiOjE2OTI4MDI4MDUsImV4cCI6MTY5MjgwNjQwNX0.5GS8PlfL5dGPSYy7lBCPYlhsIoqi3kcmsokScymZfRc";
+
+    const decoded = jwtDecode(token.split(" ")[1]);
 
     if (로그인여부 === null) {
       // 쿠키가 없거나 로그인 확인 요청 했을때 아니면

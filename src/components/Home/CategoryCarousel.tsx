@@ -19,6 +19,7 @@ interface CategoryCarouselProps {
 function CategoryCarousel({ data, category }: CategoryCarouselProps) {
   const [isLastSlide, setIsLastSlide] = useState(false);
   const { routeTo } = useRouter();
+  const [isDrag, setIsDrag] = useState(false);
   const dispatch: AppDispatch = useAppDispatch();
 
   const handleCategorySelect = (category: number | string): void => {
@@ -35,16 +36,16 @@ function CategoryCarousel({ data, category }: CategoryCarouselProps) {
     infinite: false,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 1,
+    slidesToScroll: 4,
     arrows: false,
-    lazyLoad: "ondemand",
     afterChange: (current) => {
-      console.log(current);
+      setIsDrag(false);
       setIsLastSlide(current === slidesCount);
     },
+    beforeChange: () => {
+      setIsDrag(true);
+    },
     onSwipe: (direction) => {
-      console.log(direction, isLastSlide);
-
       if (isLastSlide && direction === "left") {
         handleCategorySelect(category);
       }
@@ -54,9 +55,9 @@ function CategoryCarousel({ data, category }: CategoryCarouselProps) {
   return (
     <CarouselWrapper>
       <CategoryH1>{data[0].category_name}</CategoryH1>
-      <SlickSlider {...settings} className="">
+      <SlickSlider {...settings}>
         {data.map((item, i) => (
-          <ProductCard key={i} item={item} />
+          <ProductCard key={i} item={item} $isDrag={isDrag} />
         ))}
         <ShowMore onClick={() => handleCategorySelect(category)} />
       </SlickSlider>
@@ -68,9 +69,6 @@ export default CategoryCarousel;
 
 const SlickSlider = styled(Slider)`
   .slick-track {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
     margin: 0;
   }
 `;

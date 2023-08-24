@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
+import axiosClient from "../api/axios";
 
 type UploadImageFn = (images: File[]) => Promise<string[]>;
 
@@ -7,8 +8,7 @@ type CloudinaryResponse = {
   secure_url: string;
 };
 
-const { VITE_CLOUDINARY_API_KEY, VITE_CLOUDINARY_UPLOAD_PRESET } = import.meta
-  .env;
+const { VITE_CLOUDINARY_API_KEY, VITE_CLOUDINARY_UPLOAD_PRESET } = import.meta.env;
 
 const handleImageUpload: UploadImageFn = async (files) => {
   const imageArray: FormData[] = files.map((image) => {
@@ -19,12 +19,11 @@ const handleImageUpload: UploadImageFn = async (files) => {
     return formData;
   });
 
-  const uploadRequests: Promise<AxiosResponse<CloudinaryResponse>>[] =
-    imageArray.map((formData) =>
-      axios.post(`https://api.cloudinary.com/v1_1/ji/image/upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-    );
+  const uploadRequests: Promise<AxiosResponse<CloudinaryResponse>>[] = imageArray.map((formData) =>
+    axiosClient.post(`https://api.cloudinary.com/v1_1/ji/image/upload`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+  );
 
   const responses = await Promise.allSettled(uploadRequests);
 

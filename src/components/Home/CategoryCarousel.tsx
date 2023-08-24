@@ -61,6 +61,7 @@ function CategoryCarousel({ data, category }: CategoryCarouselProps) {
         ))}
         <ShowMore onClick={() => handleCategorySelect(category)} />
       </SlickSlider>
+      Slider{" "}
     </CarouselWrapper>
   );
 }

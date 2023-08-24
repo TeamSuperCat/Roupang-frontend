@@ -2,7 +2,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "./CustomButton";
 import { useNavigate } from "react-router";
-import axios from "axios";
+import axiosClient from "../../api/axios";
+import { useAppDispatch } from "../../hooks/useDispatch";
+import { login } from "../../slice/userSlice";
 
 // type PlaceholderInput = {
 //   enteredNameIsValid: boolean;
@@ -22,6 +24,8 @@ import axios from "axios";
 
 const LoginInput = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   // 1. 상태값을 각 인풋 별로 나누기, (에러 상태도 마찬가지, 인풋별로 각각 상태 나타내기.,)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,16 +69,22 @@ const LoginInput = () => {
   // 4. 전송버튼
   const handleLoginSubmit = async () => {
     if (isValidEmail(email) && isValidPassword(password)) {
-      const data = {
+      interface RequestData {
+        email: string;
+        password: string;
+      }
+
+      const requestData = {
         email,
         password,
       };
+      console.log(requestData);
 
-      axios
-        .post("http://3.12.151.96:8080/api/v1/member/login", data)
+      await axiosClient
+        .post<RequestData>("/member/login", requestData)
         .then((res) => {
-          const accessToken = res.headers["authorization"];
-          localStorage.setItem("accessToken", accessToken);
+          console.log(res);
+          dispatch(login(true));
           navigate("/");
         })
         .catch((err) => {
@@ -82,6 +92,19 @@ const LoginInput = () => {
             console.log(err.response.data.msg);
           }
         });
+
+      // axios
+      //   .post("http://3.12.151.96:8080/api/v1/member/login", data)
+      //   .then((res) => {
+      //     const accessToken = res.headers["authorization"];
+      //     localStorage.setItem("accessToken", accessToken);
+      //     navigate("/");
+      //   })
+      //   .catch((err) => {
+      //     if (err) {
+      //       console.log(err.response.data.msg);
+      //     }
+      //   });
 
       // try {
       //   const response = await fetch("http://localhost:8080/api/v1/member/login", {
@@ -144,6 +167,7 @@ export default LoginInput;
 
 const Container = styled.div`
   position: relative;
+  width: 100%;
 `;
 const InputWrap = styled.div`
   position: relative;

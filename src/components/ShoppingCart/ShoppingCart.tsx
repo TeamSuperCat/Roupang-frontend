@@ -20,11 +20,11 @@ const ShoppingCart = () => {
     return new Intl.NumberFormat("ko-KR").format(value);
   }
   const BuyPrice = selectedItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.price * item.amount,
     0
   );
   const totalPrice = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.price * item.amount,
     0
   );
 

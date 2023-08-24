@@ -63,7 +63,7 @@ function MainModal() {
       </ModalContent>
       <ModalMenu onClick={switchCategory} category={category} />
       <BtnWrap onClick={toggleModal}>
-        <MenuBtn text="닫기">
+        <MenuBtn text='닫기'>
           <RxCross2 />
         </MenuBtn>
       </BtnWrap>

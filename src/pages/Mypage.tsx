@@ -20,10 +20,18 @@ interface Data {
 
 type Item = {
   id: number;
-  name: string;
-  imageUrl?: string;
-  quantity: number;
+  memberId: number;
+  productIdx: number;
+  categoryName: string;
+  sellerIdx: number;
+  productName: string;
+  productImg: string;
+  description: string;
   price: number;
+  amount: number;
+  productStock: number;
+  createdAt: string;
+  optionDetail: string;
 };
 
 const Mypage = () => {
@@ -45,16 +53,40 @@ const Mypage = () => {
   const renderPage = () => {
     switch (currentPage) {
       case "menuProfile":
-        return <MenuProfile data={data} setData={setData} />;
+        return <MenuProfile data={data} setData={setData} getUserInfo={getUserInfo} />;
       case "menuCart":
         return <MenuCart items={items} />;
       case "menuRegisterSeller":
         return <MenuRegisterSeller setIsSeller={setIsSeller} />;
       case "menuSellerProducts":
-        return <MenuSellerProducts getCartItems={getCartItems} />;
+        return <MenuSellerProducts />;
       default:
-        return <MenuProfile data={data} setData={setData} />;
+        return <MenuProfile data={data} setData={setData} getUserInfo={getUserInfo} />;
     }
+  };
+
+  const postCart = async () => {
+    await axiosClient
+      .post("/cart", {
+        amount: 2,
+        productIdx: 2,
+        optionsDetail: "사이즈: s",
+      })
+      .then((res) => {
+        console.log(res);
+        // console.log(res.data.content);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getProducts = async () => {
+    await axiosClient
+      .get("/products?page=0&size=999&order=")
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.content);
+      })
+      .catch((err) => console.log(err));
   };
 
   const getCartItems = async () => {
@@ -75,9 +107,11 @@ const Mypage = () => {
       .then((res) => {
         console.log(res);
         if (res) {
-          setIsSeller(true);
+          setData(res.data);
+          if (res.data.seller) {
+            setIsSeller(true);
+          }
         }
-        // setData(res);
       })
       .catch((err) => {
         console.log(err);
@@ -107,7 +141,7 @@ const Mypage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLogin) return navigate("/");
+    if (!isLogin) return navigate("/login");
     return () => {};
   }, [isLogin]);
 
@@ -117,29 +151,6 @@ const Mypage = () => {
     // setIsSeller(true);
     return () => {};
   }, [isSeller]);
-
-  useEffect(() => {
-    // init items
-    // 통신 되면 지워도 됨
-    setItems([
-      {
-        id: 1,
-        name: "아이템1",
-        quantity: 1,
-        price: 15000,
-        imageUrl: "/img/cart1.jpg",
-      },
-      {
-        id: 2,
-        name: "아이템2",
-        quantity: 6,
-        price: 6000,
-        imageUrl: "/img/cart2.jpg",
-      },
-      // ...
-    ]);
-    return () => {};
-  }, []);
 
   /** 아 마이페이지에서 콘텍스트API를 쓰는 군요 ㄷㄷ... 넵!
    * Mypage에서 contextAPI 쓰는 것 처럼
@@ -162,6 +173,9 @@ const Mypage = () => {
     <>
       <button onClick={getUserInfo}>getUserInfo</button>
       <button onClick={signupSeller}>SignupSeller</button>
+      <button onClick={getProducts}>getProducts</button>
+      <button onClick={postCart}>postCart</button>
+      <button onClick={getCartItems}>getCartItems</button>
       <Heading>This is MYpage.</Heading>
       <Container>
         <MypageDiv>

@@ -1,15 +1,5 @@
 import styled from "styled-components";
 
-// @media (max-width: 1300px) {
-//   max-width: 1000px;
-// }
-// @media (max-width: 1150px) {
-//   max-width: 840px;
-// }
-// @media (max-width: 950px) {
-//   max-width: 90%;
-// }
-
 export const HeaderWrapper = styled.header`
   width: 100%;
   height: auto;
@@ -77,7 +67,6 @@ export const HeaderTopbox = styled.div`
       cursor: pointer;
       font-family: "Jost", sans-serif;
       padding: 5px 10px;
-      /* background-color: aliceblue; */
     }
     &:hover .header_login {
       color: #50d2ba;
@@ -125,7 +114,6 @@ export const HeaderTopbox = styled.div`
     position: relative;
     align-items: center;
     padding: 5px 10px;
-    /* background-color: aliceblue; */
 
     &:hover .header_mypage {
       transition: all 0.2s;
@@ -165,7 +153,6 @@ export const HeaderTopbox = styled.div`
     position: relative;
     align-items: center;
     padding: 5px 10px;
-    /* background-color: aliceblue; */
 
     &:hover .header_board {
       transition: all 0.2s;
@@ -298,6 +285,9 @@ export const HeaderMiddlebox = styled.div`
       cursor: pointer;
       &:hover .header_search_ex {
         display: block;
+        @media (max-width: 550px) {
+          display: none;
+        }
       }
       .header_search_ex {
         display: none;
@@ -330,6 +320,9 @@ export const HeaderMiddlebox = styled.div`
       position: relative;
       &:hover .header_clock_ex {
         display: block;
+        @media (max-width: 550px) {
+          display: none;
+        }
       }
       .header_clock_ex {
         display: none;
@@ -362,6 +355,9 @@ export const HeaderMiddlebox = styled.div`
       cursor: pointer;
       &:hover .header_cart_ex {
         display: block;
+        @media (max-width: 550px) {
+          display: none;
+        }
       }
       .header_cart_count {
         position: absolute;

@@ -1,15 +1,46 @@
 import { styled } from "styled-components";
-// import { useRouter } from "../../hooks/useRouter";
+import { useRouter } from "../../hooks/useRouter";
+import { useState } from "react";
+import Loading from "../Loading/Loading";
+import useStorage from "../../hooks/useStorage";
+
 interface ProductCardProps {
   item: ItemData;
+  $isDrag?: boolean;
 }
 
-function ProductCard({ item }: ProductCardProps) {
+function ProductCard({ item, $isDrag }: ProductCardProps) {
   const randomNum = Math.floor(Math.random() * 30) + 20;
   const upPrice = item.price + item.price * (randomNum * 0.01);
+  const [isLoading, setIsLoading] = useState(false);
+  const { routeTo } = useRouter();
+  const { state, updateData } = useStorage();
+  const handleClick = () => {
+    if (!$isDrag) {
+      setIsLoading(true);
+      const recentList = localStorage.getItem("recent");
+      if (!recentList) {
+        updateData([item.product_idx]);
+      }
+      if (recentList) {
+        const curr = [...state, item.product_idx];
+        const tmp = curr.reduce(
+          (a: number[], c) => (a.includes(c) ? a : [...a, c]),
+          []
+        );
+        updateData(tmp);
+      }
+
+      setIsLoading(false);
+
+      routeTo(`/detail/${item.product_idx}`);
+    }
+  };
+
+  if (isLoading) return <Loading />;
 
   return (
-    <CardWrapper>
+    <CardWrapper onClick={handleClick}>
       <CardImgWrapper>
         <a>
           <CardImg
@@ -40,10 +71,9 @@ export default ProductCard;
 
 const CardWrapper = styled.li`
   display: grid;
-  width: 95%;
-  height: 95%;
+  width: 100%;
+  height: 100%;
   grid-template-rows: 3fr 1fr;
-  margin: 14px 14px 14px 0;
   font-family: "Jost", sans-serif;
   min-height: 250px;
   cursor: pointer;
@@ -101,6 +131,9 @@ const PriceText = styled.span`
   font-weight: 500;
   line-height: 1;
   margin-right: 10px;
+  @media (max-width: 640px) {
+    font-size: 15px;
+  }
 
   &:nth-child(1) {
     color: #31caae;
@@ -112,6 +145,9 @@ const PriceText = styled.span`
     color: #cccccc;
     font-weight: 400;
     line-height: 1.1;
+    @media (max-width: 640px) {
+      font-size: 13px;
+    }
   }
   &:nth-child(3) {
     color: #555555;

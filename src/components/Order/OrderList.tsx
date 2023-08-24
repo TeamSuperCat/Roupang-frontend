@@ -1,21 +1,25 @@
 import { styled } from "styled-components";
 import OrderProductList from "./OrderProductList";
+import useOrder from "../../hooks/useOrder";
 
 function OrderList() {
+  // order에서 불러와서 상품 상태 업데이트 하면 불러와서 그려주기
+  const {
+    productsState: { products },
+  } = useOrder();
+
+  console.log(products);
+
   return (
     <Layout>
       <PuchaseProducts>
-        <OrderProductList />
-        <OrderProductList />
-        <OrderProductList />
-        <OrderProductList />
-        <OrderProductList />
-        <OrderProductList />
-        <OrderProductList />
+        {products.map((product, i) => (
+          <OrderProductList key={i} {...product} />
+        ))}
       </PuchaseProducts>
       <ShippingWrap>
-        <div>배송비</div>
-        <div>3,000원</div>
+        <div>배송비 였던 것</div>
+        <div>0원</div>
       </ShippingWrap>
     </Layout>
   );

@@ -3,10 +3,18 @@ import { styled } from "styled-components";
 
 type Item = {
   id: number;
-  name: string;
-  imageUrl?: string;
-  quantity: number;
+  memberId: number;
+  productIdx: number;
+  categoryName: string;
+  sellerIdx: number;
+  productName: string;
+  productImg: string;
+  description: string;
   price: number;
+  amount: number;
+  productStock: number;
+  createdAt: string;
+  optionDetail: string;
 };
 
 interface MenuCartProps {
@@ -18,10 +26,10 @@ const MenuCart = ({ items }: MenuCartProps) => {
     <CartContainer>
       <div>
         <div>
-          <div className="cart_length_view">
+          <div className='cart_length_view'>
             <span>상품 0 개</span>
             <span>
-              <Link to="/cart">자세히 보기</Link>
+              <Link to='/cart'>자세히 보기</Link>
             </span>
           </div>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -45,12 +53,12 @@ const MenuCart = ({ items }: MenuCartProps) => {
               {items.map((item) => (
                 <tr key={item.id}>
                   <td>
-                    <img src={item.imageUrl} alt="상품이미지" />
+                    <img src={item.productImg} alt='상품이미지' />
                   </td>
-                  <td>{item.name}</td>
-                  <td>{item.quantity}</td>
+                  <td>{item.productName}</td>
+                  <td>{item.productStock}</td>
                   <td>{item.price}</td>
-                  <td>{item.price * item.quantity}</td>
+                  <td>{item.price * item.productStock}</td>
                 </tr>
               ))}
             </tbody>

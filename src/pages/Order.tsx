@@ -2,30 +2,86 @@ import { styled } from "styled-components";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { PiHandbagSimple } from "react-icons/pi";
 import { RxPerson } from "react-icons/rx";
-import { Link } from "react-router-dom";
 import { useRouter } from "../hooks/useRouter";
 import OrderAccordion from "../components/Order/OrderAccordion";
-// import { useState } from "react";
 import ShipInfo from "../components/Order/ShipInfo";
 import OrderList from "../components/Order/OrderList";
-import OrderDisCount from "../components/Order/OrderDisCount";
+// import OrderDisCount from "../components/Order/OrderDisCount";
 import OrderInfo from "../components/Order/OrderInfo";
-import OrderBenefit from "../components/Order/OrderBenefit";
+import axiosClient from "../api/axios";
+import { useQuery } from "@tanstack/react-query";
+import useOrder from "../hooks/useOrder";
+import { useCartDispatch } from "../hooks/useCartDispatch";
+import { OrderItem } from "../slice/cartSlice";
+import Loading from "../components/Loading/Loading";
+import { useEffect, useState } from "react";
+import { ProductsType } from "../slice/orderSlice";
+import LoadingNoBack from "../components/Loading/LoadingNoBack";
 
-// type InfoType = "member" | "new";
+interface ResponseData {
+  memberIdx: number;
+  nickName: string;
+  address: string;
+  phoneNumber: string;
+  email: string;
+  userPoint: number;
+  purchaseItemResponseList: ProductsType[];
+}
+
+const requestOrderInfo = async (orderList: OrderItem[]) => {
+  const response = await axiosClient.post("/order", [...orderList]);
+  const data: ResponseData = response.data;
+  return data;
+};
 
 function Order() {
-  // const [shipment, setShipment] = useState<InfoType>("member");
   const { routeTo } = useRouter();
+  const { ordered } = useCartDispatch();
+  const { data, isLoading, isFetching } = useQuery(
+    ["order"],
+    () => requestOrderInfo(ordered)
+    // { staleTime: Infinity }
+  );
+  const {
+    formState: { form },
+    addressState: { updateAddress },
+    phoneState: { updatePhone },
+    emailState: { updateEmail },
+    pointState: { point, updatePoint },
+    productsState: { products, updateProducts },
+  } = useOrder();
+  const [total, setTotal] = useState(0);
+
+  // 결제 버튼 눌렀을때 /order/payment에 formdata 보내줌
+  const requestPayment = () => {
+    axiosClient.post("/order/payment");
+    // 성공 실패에 따라 행동정의 필요
+  };
+
+  const handleClick = () => {
+    console.log("클릭");
+  };
+
+  useEffect(() => {
+    if (!data) return;
+    const eforward = data.email.split("@")[0];
+    const pforward = data.phoneNumber.substring(3, 7);
+    const pbackward = data.phoneNumber.substring(7);
+    updateProducts(data.purchaseItemResponseList);
+    updateEmail({ forward: eforward });
+    updatePhone({ forward: pforward, backward: pbackward });
+    updateAddress({ rest: data.address });
+    updatePoint(data.userPoint);
+    setTotal(products.reduce((a, c) => a + c.allPrice, 0));
+  }, [data]);
 
   return (
     <OrderLayout>
+      {(isLoading || isFetching) && <LoadingNoBack />}
       <OrderHeader>
         <OrderNav>
           <NavBtn onClick={() => routeTo(-1)}>
-            <Link to="">
-              <IoArrowBackOutline />
-            </Link>
+            <IoArrowBackOutline />
           </NavBtn>
           <NavTitle>roupang</NavTitle>
           <NavRightWrap>
@@ -50,18 +106,20 @@ function Order() {
         <OrderAccordion title={"주문상품"}>
           <OrderList />
         </OrderAccordion>
-        <OrderAccordion title={"할인/부가결제"}>
+        {/* <OrderAccordion title={"포인트 사용"}>
           <OrderDisCount />
-        </OrderAccordion>
+        </OrderAccordion> */}
         <OrderAccordion title={"결제정보"}>
-          <OrderInfo />
+          <OrderInfo total={total} />
         </OrderAccordion>
-        <OrderAccordion title={"적립혜택"}>
+        {/* <OrderAccordion title={"적립혜택"}>
           <OrderBenefit />
-        </OrderAccordion>
+        </OrderAccordion> */}
       </FormWrap>
       <BtnWrap>
-        <PurchaseBtn>32,500원 결제하기</PurchaseBtn>
+        <PurchaseBtn disabled={total > point} onClick={handleClick}>
+          {total.toLocaleString()}원 결제하기
+        </PurchaseBtn>
         <span>
           무이자할부가 적용되지 않은 상품과 무이자할부가 가능한 상품을 동시에
           구매할 경우 전체 주문 상품 금액에 대해 무이자할부가 적용되지 않습니다.
@@ -85,6 +143,7 @@ const OrderLayout = styled.div`
   margin: 0 auto;
   border: 1px solid #d7d7d7;
   background-color: #f0f0f0;
+  position: relative;
 `;
 
 const OrderHeader = styled.div`
@@ -170,5 +229,10 @@ const PurchaseBtn = styled.button`
 
   &:hover {
     opacity: 0.8;
+  }
+
+  &:disabled {
+    background-color: red;
+    opacity: 0.2;
   }
 `;

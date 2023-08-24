@@ -1,22 +1,14 @@
 import React from "react";
 
-type Item = {
-  id: number;
-  name: string;
-  imageUrl?: string;
-  quantity: number;
-  price: number;
-  stock: number;
-};
-
 type CartItemProps = {
-  item: Item;
-  handleItemSelect: (item: Item) => void;
+  item: CartItem;
+  handleItemSelect: (item: CartItem) => void;
   plusQuantity: (id: number) => void;
   minusQuantity: (id: number) => void;
   handleDelete: (id: number) => void;
-  selectedItems: Item[];
+  selectedItems: CartItem[];
   formatCurrency: (price: number) => string;
+  SelectgoOrder: (id: number) => void;
 };
 
 const CartItem: React.FC<CartItemProps> = ({
@@ -27,6 +19,7 @@ const CartItem: React.FC<CartItemProps> = ({
   handleDelete,
   formatCurrency,
   selectedItems,
+  SelectgoOrder,
 }) => {
   return (
     <tr key={item.id}>
@@ -38,13 +31,13 @@ const CartItem: React.FC<CartItemProps> = ({
         />
       </td>
       <td>
-        <img src={item.imageUrl} alt="상품이미지" />
+        <img src={item.productImg} alt="상품이미지" />
       </td>
-      <td>{item.name}</td>
+      <td>{item.productName}</td>
       <td>{formatCurrency(item.price)}</td>
       <td>
         <div className="quantity_inputbox">
-          <input type="number" value={item.quantity} readOnly />
+          <input type="number" value={item.amount} readOnly />
           <div className="quantity_btnbox">
             <button onClick={() => plusQuantity(item.id)}>
               <img src="/img/toparw.svg" alt="화살표" />
@@ -54,12 +47,12 @@ const CartItem: React.FC<CartItemProps> = ({
             </button>
           </div>
         </div>
-        <div className="item_stock">재고 : {item.stock}</div>
+        <div className="item_stock">재고 : {item.productStock}</div>
       </td>
 
-      <td>{formatCurrency(item.price * item.quantity)}</td>
+      <td>{formatCurrency(item.price * item.amount)}</td>
       <td className="cart_item_btnbox">
-        <div>주문하기</div>
+        <div onClick={() => SelectgoOrder(item.id)}>주문하기</div>
         <div>위시리스트</div>
         <div onClick={() => handleDelete(item.id)}>
           삭제

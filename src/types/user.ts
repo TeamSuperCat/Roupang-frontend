@@ -12,10 +12,18 @@ export interface UserInfo {
 }
 
 export interface User {
-  userId: number; // pk
-  username: string;
-  password: string;
-  userInfo: UserInfo;
+  address: string;
+  created_at: string;
+  email: string;
+  exp: number;
+  iat: number;
+  idx: number;
+  member_img: string;
+  nickname: string;
+  phone_number: string;
+  sub: string;
+  updated_at: string;
+  user_point: number;
 }
 
 // export interface Item {

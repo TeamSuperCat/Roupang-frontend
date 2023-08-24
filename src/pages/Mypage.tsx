@@ -57,6 +57,30 @@ const Mypage = () => {
     }
   };
 
+  const postCart = async () => {
+    await axiosClient
+      .post("/cart", {
+        amount: 2,
+        productIdx: 2,
+        optionsDetail: "사이즈: s",
+      })
+      .then((res) => {
+        console.log(res);
+        // console.log(res.data.content);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getProducts = async () => {
+    await axiosClient
+      .get("/products?page=0&size=999&order=")
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.content);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const getCartItems = async () => {
     await axiosClient
       .get("/cart")
@@ -75,7 +99,9 @@ const Mypage = () => {
       .then((res) => {
         console.log(res);
         if (res) {
-          setIsSeller(true);
+          if (res.data.seller) {
+            setIsSeller(true);
+          }
         }
         // setData(res);
       })
@@ -107,7 +133,7 @@ const Mypage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLogin) return navigate("/");
+    if (!isLogin) return navigate("/login");
     return () => {};
   }, [isLogin]);
 
@@ -162,6 +188,9 @@ const Mypage = () => {
     <>
       <button onClick={getUserInfo}>getUserInfo</button>
       <button onClick={signupSeller}>SignupSeller</button>
+      <button onClick={getProducts}>getProducts</button>
+      <button onClick={postCart}>postCart</button>
+      <button onClick={getCartItems}>getCartItems</button>
       <Heading>This is MYpage.</Heading>
       <Container>
         <MypageDiv>

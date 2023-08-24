@@ -20,10 +20,18 @@ interface Data {
 
 type Item = {
   id: number;
-  name: string;
-  imageUrl?: string;
-  quantity: number;
+  memberId: number;
+  productIdx: number;
+  categoryName: string;
+  sellerIdx: number;
+  productName: string;
+  productImg: string;
+  description: string;
   price: number;
+  amount: number;
+  productStock: number;
+  createdAt: string;
+  optionDetail: string;
 };
 
 const Mypage = () => {

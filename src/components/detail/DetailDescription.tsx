@@ -9,10 +9,8 @@ import kakaoPaymentfunction from "../../api/KakaoPayment";
 import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
 import { immediatPayment } from "../../slice/cartSlice";
+
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../hooks/useDispatch";
-import { useSelector, useDispatch } from "react-redux";
-import { order } from "../../slice/immediatpaymentSlice";
 
 const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
@@ -27,7 +25,6 @@ const responseProductData = {
 ///컴포넌트시작
 const DetailDescription = () => {
   const dispatch = useDispatch();
-  const OrderItem = useAppSelector((state) => state.cart.order);
   const { productid } = useParams();
   const navigate = useNavigate();
 
@@ -44,9 +41,6 @@ const DetailDescription = () => {
     description_img: "",
   });
   const [option, setOption] = useState<Record<string, string>>({});
-  const RTKitems = useSelector((state: any) => state);
-
-  const dispatch = useDispatch();
 
   const product_id: string | undefined = productid;
 
@@ -80,7 +74,6 @@ const DetailDescription = () => {
   };
 
   const enterKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    // console.log(event);
     if (event.key === "Enter") {
       const inputValue = (event.target as HTMLInputElement).value;
       setIsAmountInputbox((prev) => !prev);
@@ -122,7 +115,6 @@ const DetailDescription = () => {
           return;
         }
       }
-      console.log("장바구니에 담을수있겠어요");
     } else {
       alert("옵션을 선택해주세요");
       return;
@@ -140,12 +132,9 @@ const DetailDescription = () => {
       )
       .then((res) => {
         alert("장바구니 완료 쇼핑을 계쏙 하쎄용");
-        console.log(res);
-        console.log("응잘되");
       })
       .catch((error) => {
-        console.log(error);
-        console.log("응안돼");
+        alert("에러입니다!");
       });
   };
   //구매하기
@@ -174,10 +163,8 @@ const DetailDescription = () => {
       productIdx: product_id,
     };
     await dispatch(immediatPayment(payload));
-    console.log(OrderItem);
     navigate("/order");
   };
-  console.log(RTKitems);
 
   //선택한 옵션으로 중복되지않게 옵션을만듬
   const finalSelectionOptions = (

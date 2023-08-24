@@ -147,7 +147,11 @@ interface RouteObject {
 //router.children가 존재하면 다시 함수를 다시 호출해서 중첩라우팅을 변환합니다. 재귀를 사용했으니 2중3중으로 들어가도 처리가능합니다.
 function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   return routerArray.map((router) => {
-    const routeElement = router.withAuth ? <AuthComponents>{router.element}</AuthComponents> : router.element;
+    const routeElement = router.withAuth ? (
+      <AuthComponents>{router.element}</AuthComponents>
+    ) : (
+      router.element
+    );
 
     const routeObject: RouteObject = {
       path: router.path,
@@ -167,4 +171,6 @@ function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   });
 }
 
-export const routers: RemixRouter = createBrowserRouter(transformRoutes(routerData));
+export const routers: RemixRouter = createBrowserRouter(
+  transformRoutes(routerData)
+);

@@ -22,6 +22,9 @@ import axiosClient from "../../api/axios";
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const isLogin = useAppSelector((state) => state.user.isLogin);
+  const cartLength = useAppSelector((state) =>
+    state.cart.items ? state.cart.items.length : 0
+  );
 
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -57,8 +60,10 @@ const Header = () => {
     <>
       <HeaderWrapper>
         <HeaderTopbox>
-          <div className='header_support_info' onClick={Testyo}>/ 고객 지원센터 | 012-3456-7890</div>
-          <div className='header_mymenu_info'>
+          <div className="header_support_info" onClick={Testyo}>
+            / 고객 지원센터 | 012-3456-7890
+          </div>
+          <div className="header_mymenu_info">
             {isLogin ? (
               <>
                 <div className="header_logout_info">
@@ -179,7 +184,7 @@ const Header = () => {
             >
               <img className="header_cartimg" src="/img/cart.svg" alt="cart" />
               <span className="header_cart_count">
-                <span>0</span>
+                <span>{cartLength}</span>
               </span>
               <div className="header_cart_ex">장바구니</div>
             </div>

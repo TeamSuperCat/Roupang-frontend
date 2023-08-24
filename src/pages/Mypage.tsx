@@ -62,7 +62,7 @@ const Mypage = () => {
       .post("/cart", {
         amount: 2,
         productIdx: 2,
-        optionDetail: ["사이즈: s"],
+        optionsDetail: "사이즈: s",
       })
       .then((res) => {
         console.log(res);

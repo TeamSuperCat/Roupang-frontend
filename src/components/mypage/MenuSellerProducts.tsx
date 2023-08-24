@@ -1,5 +1,5 @@
 import axiosClient from "../../api/axios";
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import useGetUrl from "../../hooks/useGetUrls";
@@ -7,7 +7,7 @@ import useGetUrl from "../../hooks/useGetUrls";
 interface Product {
   produtcName: string;
   description: string;
-  // categoryIdx: number;
+  categoryIdx: number;
   price: number;
   stock: number;
   productImg: string | File;
@@ -32,11 +32,12 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
   const [descriptionImgUrls, setDescriptionImgUrls] = useState<string[]>([]);
   const { ref: descriptionImgRef, onChange: descriptionImgOnChange } = useGetUrl(setDescriptionImgUrls);
 
+  const selectRef = useRef(0);
   const [categories, setCategories] = useState<Category[]>([]);
   const [product, setProduct] = useState<Product>({
     produtcName: "",
     description: "",
-    // categoryIdx: 0,
+    categoryIdx: 0,
     price: 0,
     stock: 0,
     productImg: "default_profile.png",
@@ -102,6 +103,14 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
         descriptionImg: descriptionImgUrls[0],
       }));
       console.log(product);
+
+      if (selectRef.current === undefined) return console.log("selectRef.current undefined임");
+      // if (selectRef.current.value === null) return console.log("selectRef.current.value null");
+
+      const selectedCategory = selectRef.current;
+      console.log(selectedCategory);
+      // if (selectedCategory === null) return console.log("selectedCategory null임");
+      await setProduct((prev) => ({ ...prev, categoryIdx: +selectedCategory }));
 
       await axiosClient
         .post("/seller/products/register", product)
@@ -191,11 +200,12 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
           <select
             name='category'
             id='category'
-            // value={product.category}
+            // value={product.categoryIdx}
+            ref={selectRef}
             onChange={handleInputChange}
           >
             {categories.map((category) => (
-              <option key={category.categoryName} value={category.categoryName}>
+              <option key={category.categoryName} value={category.categoryIdx}>
                 {category.categoryName}
               </option>
             ))}

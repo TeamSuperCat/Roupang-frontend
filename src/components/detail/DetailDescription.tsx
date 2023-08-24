@@ -158,9 +158,6 @@ const DetailDescription = () => {
       return;
     }
 
-    console.log("보낼객체형태임", 보낼객체형태임);
-    console.log("보낼객체형태임", typeof 보낼객체형태임);
-
     axiosClient
       .post("/order", [
         {
@@ -170,9 +167,24 @@ const DetailDescription = () => {
         },
       ])
       .then((res) => {
-        alert("구매완료!");
         console.log(res);
         console.log("응잘되");
+        console.log(res.data.purchaseItemResponseList[0]);
+
+        const Purchasecompleted: ItemData{
+          category_name: "몰루",
+          description: res.data.purchaseItemResponseList[0].description,
+          description_img: "ㅇㅇ",
+          options: res.data.purchaseItemResponseList[0].option,
+          price: res.data.purchaseItemResponseList[0].allprice,
+          product_idx: Number(productid),
+          product_img: res.data.purchaseItemResponseList[0].productImg,
+          product_name: res.data.purchaseItemResponseList[0].productName,
+          sales_end_date: '',
+          stock: 1
+        }
+
+        // navigate("/order");
       })
       .catch((error) => {
         console.log(error);

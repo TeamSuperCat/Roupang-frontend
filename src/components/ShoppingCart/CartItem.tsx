@@ -8,6 +8,7 @@ type CartItemProps = {
   handleDelete: (id: number) => void;
   selectedItems: CartItem[];
   formatCurrency: (price: number) => string;
+  SelectgoOrder: (id: number) => void;
 };
 
 const CartItem: React.FC<CartItemProps> = ({
@@ -18,6 +19,7 @@ const CartItem: React.FC<CartItemProps> = ({
   handleDelete,
   formatCurrency,
   selectedItems,
+  SelectgoOrder,
 }) => {
   return (
     <tr key={item.id}>
@@ -50,7 +52,7 @@ const CartItem: React.FC<CartItemProps> = ({
 
       <td>{formatCurrency(item.price * item.amount)}</td>
       <td className="cart_item_btnbox">
-        <div>주문하기</div>
+        <div onClick={() => SelectgoOrder(item.id)}>주문하기</div>
         <div>위시리스트</div>
         <div onClick={() => handleDelete(item.id)}>
           삭제

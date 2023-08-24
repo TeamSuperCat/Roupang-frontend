@@ -14,12 +14,16 @@ const MainListControl = () => {
   const searchkey = useAppSelector((state) => state.item.keyword);
   const dispatch = useAppDispatch();
 
+  //이 state는 사용자가 현재 필터상황을 확인할수있게 스타일컴포넌트에 props로 사용됩니다.
   const [isfilterType, setIsfilterTpye] = useState("");
 
+  //상태값을 감지해서 사용자가 선택한 필터타입이 바뀔때마다 isfilterType에 현재 필터상황을 넣어줍니다.
   useEffect(() => {
     setIsfilterTpye(filtersort);
   }, [filtersort]);
 
+  //최신순, 가격순 등 사용자가 필터를 클릭하면 그 필터에 맞는 아이템들을 보여주기위한 함수입니다.
+  //현재 main페이지의 상황이 카테고리를 선택된 상황인지, 검색해서 들어온 상황인지를 판단해서 현재 상황에 맞는 dispatch 를 호출합니다.
   const handleGetCateItems = (category: string) => {
     setIsfilterTpye(category);
     dispatch(getSortType(category));

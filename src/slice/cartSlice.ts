@@ -15,13 +15,13 @@ declare interface CartState {
   order: OrderItem[];
   isLoading: boolean;
 }
-
 interface OrderItem {
   amount: number;
   optionDetail: string;
   productIdx: number;
 }
 
+//items는 장바구니 데이터, selectedItems는 현재 장바구니에서 선택된 데이터, order는 결제페이지에서 확인하는 데이터입니다.
 const initialState: CartState = {
   items: [], //장바구니에 보여질화면
   selectedItems: [],
@@ -106,6 +106,11 @@ const cartSlice = createSlice({
         productIdx: item.productIdx,
       }));
     },
+    selectedOrder: (state, action) => {
+      const orderItem = state.items.find((item) => item.id === action.payload);
+      const { amount, optionDetail, productIdx } = orderItem as OrderItem;
+      state.order = [{ amount, optionDetail, productIdx }];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -137,6 +142,7 @@ export const {
   clearselectedItems,
   moveOrder,
   immediatPayment,
+  selectedOrder,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

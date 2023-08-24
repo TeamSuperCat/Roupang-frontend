@@ -6,6 +6,7 @@ import { useAppSelector } from "../../hooks/useDispatch";
 import Loading from "../Loading/Loading";
 
 const ShoppingCart = () => {
+  //ShoppingCart 컴포넌트에서 쓰이는 로직들을 useCartDispatch로 따로 분리하였고, 분리된 로직들을 가져왔습니다.
   const {
     items,
     selectedItems,
@@ -19,21 +20,27 @@ const ShoppingCart = () => {
     getCartlisting,
     selectClear,
     goOrder,
+    SelectgoOrder,
   } = useCartDispatch();
   const isLoading = useAppSelector((state) => state.cart.isLoading);
 
+  //이 함수는 가격을 표시하는데 3자릿수마다 콤마를 찍어주는 함수입니다. formatCurrency(숫자) 이런식으로 사용합니다.
   function formatCurrency(value: number) {
     return new Intl.NumberFormat("ko-KR").format(value);
   }
+  //장바구니에서 현재 선택된 상품들의 가격을 합산된 값입니다.
   const BuyPrice = (selectedItems || []).reduce(
     (sum, item) => sum + item.price * item.amount,
     0
   );
+  //장바구니에 담긴 전체 상품들의 총 합산 가격입니다.
   const totalPrice = (items || []).reduce(
     (sum, item) => sum + item.price * item.amount,
     0
   );
 
+  //처음 장바구니페이지에 들어오면 getCartlisting()를 통해서 사용자의 장바구니 정보를 서버로부터 받아옵니다.
+  //selectClear()이 함수는 이전에 장바구니에서 선택했었던 값들을 초기화해줍니다
   useEffect(() => {
     selectClear();
     getCartlisting();
@@ -88,6 +95,7 @@ const ShoppingCart = () => {
                     <CartItem
                       key={item.id}
                       item={item}
+                      SelectgoOrder={SelectgoOrder}
                       handleItemSelect={handleItemSelect}
                       plusQuantity={plusQuantity}
                       minusQuantity={minusQuantity}

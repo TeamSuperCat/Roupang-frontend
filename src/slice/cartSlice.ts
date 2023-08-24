@@ -33,6 +33,9 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    immediatPayment: (state, action) => {
+      state.order = action.payload;
+    },
     removeItem: (state, action: PayloadAction<number>) => {
       const id = action.payload;
       state.items = state.items.filter((item) => item.id !== id);
@@ -133,6 +136,7 @@ export const {
   removeSelected,
   clearselectedItems,
   moveOrder,
+  immediatPayment,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

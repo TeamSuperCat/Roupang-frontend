@@ -107,17 +107,6 @@ const HamburgerModal: React.FC<HamburgerModalProps> = ({
                         >
                           회원가입
                         </div>
-                        {/* <div className="header_login_drop">
-                          <ul className="login_drop_menu">
-                            <li onClick={() => navigate("/mypage")}>
-                              내 정보 수정
-                            </li>
-                            <li onClick={() => navigate("/login")}>로그인</li>
-                            <li onClick={() => navigate("/signup")}>
-                              회원가입
-                            </li>
-                          </ul>
-                        </div> */}
                       </div>
                     </>
                   )}
@@ -126,14 +115,12 @@ const HamburgerModal: React.FC<HamburgerModalProps> = ({
                     className="header_mypage_info"
                     onClick={() => navigate("/mypage")}
                   >
-                    {/* <img src="/img/mypage.svg" alt="mypage" /> */}
                     <div className="header_mypage">마이페이지</div>
                     <div className="header_mypage">나의글</div>
                     <div className="header_mypage">좋아요</div>
                     <div className="header_mypage">관심상품</div>
                   </div>
                   <div className="header_board_info ">
-                    {/* <img src="/img/bell.svg" alt="bell" /> */}
                     <div className="header_board">공지사항</div>
                     <div className="header_board">리뷰</div>
                     <div className="header_board">Q & A</div>

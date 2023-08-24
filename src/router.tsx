@@ -13,7 +13,6 @@ import Detail from "./pages/Detail";
 import Loading from "./components/Loading/Loading";
 import Error from "./pages/ErrorPage";
 import Order from "./pages/Order";
-import Seller from "./pages/Seller";
 import SellerEdit from "./pages/SellerEdit";
 import Mypage from "./pages/Mypage";
 
@@ -88,12 +87,6 @@ const routerData: RouterElement[] = [
         element: <Signup />,
       },
       {
-        id: 12,
-        path: "seller",
-        label: "Seller",
-        element: <Seller />,
-      },
-      {
         id: 13,
         path: "selleredit",
         label: "SellerEdit",
@@ -154,11 +147,7 @@ interface RouteObject {
 //router.children가 존재하면 다시 함수를 다시 호출해서 중첩라우팅을 변환합니다. 재귀를 사용했으니 2중3중으로 들어가도 처리가능합니다.
 function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   return routerArray.map((router) => {
-    const routeElement = router.withAuth ? (
-      <AuthComponents>{router.element}</AuthComponents>
-    ) : (
-      router.element
-    );
+    const routeElement = router.withAuth ? <AuthComponents>{router.element}</AuthComponents> : router.element;
 
     const routeObject: RouteObject = {
       path: router.path,
@@ -178,6 +167,4 @@ function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   });
 }
 
-export const routers: RemixRouter = createBrowserRouter(
-  transformRoutes(routerData)
-);
+export const routers: RemixRouter = createBrowserRouter(transformRoutes(routerData));

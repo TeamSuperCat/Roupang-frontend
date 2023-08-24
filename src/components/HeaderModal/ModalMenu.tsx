@@ -25,47 +25,22 @@ function ModalMenu({ onClick, category }: Props) {
   return (
     <ModalMenuLayOut>
       <BtnWrapper>
-        <MenuBtn
-          primary={true}
-          rotateState={isOpen}
-          onClick={handleClick}
-          text={isOpen ? "닫기" : "열기"}
-        >
+        <MenuBtn primary={true} rotateState={isOpen} onClick={handleClick} text={isOpen ? "닫기" : "열기"}>
           <BsThreeDotsVertical />
         </MenuBtn>
-        <MenuBtn
-          text="고객센터"
-          onClick={() => handleActive("customer")}
-          category={category === "customer" && isOpen}
-        >
+        <MenuBtn text='고객센터' onClick={() => handleActive("customer")} category={category === "customer" && isOpen}>
           <BsBell />
         </MenuBtn>
-        <MenuBtn
-          text="마이샵"
-          onClick={() => handleActive("myshop")}
-          category={category === "myshop" && isOpen}
-        >
+        <MenuBtn text='마이샵' onClick={() => handleActive("myshop")} category={category === "myshop" && isOpen}>
           <CgProfile />
         </MenuBtn>
-        <MenuBtn
-          text="최근 본 상품"
-          onClick={() => handleActive("recent")}
-          category={category === "recent" && isOpen}
-        >
+        <MenuBtn text='최근 본 상품' onClick={() => handleActive("recent")} category={category === "recent" && isOpen}>
           <BsClock />
         </MenuBtn>
-        <MenuBtn
-          text="관심 상품"
-          onClick={() => handleActive("interest")}
-          category={category === "interest" && isOpen}
-        >
+        <MenuBtn text='관심 상품' onClick={() => handleActive("interest")} category={category === "interest" && isOpen}>
           <AiOutlineHeart />
         </MenuBtn>
-        <MenuBtn
-          text="좋아요"
-          onClick={() => handleActive("like")}
-          category={category === "like" && isOpen}
-        >
+        <MenuBtn text='좋아요' onClick={() => handleActive("like")} category={category === "like" && isOpen}>
           <BsStar />
         </MenuBtn>
       </BtnWrapper>

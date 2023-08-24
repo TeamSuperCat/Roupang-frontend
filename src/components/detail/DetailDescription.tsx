@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
 import descImage from "../../assets/test/descImage.jpg";
 import styled from "styled-components";
+import axiosClient from "../../api/axios";
 import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
-
-const optionData = [{ option: "이건 개" }, { option: "이건 고양이" }, { option: "이건 닭" }, { option: "이건 토끼" }];
+import loadingImage from "../../assets/test/loading.gif";
+import Option from "./Option";
 
 const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
@@ -19,38 +20,44 @@ const responseProductData = {
   sales_end_date: "2023-08-15",
 };
 
-interface DetailDescriptionBoxProps {
-  isMoreView?: boolean;
-}
-
 ///컴포넌트시작
 const DetailDescription = () => {
   const { productid } = useParams();
-  console.log("제품ID", productid);
-  const [isOption, setIsOption] = useState(false);
-  const [, setIsCheck] = useState(false);
-  const [isMoreView, setIsMoreView] = useState(false);
-  const [OptionValue, setOptionValue] = useState("옵션선택");
-  const [productAmount, setProductAmount] = useState(1);
+  const navigate = useNavigate();
 
-  const optionClcikHandler = () => {
-    console.log(isOption);
-    setIsOption((prev) => !prev);
-  };
-  const optionCheckHandler = (event: React.MouseEvent<HTMLDivElement>, data: string) => {
-    console.log(event);
-    setIsCheck((prev) => !prev);
-    setOptionValue(data);
-    setIsOption((prev) => !prev);
-  };
+  const [isMoreView, setIsMoreView] = useState<boolean>(false);
+  const [productAmount, setProductAmount] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAmountInputBox, setIsAmountInputbox] = useState<boolean>(false);
+  const [data, setData] = useState({
+    stock: 0,
+    product_name: "",
+    price: 0,
+    options: [],
+    product_img: "",
+    description_img: "",
+  });
+  const [option, setOption] = useState<Record<string, string>>({});
+
+  const product_id: string | undefined = productid;
+
+  useEffect(() => {
+    axiosClient.get(`products/${product_id}`).then((res) => {
+      // axiosClient.get(`products/65`).then((res) => {
+      setData(res.data);
+      setIsLoading(false);
+    });
+  }, [product_id]);
 
   const productAmountUp = () => {
-    if (productAmount < responseProductData.stock) {
+    if (Number(productAmount) < data.stock) {
+      setIsAmountInputbox(false);
       setProductAmount((prev) => prev + 1);
     }
   };
   const productAmountDown = () => {
-    if (productAmount > 1) {
+    if (Number(productAmount) > 1) {
+      setIsAmountInputbox(false);
       setProductAmount((prev) => prev - 1);
     }
   };
@@ -58,62 +65,156 @@ const DetailDescription = () => {
   const ProductInformationMoreViewHandler = () => {
     setIsMoreView((prev) => !prev);
   };
-  console.log(isMoreView);
+
+  const enterAmount = () => {
+    setIsAmountInputbox((prev) => !prev);
+  };
+
+  const enterKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // console.log(event);
+    if (event.key === "Enter") {
+      const inputValue = (event.target as HTMLInputElement).value;
+      setIsAmountInputbox((prev) => !prev);
+      if (inputValue === "") {
+        setProductAmount(1);
+        return;
+      } else if (Number(inputValue) < 1) {
+        setProductAmount(1);
+      } else if (Number(inputValue) >= data.stock) {
+        setProductAmount(data.stock);
+      } else {
+        setProductAmount(Number(inputValue));
+      }
+    }
+  };
+  const amountInputboxBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    setIsAmountInputbox((prev) => !prev);
+    if (event.target.value === "") {
+      setProductAmount(1);
+      return;
+    } else {
+      setProductAmount(Number(event.target.value));
+    }
+  };
 
   //장바구니에 넣기
-  //장바구니 api로 보낸다
-  //데이터는 제품아이디, 수량, 가격
   const shopingCartButton = () => {
-    // const token = localStorage.getItem("userinfo");
-    // const request = fetch("http://localhost:8080/api/v1/cart/items", {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: JSON.stringify({
-    //     product_idx: productid,
-    //     amount: productAmount,
-    //   }),
-    // })
-    //   .then()
-    //   .catch(() => {
-    //     console.log("장바구니 응안돼");
-    //   });
+    //선택된 옵션들 입니다
+    const optionName = Object.keys(option);
+    let 보낼객체형태임 = "";
+    //선택된옵션갯수 === 실제옵션갯수
+    if (optionName.length === data.options.length) {
+      for (let i = 0; i < optionName.length; i++) {
+        //옵션을 선택을안하면 "" 빈칸이 찍힙니다
+        보낼객체형태임 =
+          보낼객체형태임 + `${optionName[i]}:${option[optionName[i]]}` + ",";
+        if (option[optionName[i]] === "") {
+          alert("옵션을 선택해주세요");
+          return;
+        }
+      }
+      console.log("장바구니에 담을수있겠어요");
+    } else {
+      alert("옵션을 선택해주세요");
+      return;
+    }
+
+    axiosClient
+      .post(
+        `/cart`,
+
+        {
+          amount: productAmount,
+          optionDetail: 보낼객체형태임,
+          productIdx: product_id,
+        }
+      )
+      .then((res) => {
+        alert("장바구니 완료 쇼핑을 계쏙 하쎄용");
+        console.log(res);
+        console.log("응잘되");
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("응안돼");
+      });
+  };
+  //구매하기
+  const buyButton = () => {
+    const optionName = Object.keys(option);
+    let 보낼객체형태임 = "";
+    //선택된옵션갯수 === 실제옵션갯수
+    if (optionName.length === data.options.length) {
+      for (let i = 0; i < optionName.length; i++) {
+        //옵션을 선택을안하면 "" 빈칸이 찍힙니다
+        보낼객체형태임 =
+          보낼객체형태임 + `${optionName[i]}:${option[optionName[i]]}` + ",";
+        if (option[optionName[i]] === "") {
+          alert("옵션을 선택해주세요");
+          return;
+        }
+      }
+    } else {
+      alert("옵션을 선택해주세요");
+      return;
+    }
+
+    console.log("보낼객체형태임", 보낼객체형태임);
+    console.log("보낼객체형태임", typeof 보낼객체형태임);
+
+    axiosClient
+      .post("/order", [
+        {
+          amount: productAmount,
+          optionDetail: 보낼객체형태임,
+          productIdx: product_id,
+        },
+      ])
+      .then((res) => {
+        console.log(res);
+        console.log("응잘되");
+        navigate("/order");
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("응안돼");
+      });
   };
 
-  //구매하기
-  //구매하기 api로 보낸다
-  //데이터는 제품아이디, 수량, 가격
-  const buyButton = () => {
-    // const token = localStorage.getItem("userinfo");
-    // const request = fetch("http://localhost:8080/api/v1/cart/items", {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: JSON.stringify({
-    //     product_idx: productid,
-    //     amount: productAmount,
-    //   }),
-    // })
-    //   .then()
-    //   .catch(() => {
-    //     console.log("구매하기 응안돼");
-    //   });
+  //선택한 옵션으로 중복되지않게 옵션을만듬
+  const finalSelectionOptions = (
+    optiondata: string | null,
+    optionType: string | null
+  ) => {
+    if (optionType !== null && optiondata !== null) {
+      setOption({ ...option, [optionType]: optiondata });
+    }
   };
+
+  // console.log(option);
 
   return (
     <>
       <Container>
-        <Imagemox>
-          <img src={responseProductData.product_img} alt='dd' />
-        </Imagemox>
+        {isLoading ? (
+          <ImageBox>
+            <ProductImage src={loadingImage} alt="dd" />
+          </ImageBox>
+        ) : (
+          <ImageBox>
+            <ProductImage src={data.product_img} alt="dd" />
+          </ImageBox>
+        )}
+
         <DescriptionBox>
           <ProductTitleDiv>
-            <DivFlex className='설명제목'>
-              <ProductTitle>{responseProductData.product_name}</ProductTitle>
+            <DivFlex className="설명제목">
+              {isLoading ? (
+                <ProductTitle></ProductTitle>
+              ) : (
+                <ProductTitle>{data.product_name}</ProductTitle>
+              )}
+
               <DivFlex>
                 <HartIcon>❤️</HartIcon>
                 <ShareIcon>🔨</ShareIcon>
@@ -126,11 +227,12 @@ const DetailDescription = () => {
 
           <ProductPriceDiv>
             <div>
-              {parseInt((responseProductData.price * 1.18).toString())} 원
+              {isLoading ? "" : parseInt((data.price * 1.18).toString())} 원
               <span style={{ marginLeft: "1rem" }}>소비자가</span>
             </div>
             <div>
-              {responseProductData.price} 원<span style={{ marginLeft: "1rem" }}>루팡가</span>
+              {isLoading ? "" : data.price} 원
+              <span style={{ marginLeft: "1rem" }}>루팡가</span>
             </div>
             <div></div>
             <HoverContainer>
@@ -148,33 +250,49 @@ const DetailDescription = () => {
           </ProductPriceDiv>
 
           {/* 옵션 선택구간 */}
-          <ProductOption>
-            <OptionSelect onClick={optionClcikHandler}>
-              <div>{OptionValue}</div>
-              <div>▿</div>
-            </OptionSelect>
-          </ProductOption>
-          {isOption &&
-            optionData.map((data, index) => {
-              return (
-                <OptionList>
-                  <div key={index} onClick={(event) => optionCheckHandler(event, data.option)}>
-                    {data.option}
-                  </div>
+          {data.options ? (
+            data.options.map((item: any, index: number) => (
+              <Option
+                key={index}
+                option={item}
+                finalSelectionOptions={finalSelectionOptions}
+              />
+            ))
+          ) : (
+            <></>
+          )}
 
-                  <div></div>
-                </OptionList>
-              );
-            })}
           {/* 수량표시하는곳 */}
           <ProductCounter>
-            <Amount>수량</Amount>
-            <DivFlex>
-              <MinusButton onClick={productAmountDown}>-</MinusButton>
-              <ProductAmount>{productAmount}</ProductAmount>
-              <PlusButton onClick={productAmountUp}>+</PlusButton>
-            </DivFlex>
-            <Amount>재고 : {responseProductData.stock}</Amount>
+            {isAmountInputBox ? (
+              <>
+                <Amount>수량</Amount>
+                <DivFlex>
+                  <MinusButton onClick={productAmountDown}>-</MinusButton>
+                  <AmountInputbox
+                    type="number"
+                    onKeyDown={enterKeydown}
+                    onBlur={amountInputboxBlur}
+                    placeholder="수량을 입력해주세요"
+                    autoFocus
+                  />
+                  <PlusButton onClick={productAmountUp}>+</PlusButton>
+                </DivFlex>
+                <Amount>재고 : {data.stock}</Amount>
+              </>
+            ) : (
+              <>
+                <Amount>수량</Amount>
+                <DivFlex>
+                  <MinusButton onClick={productAmountDown}>-</MinusButton>
+                  <ProductAmount onClick={enterAmount}>
+                    {productAmount}
+                  </ProductAmount>
+                  <PlusButton onClick={productAmountUp}>+</PlusButton>
+                </DivFlex>
+                <Amount>재고 : {data.stock}</Amount>
+              </>
+            )}
           </ProductCounter>
 
           {/* 장바구니 구매하기버튼 시작 */}
@@ -198,17 +316,22 @@ const DetailDescription = () => {
             <div>
               <img
                 src={Kakaopaymenticon}
-                alt=''
+                alt=""
                 onClick={() =>
-                  kakaoPaymentfunction(responseProductData.product_name, productAmount, responseProductData.price)
+                  kakaoPaymentfunction(
+                    responseProductData.product_name,
+                    productAmount,
+                    responseProductData.price
+                  )
                 }
               />
             </div>
           </SimplePayment>
         </DescriptionBox>
       </Container>
-      <DetailDescriptionBox isMoreView={isMoreView}>
-        <DescriptionImage src={responseProductData.description_img} alt='' />
+
+      <DetailDescriptionBox $isMoreView={isMoreView}>
+        <DescriptionImage src={data.description_img} alt="" />
       </DetailDescriptionBox>
       <MoreViewButtonBox>
         {isMoreView ? (
@@ -239,10 +362,20 @@ const Container = styled.div`
   justify-content: center;
   margin: auto;
 `;
-const Imagemox = styled.div`
+const ImageBox = styled.div`
+  /* position: relative; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  object-fit: cover;
+  overflow: hidden;
   margin: 5px;
   width: 500px;
   height: 500px;
+`;
+
+const ProductImage = styled.img`
+  width: 100%;
 `;
 const DescriptionBox = styled.div`
   margin: 5px;
@@ -314,26 +447,6 @@ const HartIcon = styled.div`
 
 const ShareIcon = styled.div`
   margin-left: 1rem;
-`;
-
-const ProductOption = styled.div`
-  padding: 1rem;
-  border: 1px solid black;
-  margin-bottom: 1rem;
-`;
-
-const OptionSelect = styled.div`
-  font-size: 1.2rem;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-`;
-const OptionList = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid gray;
-  margin-bottom: 0.2rem;
-  padding: 0.5rem;
 `;
 
 const ShopingCartButton = styled.div`
@@ -424,6 +537,19 @@ const ProductCounter = styled.div`
 `;
 
 const Amount = styled.div``;
+const AmountInputbox = styled.input`
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+`;
 const ProductAmount = styled.div`
   font-size: 1.1rem;
   font-weight: bold;
@@ -452,12 +578,12 @@ const MinusButton = styled.div`
   cursor: pointer;
 `;
 
-const DetailDescriptionBox = styled.div<DetailDescriptionBoxProps>`
+const DetailDescriptionBox = styled.div<{ $isMoreView?: boolean }>`
   display: block;
   position: relative;
   width: 100%;
-  height: ${({ isMoreView }) => (isMoreView ? "auto" : "1500px")};
-  overflow: ${({ isMoreView }) => (isMoreView ? "visible" : "hidden")};
+  height: ${({ $isMoreView }) => ($isMoreView ? "auto" : "1500px")};
+  overflow: ${({ $isMoreView }) => ($isMoreView ? "visible" : "hidden")};
 `;
 
 const DescriptionImage = styled.img`

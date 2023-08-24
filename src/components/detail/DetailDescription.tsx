@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
 import descImage from "../../assets/test/descImage.jpg";
 import styled from "styled-components";
@@ -23,6 +23,7 @@ const responseProductData = {
 ///컴포넌트시작
 const DetailDescription = () => {
   const { productid } = useParams();
+  const navigate = useNavigate();
 
   const [isMoreView, setIsMoreView] = useState<boolean>(false);
   const [productAmount, setProductAmount] = useState<number>(1);
@@ -170,9 +171,9 @@ const DetailDescription = () => {
         },
       ])
       .then((res) => {
-        alert("구매완료!");
         console.log(res);
         console.log("응잘되");
+        navigate("/order");
       })
       .catch((error) => {
         console.log(error);

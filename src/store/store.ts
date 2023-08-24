@@ -3,6 +3,7 @@ import cartReducer from "../slice/cartSlice";
 import modalReducer from "../slice/modalSlice";
 import itemReducer from "../slice/ItemSlice";
 import mainReducer from "../slice/mainSlice";
+import userReducer from "../slice/userSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   item: itemReducer,
   main: mainReducer,
+  user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

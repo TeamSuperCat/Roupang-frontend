@@ -33,6 +33,8 @@ const DetailDescription = () => {
     product_name: "",
     price: 0,
     options: [],
+    product_img: "",
+    description_img: "",
   });
   const [option, setOption] = useState<Record<string, string>>({});
 
@@ -96,17 +98,15 @@ const DetailDescription = () => {
 
   //장바구니에 넣기
   const shopingCartButton = () => {
-    // const token: string | null = localStorage.getItem("access_token");
-    // const parsetoken = JSON.parse(token);
-
-    console.log("장바구니에 넣어주세용");
     //선택된 옵션들 입니다
     const optionName = Object.keys(option);
-
+    let 보낼객체형태임 = "";
     //선택된옵션갯수 === 실제옵션갯수
     if (optionName.length === data.options.length) {
       for (let i = 0; i < optionName.length; i++) {
         //옵션을 선택을안하면 "" 빈칸이 찍힙니다
+        보낼객체형태임 =
+          보낼객체형태임 + `${optionName[i]}:${option[optionName[i]]}` + ",";
         if (option[optionName[i]] === "") {
           alert("옵션을 선택해주세요");
           return;
@@ -117,23 +117,19 @@ const DetailDescription = () => {
       alert("옵션을 선택해주세요");
       return;
     }
+
     axiosClient
       .post(
         `/cart`,
+
         {
           amount: productAmount,
-          productIdx: productid,
-          options: JSON.stringify(option),
-        },
-        {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW1iZXJUb2tlbiIsImlkeCI6MzAsImVtYWlsIjoiZ2t3bHN0bkBna3dsc3RuLmNvbSIsIm5pY2tuYW1lIjoi7ZWY7KeE7IiYIiwicGhvbmVfbnVtYmVyIjoiMDEwNzc3MTc0NDUiLCJhZGRyZXNzIjoi7J247LKc67aA7Y-JIiwibWVtYmVyX2ltZyI6ImRlZmF1bHRfcHJvZmlsZS5wbmciLCJjcmVhdGVkX2F0IjoiMjAyMy0wOC0yMiAxMzowNjozNyIsInVwZGF0ZWRfYXQiOiIyMDIzLTA4LTIyIDEzOjA2OjM3IiwidXNlcl9wb2ludCI6MCwiaWF0IjoxNjkyNzEzNjY3LCJleHAiOjE2OTI3MTcyNjd9.JkFlnYqKN5lfEU5AWMBmtpH6_nDDZSqpvlIZQPlzpsM",
-            "Content-Type": "application/json",
-          },
+          optionDetail: 보낼객체형태임,
+          productIdx: product_id,
         }
       )
       .then((res) => {
+        alert("장바구니 완료 쇼핑을 계쏙 하쎄용");
         console.log(res);
         console.log("응잘되");
       })
@@ -141,27 +137,48 @@ const DetailDescription = () => {
         console.log(error);
         console.log("응안돼");
       });
-
-    // const request = fetch("v1/cart/items", {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: JSON.stringify({
-    //     product_idx: productid,
-    //     amount: productAmount,
-    //   }),
-    // })
-    //   .then()
-    //   .catch(() => {
-    //     console.log("장바구니 응안돼");
-    //   });
   };
   //구매하기
-  //구매하기 api로 보낸다
-  //데이터는 제품아이디, 수량, 가격
-  const buyButton = () => {};
+  const buyButton = () => {
+    const optionName = Object.keys(option);
+    let 보낼객체형태임 = "";
+    //선택된옵션갯수 === 실제옵션갯수
+    if (optionName.length === data.options.length) {
+      for (let i = 0; i < optionName.length; i++) {
+        //옵션을 선택을안하면 "" 빈칸이 찍힙니다
+        보낼객체형태임 =
+          보낼객체형태임 + `${optionName[i]}:${option[optionName[i]]}` + ",";
+        if (option[optionName[i]] === "") {
+          alert("옵션을 선택해주세요");
+          return;
+        }
+      }
+    } else {
+      alert("옵션을 선택해주세요");
+      return;
+    }
+
+    console.log("보낼객체형태임", 보낼객체형태임);
+    console.log("보낼객체형태임", typeof 보낼객체형태임);
+
+    axiosClient
+      .post("/order", [
+        {
+          amount: productAmount,
+          optionDetail: 보낼객체형태임,
+          productIdx: product_id,
+        },
+      ])
+      .then((res) => {
+        alert("구매완료!");
+        console.log(res);
+        console.log("응잘되");
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("응안돼");
+      });
+  };
 
   //선택한 옵션으로 중복되지않게 옵션을만듬
   const finalSelectionOptions = (
@@ -180,11 +197,11 @@ const DetailDescription = () => {
       <Container>
         {isLoading ? (
           <ImageBox>
-            <img src={loadingImage} alt="dd" />
+            <ProductImage src={loadingImage} alt="dd" />
           </ImageBox>
         ) : (
           <ImageBox>
-            <img src={responseProductData.product_img} alt="dd" />
+            <ProductImage src={data.product_img} alt="dd" />
           </ImageBox>
         )}
 
@@ -313,7 +330,7 @@ const DetailDescription = () => {
       </Container>
 
       <DetailDescriptionBox $isMoreView={isMoreView}>
-        <DescriptionImage src={responseProductData.description_img} alt="" />
+        <DescriptionImage src={data.description_img} alt="" />
       </DetailDescriptionBox>
       <MoreViewButtonBox>
         {isMoreView ? (
@@ -345,12 +362,19 @@ const Container = styled.div`
   margin: auto;
 `;
 const ImageBox = styled.div`
+  /* position: relative; */
   display: flex;
   justify-content: center;
   align-items: center;
+  object-fit: cover;
+  overflow: hidden;
   margin: 5px;
   width: 500px;
   height: 500px;
+`;
+
+const ProductImage = styled.img`
+  width: 100%;
 `;
 const DescriptionBox = styled.div`
   margin: 5px;

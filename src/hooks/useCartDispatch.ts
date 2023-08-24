@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
+import { useAppDispatch, useAppSelector } from "../hooks/useDispatch";
 import {
   removeItem,
   selectItem,
@@ -14,7 +14,7 @@ import {
   clearselectedItems,
   moveOrder,
   selectedOrder,
-} from "../../slice/cartSlice";
+} from "../slice/cartSlice";
 
 export const useCartDispatch = () => {
   const dispatch = useAppDispatch();

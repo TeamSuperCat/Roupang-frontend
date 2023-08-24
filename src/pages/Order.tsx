@@ -11,16 +11,35 @@ import OrderInfo from "../components/Order/OrderInfo";
 import axiosClient from "../api/axios";
 import { useQuery } from "@tanstack/react-query";
 import useOrder from "../hooks/useOrder";
+import { useCartDispatch } from "../hooks/useCartDispatch";
+import { OrderItem } from "../slice/cartSlice";
+import Loading from "../components/Loading/Loading";
+import { useEffect } from "react";
+import { ProductsType } from "../slice/orderSlice";
 
-const requestOrderInfo = async (orderList = "구매할물품") => {
-  const response = await axiosClient.post("/order", orderList);
-  return response.data;
+interface ResponseData {
+  memberIdx: number;
+  nickName: string;
+  address: string;
+  phoneNumber: string;
+  email: string;
+  userPoint: number;
+  purchaseItemResponseList: ProductsType[];
+}
+
+const requestOrderInfo = async (orderList: OrderItem[]) => {
+  const response = await axiosClient.post("/order", [...orderList]);
+  const data: ResponseData = response.data;
+  return data;
 };
 
 function Order() {
   const { routeTo } = useRouter();
-  const { data, isLoading } = useQuery(["order"], () =>
-    requestOrderInfo("구매할물품의 상태정보")
+  const { ordered } = useCartDispatch();
+  const { data, isLoading } = useQuery(
+    ["order"],
+    () => requestOrderInfo(ordered)
+    // { staleTime: Infinity }
   );
 
   const {
@@ -28,21 +47,34 @@ function Order() {
     addressState: { updateAddress },
     phoneState: { updatePhone },
     emailState: { updateEmail },
-    pointState: { handlePoint },
+    pointState: { updatePoint },
+    productsState: { updateProducts },
   } = useOrder();
   // 페이지 진입하면 useQuery로 구매할 상품정보 불러온다음
   // /order POST로 전역에 저장된 구매할 물품정보 받아서 보내준다
   // 거기서 포인트 정보를 뽑아서 orderslice 에 포인트 상태 저장
   // 사용자 정보도 상태 저장
   // 결제 버튼 눌렀을때 /order/payment에 formdata 보내줌
-
   const requestPayment = () => {
     axiosClient.post("/order/payment");
     // 성공 실패에 따라 행동정의 필요
   };
 
+  useEffect(() => {
+    if (!data) return;
+    const eforward = data.email.split("@")[0];
+    const pforward = data.phoneNumber.substring(3, 7);
+    const pbackward = data.phoneNumber.substring(7);
+    updateProducts(data.purchaseItemResponseList);
+    updateEmail({ forward: eforward });
+    updatePhone({ forward: pforward, backward: pbackward });
+    updateAddress({ rest: data.address });
+    updatePoint(data.userPoint);
+  }, []);
+
   return (
     <OrderLayout>
+      {isLoading && <Loading />}
       <OrderHeader>
         <OrderNav>
           <NavBtn onClick={() => routeTo(-1)}>
@@ -106,6 +138,7 @@ const OrderLayout = styled.div`
   margin: 0 auto;
   border: 1px solid #d7d7d7;
   background-color: #f0f0f0;
+  position: relative;
 `;
 
 const OrderHeader = styled.div`

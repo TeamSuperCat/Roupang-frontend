@@ -22,9 +22,12 @@ export const SearchModalWrapper = styled.div`
   }
   .searchmodal_box {
     width: 100%;
-    max-width: 960px;
+    max-width: 800px;
     height: 300px;
     z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
     animation: fadeOn 0.8s ease-in-out;
     @keyframes fadeOn {
       0% {
@@ -46,8 +49,14 @@ export const SearchModalWrapper = styled.div`
       align-items: center;
       position: relative;
       flex-direction: column;
+      width: 100%;
       .search_inputlabel {
-        width: 80%;
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        @media (max-width: 550px) {
+          width: 80%;
+        }
         .search_input {
           width: 100%;
           border: none;
@@ -55,18 +64,28 @@ export const SearchModalWrapper = styled.div`
           background-color: transparent;
           border-bottom: 4px solid #fff;
           color: #fff;
-          font-size: 50px;
-          padding: 30px;
+          padding: 30px 50px 30px 30px;
+          font-size: 30px;
+          @media (max-width: 550px) {
+            font-size: 20px;
+            padding: 10px 35px 10px 10px;
+          }
         }
       }
     }
 
     img {
-      width: 70px;
-      height: 70px;
+      width: 60px;
+      height: 60px;
       position: absolute;
-      right: 20px;
+      right: 30px;
+      top: 16px;
       cursor: pointer;
+      @media (max-width: 550px) {
+        width: 45px;
+        height: 45px;
+        top: -3px;
+      }
       &:hover {
         filter: invert(96%) sepia(43%) saturate(291%) hue-rotate(86deg)
           brightness(101%) contrast(93%);

@@ -44,16 +44,16 @@ const useOrder = () => {
     dispatch(setAddress({ ...address, ...newAddr }));
   };
   const updatePhone = (newPhone: PhoneType) => {
-    dispatch(setPhone(newPhone));
+    dispatch(setPhone({ ...phone, ...newPhone }));
   };
   const updateEmail = (newEmail: EmailType) => {
-    dispatch(setEmail(newEmail));
+    dispatch(setEmail({ ...email, ...newEmail }));
   };
   const updateForm = (newForm: FormDataType) => {
     dispatch(setFormData(newForm));
   };
-  const handlePoint = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setPoint(Number(e.target.value)));
+  const updatePoint = (point: number) => {
+    dispatch(setPoint(point));
   };
 
   const handleTo = (e: ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +89,7 @@ const useOrder = () => {
     },
     pointState: {
       point,
-      handlePoint,
+      updatePoint,
     },
     productsState: {
       products,

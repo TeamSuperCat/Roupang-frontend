@@ -13,3 +13,19 @@ declare interface ItemData {
   stock: number;
   id?: any;
 }
+
+declare interface CartItem {
+  amount: number;
+  categoryName: string;
+  createdAt: string;
+  description: string;
+  id: number;
+  memberId: number;
+  optionDetail: string;
+  price: number;
+  productIdx: number;
+  productImg: string;
+  productName: string;
+  productStock: number;
+  sellerIdx: number;
+}

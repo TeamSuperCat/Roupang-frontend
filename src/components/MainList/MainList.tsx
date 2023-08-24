@@ -23,7 +23,6 @@ const MainList = () => {
   const fetchItems = async ({ pageParam = 0 }) => {
     let url;
     let responsePage1Url;
-
     if (searchkey) {
       url = `/products/search?keyword=${searchkey}&page=${pageParam}&size=8&order=${sorttype}`;
       responsePage1Url = `/products/search?keyword=${searchkey}&page=1&size=8&order=${sorttype}`;
@@ -41,14 +40,9 @@ const MainList = () => {
           ...response.data.content,
           ...responsePage1.data.content,
         ];
-        const uniqueData = Array.from(
-          new Set(combinedData.map((item) => item.product_idx))
-        ).map((product_idx) => {
-          return combinedData.find((item) => item.product_idx === product_idx);
-        });
         return {
           ...response.data,
-          content: uniqueData,
+          content: combinedData,
         };
       }
       return response.data;

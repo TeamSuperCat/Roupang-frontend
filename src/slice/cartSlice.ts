@@ -1,39 +1,26 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import axiosClient from "../api/axios";
 
-interface Item {
-  id: number;
-  name: string;
-  imageUrl?: string;
-  quantity: number;
-  price: number;
-  stock: number;
-}
+export const getCartItems = createAsyncThunk<CartItem[], void>(
+  "item/getCartItems",
+  async () => {
+    const response = await axiosClient.get<CartItem[]>(`/cart`);
+    return response.data;
+  }
+);
 
 declare interface CartState {
-  items: Item[];
-  selectedItems: Item[];
+  items: CartItem[];
+  selectedItems: CartItem[];
+  order: CartItem[];
+  isLoading: boolean;
 }
 
 const initialState: CartState = {
-  items: [
-    {
-      id: 1,
-      name: "아이템1",
-      quantity: 1,
-      price: 15000,
-      imageUrl: "/img/cart1.jpg",
-      stock: 5,
-    },
-    {
-      id: 2,
-      name: "아이템2",
-      quantity: 6,
-      price: 6000,
-      imageUrl: "/img/cart2.jpg",
-      stock: 17,
-    },
-  ],
+  items: [], //장바구니에 보여질화면
   selectedItems: [],
+  order: [], //결제화면에 보여줄 아이템들
+  isLoading: false,
 };
 
 const cartSlice = createSlice({
@@ -44,7 +31,7 @@ const cartSlice = createSlice({
       const id = action.payload;
       state.items = state.items.filter((item) => item.id !== id);
     },
-    selectItem: (state, action: PayloadAction<Item | ItemData>) => {
+    selectItem: (state, action: PayloadAction<CartItem>) => {
       const newItem = action.payload;
       const existingItem = state.items.find((item) => item.id === newItem.id);
       if (existingItem && !state.selectedItems.includes(existingItem)) {
@@ -67,25 +54,25 @@ const cartSlice = createSlice({
       const id = action.payload;
       const item = state.items.find((item) => item.id === id);
       if (item) {
-        item.quantity += 1;
+        item.amount += 1;
         const selectedItem = state.selectedItems.find(
           (selected) => selected.id === id
         );
         if (selectedItem) {
-          selectedItem.quantity = item.quantity;
+          selectedItem.amount = item.amount;
         }
       }
     },
     decrementQuantity: (state, action: PayloadAction<number>) => {
       const id = action.payload;
       const item = state.items.find((item) => item.id === id);
-      if (item && item.quantity > 1) {
-        item.quantity -= 1;
+      if (item && item.amount > 1) {
+        item.amount -= 1;
         const selectedItem = state.selectedItems.find(
           (selected) => selected.id === id
         );
         if (selectedItem) {
-          selectedItem.quantity = item.quantity;
+          selectedItem.amount = item.amount;
         }
       }
     },
@@ -100,6 +87,21 @@ const cartSlice = createSlice({
       );
       state.selectedItems = [];
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCartItems.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        state.items = action.payload;
+        console.log(action.payload);
+        state.isLoading = false;
+      })
+      .addCase(getCartItems.rejected, (state, action) => {
+        console.log(action.error, "실패");
+        state.isLoading = false;
+      });
   },
 });
 

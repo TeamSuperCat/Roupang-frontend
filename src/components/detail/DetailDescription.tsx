@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import image from "../../assets/test/carousel04.jpg";
 import descImage from "../../assets/test/descImage.jpg";
 import styled from "styled-components";
@@ -25,6 +25,7 @@ const responseProductData = {
 ///컴포넌트시작
 const DetailDescription = () => {
   const { productid } = useParams();
+  const navigate = useNavigate();
 
   const [isMoreView, setIsMoreView] = useState<boolean>(false);
   const [productAmount, setProductAmount] = useState<number>(1);
@@ -174,24 +175,6 @@ const DetailDescription = () => {
       .then((res) => {
         console.log(res);
         console.log("응잘되");
-
-        const Purchasecompleted: ItemData = {
-          category_name: "몰루",
-          description: res.data.purchaseItemResponseList[0].description,
-          description_img: "ㅇㅇ",
-          options: res.data.purchaseItemResponseList[0].option,
-          price: res.data.purchaseItemResponseList[0].allPrice,
-          product_idx: Number(productid),
-          product_img: res.data.purchaseItemResponseList[0].productImg,
-          product_name: res.data.purchaseItemResponseList[0].productName,
-          sales_end_date: "",
-          stock: 1,
-        };
-        dispatch(selectItem(Purchasecompleted));
-
-        console.log("Purchasecompleted", Purchasecompleted);
-
-        // navigate("/order");
       })
       .catch((error) => {
         console.log(error);

@@ -9,20 +9,11 @@ import {
   decrementQuantity,
   selectAllItems,
   deselectAllItems,
+  getCartItems,
 } from "../../slice/cartSlice";
-
-type Item = {
-  id: number;
-  name: string;
-  imageUrl?: string;
-  quantity: number;
-  price: number;
-  stock: number;
-};
 
 export const useCartDispatch = () => {
   const dispatch = useAppDispatch();
-
   const items = useAppSelector((state) => state.cart.items);
   const selectedItems = useAppSelector((state) => state.cart.selectedItems);
 
@@ -34,12 +25,16 @@ export const useCartDispatch = () => {
     }
   };
 
-  const handleItemSelect = (itemToSelect: Item) => {
+  const handleItemSelect = (itemToSelect: CartItem) => {
     if (selectedItems.some((item) => item.id === itemToSelect.id)) {
       dispatch(deselectItem(itemToSelect.id));
     } else {
       dispatch(selectItem(itemToSelect));
     }
+  };
+
+  const getCartlisting = () => {
+    dispatch(getCartItems());
   };
 
   const handleDelete = (id: number) => {
@@ -56,14 +51,14 @@ export const useCartDispatch = () => {
 
   const plusQuantity = (id: number) => {
     const item = items.find((item) => item.id === id);
-    if (item && item.quantity < item.stock) {
+    if (item && item.amount < item.productStock) {
       dispatch(incrementQuantity(id));
     }
   };
 
   const minusQuantity = (id: number) => {
     const item = items.find((item) => item.id === id);
-    if (item && item.quantity > 1) {
+    if (item && item.amount > 1) {
       dispatch(decrementQuantity(id));
     }
   };
@@ -78,5 +73,6 @@ export const useCartDispatch = () => {
     handleDeleteSelected,
     plusQuantity,
     minusQuantity,
+    getCartlisting,
   };
 };

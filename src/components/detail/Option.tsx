@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+interface OptionType {
+  optionTypeName: string;
+  optionDetails: Array<{ optionDetailName: string }>;
+}
 
-const Option = ({ option, finalSelectionOptions }) => {
-  const [isOptionCheck, setIsOptionCheck] = useState(option.optionTypeName);
+interface OptionProps {
+  option: OptionType;
+  finalSelectionOptions: (data: string | null, type: string | null) => void;
+}
+
+const Option = ({ option, finalSelectionOptions }: OptionProps) => {
+  const [isOptionCheck, setIsOptionCheck] = useState<string | null>(
+    option.optionTypeName
+  );
   const [isClick, setIsClick] = useState(false);
-  const [selectOptionData, setSelectOptionData] = useState("");
+  const [selectOptionData, setSelectOptionData] = useState<string | null>("");
 
   const optionCheckHandler = (event: React.MouseEvent<HTMLElement>) => {
     let optionvalue = event.currentTarget.textContent;
-    let optionType = option.optionTypeName;
     setSelectOptionData(optionvalue);
     setIsOptionCheck(optionvalue);
     setIsClick((prev) => !prev);

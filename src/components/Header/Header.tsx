@@ -48,6 +48,7 @@ const Header = () => {
         <HeaderTopbox>
           <div className='header_support_info'>/ 고객 지원센터 | 012-3456-7890</div>
           <div className='header_mymenu_info'>
+            {/* {isLogin ? ( */}
             {isLogin ? (
               <>
                 <div className='header_logout_info'>
@@ -62,7 +63,7 @@ const Header = () => {
                   <div className='header_login' onClick={() => navigate("/login")}>
                     로그인
                   </div>
-                  <div>/</div>
+                  {/* <div>/</div> */}
                   <div className='header_join' onClick={() => navigate("/signup")}>
                     회원가입
                   </div>
@@ -128,15 +129,22 @@ const Header = () => {
             </Swiper>
           </div>
 
+          <div className='header_hamburger_menu_info'>
+            <div className='header_hamburger_menu_box'>
+              <img src='/img/hamburger_menu.svg' alt='hamburgermenu' onClick={modalOpen} />
+            </div>
+          </div>
+
           <div className='header_mainlogo'>
             <Link to='/'>
               <img src='/img/roupang.svg' alt='mainlogo' />
             </Link>
           </div>
+
           <div className='header_myinfo'>
-            <div className='header_userbox' onClick={() => navigate("/mypage")}>
-              <img src='/img/user.svg' alt='user' />
-              <div className='header_user_ex'>마이페이지</div>
+            <div className='header_search_box'>
+              <img src='/img/search.svg' alt='search' onClick={modalOpen} />
+              <div className='header_search_ex'>검색</div>
             </div>
             <div className='header_clockbox'>
               <img src='/img/clock.svg' alt='time' />
@@ -161,9 +169,9 @@ const Header = () => {
             <li onClick={() => handleCategorySelect("6")}>산책/놀이</li>
             <li onClick={() => handleCategorySelect("7")}>간식/영양제</li>
           </ul>
-          <div className='header_search_box'>
-            <img src='/img/search.svg' alt='search' onClick={modalOpen} />
-          </div>
+          {/* <div className="header_search_box">
+            <img src="/img/search.svg" alt="search" onClick={modalOpen} />
+          </div> */}
         </HeaderBottonbox>
       </HeaderWrapper>
 

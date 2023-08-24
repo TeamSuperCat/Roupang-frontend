@@ -9,7 +9,7 @@ interface Product {
   description: string;
   descriptionImg: string | File;
   existsOption: boolean;
-  options: Option[];
+  options: Option[] | [];
   price: number;
   productImg: string | File;
   productName: string;
@@ -17,11 +17,11 @@ interface Product {
   stock: number;
 }
 
-interface Option {
+type Option = {
   [key: string]: string | undefined;
   optionDetailNames: string;
   optionTypeName: string;
-}
+};
 
 type Category = {
   categoryIdx: number;
@@ -50,17 +50,9 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
     stock: 0,
     salesEndDate: "",
     existsOption: false,
-    options: [
-      {
-        optionDetailNames: "",
-        optionTypeName: "",
-      },
-    ],
+    options: [],
   });
-  const [option, setOption] = useState<Option>({
-    optionDetailNames: "",
-    optionTypeName: "",
-  });
+  const [option, setOption] = useState<Option>({} as Option);
 
   const addOption = () => {
     setProduct((prevProduct) => ({
@@ -300,6 +292,7 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
             type='text'
             id='optionDetailNames'
             name='optionDetailNames'
+            placeholder='옵션 종류'
             value={option.optionDetailNames}
             onChange={handleInputChange}
           />
@@ -307,6 +300,7 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
             type='text'
             id='optionTypeName'
             name='optionTypeName'
+            placeholder='옵션 값'
             value={option.optionTypeName}
             onChange={handleInputChange}
           />

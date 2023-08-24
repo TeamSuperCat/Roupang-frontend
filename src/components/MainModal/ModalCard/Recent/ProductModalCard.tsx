@@ -1,12 +1,38 @@
 import { styled } from "styled-components";
+import { useRouter } from "../../../../hooks/useRouter";
+import useHandleModal from "../../../../hooks/useHandleModal";
 
-function ProductModalCard() {
+interface Props {
+  productName: string;
+  price: number;
+  productImg: string;
+  productIdx: number;
+}
+
+interface ProductImg {
+  img: string;
+}
+
+function ProductModalCard({
+  productName,
+  productImg,
+  price,
+  productIdx,
+}: Props) {
+  const { routeTo } = useRouter();
+  const { closeModal } = useHandleModal();
+
   return (
-    <ProductCardWrap>
-      <ProductImg />
+    <ProductCardWrap
+      onClick={() => {
+        closeModal();
+        routeTo(`/detail/${productIdx}`);
+      }}
+    >
+      <ProductImg img={productImg} />
       <ProductDescWrap>
-        <ProductTitle>D17 짜라 3종 혼합 120p 치킨 참치 연어와치킨</ProductTitle>
-        <ProductPrice>{`26,400원 > 38,200원`}</ProductPrice>
+        <ProductTitle>{productName}</ProductTitle>
+        <ProductPrice>{`${price.toLocaleString()}원`}</ProductPrice>
       </ProductDescWrap>
     </ProductCardWrap>
   );
@@ -27,11 +53,11 @@ const ProductCardWrap = styled.li`
   }
 `;
 
-const ProductImg = styled.div`
+const ProductImg = styled.div<ProductImg>`
   height: 100%;
   width: 60px;
   aspect-ratio: 1 / 1;
-  background-image: url("https://puppydog.co.kr/web/product/medium/202307/ecfe1e3c09c794a0fad49d45cfe16d44.jpg");
+  background-image: ${({ img }) => `url(${img})`};
   background-repeat: no-repeat;
   background-size: contain;
   margin-right: 10px;

@@ -1,15 +1,46 @@
 import { styled } from "styled-components";
-// import { useRouter } from "../../hooks/useRouter";
+import { useRouter } from "../../hooks/useRouter";
+import { useState } from "react";
+import Loading from "../Loading/Loading";
+import useStorage from "../../hooks/useStorage";
+
 interface ProductCardProps {
   item: ItemData;
+  $isDrag?: boolean;
 }
 
-function ProductCard({ item }: ProductCardProps) {
+function ProductCard({ item, $isDrag }: ProductCardProps) {
   const randomNum = Math.floor(Math.random() * 30) + 20;
   const upPrice = item.price + item.price * (randomNum * 0.01);
+  const [isLoading, setIsLoading] = useState(false);
+  const { routeTo } = useRouter();
+  const { state, updateData } = useStorage();
+  const handleClick = () => {
+    if (!$isDrag) {
+      setIsLoading(true);
+      const recentList = localStorage.getItem("recent");
+      if (!recentList) {
+        updateData([item.product_idx]);
+      }
+      if (recentList) {
+        const curr = [...state, item.product_idx];
+        const tmp = curr.reduce(
+          (a: number[], c) => (a.includes(c) ? a : [...a, c]),
+          []
+        );
+        updateData(tmp);
+      }
+
+      setIsLoading(false);
+
+      routeTo(`/detail/${item.product_idx}`);
+    }
+  };
+
+  if (isLoading) return <Loading />;
 
   return (
-    <CardWrapper>
+    <CardWrapper onClick={handleClick}>
       <CardImgWrapper>
         <a>
           <CardImg

@@ -1,8 +1,13 @@
 import styled from "styled-components";
 
-export const LoadingWrapper = styled.div`
+interface Props {
+  size?: number | string;
+}
+
+export const LoadingWrapper = styled.div<Props>`
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  min-height: 800px;
   background: transparent;
   -webkit-font-smoothing: antialiased;
   display: flex;
@@ -16,7 +21,7 @@ export const LoadingWrapper = styled.div`
       top: 20px;
       display: inline-block;
       font-family: "Fredoka", sans-serif;
-      font-size: 80px;
+      font-size: ${({ size }) => (size ? `${size}px` : "80px")};
       color: #fff;
       &:nth-child(1) {
         animation: bounce 0.3s ease infinite alternate;

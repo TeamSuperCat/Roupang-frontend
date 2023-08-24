@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { SiNaver } from "react-icons/si";
-import axios from "axios";
+import axiosClient from "../../api/axios";
 
 type ButtonProps = {
   loginType: {
@@ -13,7 +13,7 @@ type ButtonProps = {
 
 const OAuthButton = ({ loginType }: ButtonProps) => {
   const kakaoLoginHandler = async () => {
-    await axios
+    await axiosClient
       .get(
         `https://kauth.kakao.com/oauth/authorize?
     response_type=code&

@@ -6,7 +6,7 @@ import { useRouter } from "../hooks/useRouter";
 import OrderAccordion from "../components/Order/OrderAccordion";
 import ShipInfo from "../components/Order/ShipInfo";
 import OrderList from "../components/Order/OrderList";
-import OrderDisCount from "../components/Order/OrderDisCount";
+// import OrderDisCount from "../components/Order/OrderDisCount";
 import OrderInfo from "../components/Order/OrderInfo";
 import axiosClient from "../api/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -14,8 +14,9 @@ import useOrder from "../hooks/useOrder";
 import { useCartDispatch } from "../hooks/useCartDispatch";
 import { OrderItem } from "../slice/cartSlice";
 import Loading from "../components/Loading/Loading";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ProductsType } from "../slice/orderSlice";
+import LoadingNoBack from "../components/Loading/LoadingNoBack";
 
 interface ResponseData {
   memberIdx: number;
@@ -36,28 +37,29 @@ const requestOrderInfo = async (orderList: OrderItem[]) => {
 function Order() {
   const { routeTo } = useRouter();
   const { ordered } = useCartDispatch();
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isFetching } = useQuery(
     ["order"],
     () => requestOrderInfo(ordered)
     // { staleTime: Infinity }
   );
-
   const {
     formState: { form },
     addressState: { updateAddress },
     phoneState: { updatePhone },
     emailState: { updateEmail },
-    pointState: { updatePoint },
-    productsState: { updateProducts },
+    pointState: { point, updatePoint },
+    productsState: { products, updateProducts },
   } = useOrder();
-  // 페이지 진입하면 useQuery로 구매할 상품정보 불러온다음
-  // /order POST로 전역에 저장된 구매할 물품정보 받아서 보내준다
-  // 거기서 포인트 정보를 뽑아서 orderslice 에 포인트 상태 저장
-  // 사용자 정보도 상태 저장
+  const [total, setTotal] = useState(0);
+
   // 결제 버튼 눌렀을때 /order/payment에 formdata 보내줌
   const requestPayment = () => {
     axiosClient.post("/order/payment");
     // 성공 실패에 따라 행동정의 필요
+  };
+
+  const handleClick = () => {
+    console.log("클릭");
   };
 
   useEffect(() => {
@@ -70,11 +72,12 @@ function Order() {
     updatePhone({ forward: pforward, backward: pbackward });
     updateAddress({ rest: data.address });
     updatePoint(data.userPoint);
-  }, []);
+    setTotal(products.reduce((a, c) => a + c.allPrice, 0));
+  }, [data]);
 
   return (
     <OrderLayout>
-      {isLoading && <Loading />}
+      {(isLoading || isFetching) && <LoadingNoBack />}
       <OrderHeader>
         <OrderNav>
           <NavBtn onClick={() => routeTo(-1)}>
@@ -103,18 +106,20 @@ function Order() {
         <OrderAccordion title={"주문상품"}>
           <OrderList />
         </OrderAccordion>
-        <OrderAccordion title={"포인트 사용"}>
+        {/* <OrderAccordion title={"포인트 사용"}>
           <OrderDisCount />
-        </OrderAccordion>
+        </OrderAccordion> */}
         <OrderAccordion title={"결제정보"}>
-          <OrderInfo />
+          <OrderInfo total={total} />
         </OrderAccordion>
         {/* <OrderAccordion title={"적립혜택"}>
           <OrderBenefit />
         </OrderAccordion> */}
       </FormWrap>
       <BtnWrap>
-        <PurchaseBtn>32,500원 결제하기</PurchaseBtn>
+        <PurchaseBtn disabled={total > point} onClick={handleClick}>
+          {total.toLocaleString()}원 결제하기
+        </PurchaseBtn>
         <span>
           무이자할부가 적용되지 않은 상품과 무이자할부가 가능한 상품을 동시에
           구매할 경우 전체 주문 상품 금액에 대해 무이자할부가 적용되지 않습니다.
@@ -224,5 +229,10 @@ const PurchaseBtn = styled.button`
 
   &:hover {
     opacity: 0.8;
+  }
+
+  &:disabled {
+    background-color: red;
+    opacity: 0.2;
   }
 `;

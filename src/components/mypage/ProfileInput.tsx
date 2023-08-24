@@ -18,6 +18,7 @@ type inputProps = {
   data: {
     [key: string]: string | undefined;
     email: string;
+    nickname: string;
     phoneNumber: string | undefined;
     address: string;
   };
@@ -63,9 +64,9 @@ const ProfileInput = ({ name, type, text, data, onChange, isUpdate }: inputProps
               </div>
               <p>{nicknameErrMsg}</p>
             </InputButtonWrap>
-          ) : (
+          ) : name ? (
             <Input name={name} type={type} value={data[name]} onChange={(e) => onChange(e)} readOnly={true} />
-          )}
+          ) : null}
         </InputDoubleCheck>
       </div>
     </InputWrap>

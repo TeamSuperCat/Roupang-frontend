@@ -61,7 +61,7 @@ const Mypage = () => {
       case "menuSellerProducts":
         return <MenuSellerProducts />;
       default:
-        return <MenuProfile data={data} setData={setData} />;
+        return <MenuProfile data={data} setData={setData} getUserInfo={getUserInfo} />;
     }
   };
 
@@ -151,29 +151,6 @@ const Mypage = () => {
     // setIsSeller(true);
     return () => {};
   }, [isSeller]);
-
-  useEffect(() => {
-    // init items
-    // 통신 되면 지워도 됨
-    setItems([
-      {
-        id: 1,
-        name: "아이템1",
-        quantity: 1,
-        price: 15000,
-        imageUrl: "/img/cart1.jpg",
-      },
-      {
-        id: 2,
-        name: "아이템2",
-        quantity: 6,
-        price: 6000,
-        imageUrl: "/img/cart2.jpg",
-      },
-      // ...
-    ]);
-    return () => {};
-  }, []);
 
   /** 아 마이페이지에서 콘텍스트API를 쓰는 군요 ㄷㄷ... 넵!
    * Mypage에서 contextAPI 쓰는 것 처럼

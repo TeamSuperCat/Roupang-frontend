@@ -27,7 +27,11 @@ type Category = {
   categoryName: string;
 };
 
-const SellerRegisterProduct = () => {
+interface SellerRegisterProductProps {
+  getSellerProducts: () => void;
+}
+
+const SellerRegisterProduct = ({ getSellerProducts }: SellerRegisterProductProps) => {
   const [productImgUrls, setProductImgUrls] = useState<string[]>([]);
   const { ref: productImgRef, onChange: productImgOnChange } = useGetUrl(setProductImgUrls);
 
@@ -166,6 +170,7 @@ const SellerRegisterProduct = () => {
         .post("/seller/products/register", product)
         .then((res) => {
           console.log(res);
+          getSellerProducts();
         })
         .catch((err) => {
           console.log(err);

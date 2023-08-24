@@ -33,7 +33,7 @@ declare interface CartState {
   isLoading: boolean;
   liveview: number;
 }
-interface OrderItem {
+export interface OrderItem {
   amount: number;
   optionDetail: string;
   productIdx: number;

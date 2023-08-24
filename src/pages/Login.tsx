@@ -160,7 +160,7 @@ const Login = () => {
       {buttonItems
         .filter((item) => item.isOAuth)
         .map((item) => (
-          <OAuthButton loginType={item} />
+          <OAuthButton key={item.title} loginType={item} />
         ))}
     </Container>
   );

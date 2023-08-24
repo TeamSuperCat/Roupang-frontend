@@ -1,27 +1,43 @@
 import { styled } from "styled-components";
+import useOrder from "../../hooks/useOrder";
 
-function OrderInfo() {
+interface Props {
+  total: number;
+}
+
+function OrderInfo({ total }: Props) {
   // TODO 결제 금액 반영해서 넣기
+  const {
+    pointState: { point },
+  } = useOrder();
+  const message = "포인트 잔액 부족";
+  const totalLocale = total.toLocaleString();
 
   return (
     <ContentsWrap>
       <PriceInfoWrap>
         <InfoWrap>
-          <InfoTitle>주문상품</InfoTitle>
-          <InfoPrice>31,500원</InfoPrice>
+          <InfoTitle>보유 포인트</InfoTitle>
+          <InfoPrice>{point.toLocaleString()}원</InfoPrice>
         </InfoWrap>
         <InfoWrap>
-          <InfoTitle>배송비</InfoTitle>
-          <InfoPrice>+0원</InfoPrice>
+          <InfoTitle>주문상품</InfoTitle>
+          <InfoPrice>{totalLocale}원</InfoPrice>
         </InfoWrap>
         <InfoWrap>
           <InfoTitle>포인트사용</InfoTitle>
-          <InfoPrice style={{ color: "red" }}>-2,000원</InfoPrice>
+          <InfoPrice style={{ color: "red" }}>
+            {total > point ? message : `-${point.toLocaleString()}원`}
+          </InfoPrice>
+        </InfoWrap>
+        <InfoWrap>
+          <InfoTitle>사용후 포인트잔액</InfoTitle>
+          <InfoPrice>0원</InfoPrice>
         </InfoWrap>
       </PriceInfoWrap>
       <AmountWrap>
         <AmountText>최종 결제 금액</AmountText>
-        <Amount>29,500원</Amount>
+        <Amount>{total > point ? message : `${totalLocale}원`}</Amount>
       </AmountWrap>
     </ContentsWrap>
   );

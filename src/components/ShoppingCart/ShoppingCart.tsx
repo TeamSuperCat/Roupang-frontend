@@ -17,6 +17,8 @@ const ShoppingCart = () => {
     plusQuantity,
     minusQuantity,
     getCartlisting,
+    selectClear,
+    goOrder,
   } = useCartDispatch();
   const isLoading = useAppSelector((state) => state.cart.isLoading);
 
@@ -33,9 +35,8 @@ const ShoppingCart = () => {
   );
 
   useEffect(() => {
+    selectClear();
     getCartlisting();
-    console.log("어흥");
-    console.log(items);
   }, []);
 
   return (
@@ -128,7 +129,7 @@ const ShoppingCart = () => {
                 </div>
               </div>
               <div className="cart_order_btnbox">
-                <div className="cart_order_btn">
+                <div className="cart_order_btn" onClick={goOrder}>
                   <img src="/img/ordercheck.svg" alt="체크" />
                   <div>상품 주문하기</div>
                 </div>

@@ -60,8 +60,10 @@ const Header = () => {
     <>
       <HeaderWrapper>
         <HeaderTopbox>
-          <div className='header_support_info' onClick={Testyo}>/ 고객 지원센터 | 012-3456-7890</div>
-          <div className='header_mymenu_info'>
+          <div className="header_support_info" onClick={Testyo}>
+            / 고객 지원센터 | 012-3456-7890
+          </div>
+          <div className="header_mymenu_info">
             {isLogin ? (
               <>
                 <div className="header_logout_info">

@@ -11,12 +11,16 @@ import OrderList from "../components/Order/OrderList";
 import OrderDisCount from "../components/Order/OrderDisCount";
 import OrderInfo from "../components/Order/OrderInfo";
 import OrderBenefit from "../components/Order/OrderBenefit";
+import { useAppSelector } from "../hooks/useDispatch";
 
 // type InfoType = "member" | "new";
 
 function Order() {
   // const [shipment, setShipment] = useState<InfoType>("member");
   const { routeTo } = useRouter();
+  const OrderItem = useAppSelector((state) => state.cart.order);
+
+  console.log(OrderItem);
 
   return (
     <OrderLayout>

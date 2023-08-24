@@ -285,6 +285,9 @@ export const HeaderMiddlebox = styled.div`
       cursor: pointer;
       &:hover .header_search_ex {
         display: block;
+        @media (max-width: 550px) {
+          display: none;
+        }
       }
       .header_search_ex {
         display: none;
@@ -317,6 +320,9 @@ export const HeaderMiddlebox = styled.div`
       position: relative;
       &:hover .header_clock_ex {
         display: block;
+        @media (max-width: 550px) {
+          display: none;
+        }
       }
       .header_clock_ex {
         display: none;
@@ -349,6 +355,9 @@ export const HeaderMiddlebox = styled.div`
       cursor: pointer;
       &:hover .header_cart_ex {
         display: block;
+        @media (max-width: 550px) {
+          display: none;
+        }
       }
       .header_cart_count {
         position: absolute;

@@ -15,12 +15,8 @@ type inputProps = {
   };
   emailErrMsg: string;
   nicknameErrMsg: string;
-  checkEmailDuplicate: (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => Promise<void>;
-  checkNicknameDuplicate: (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => Promise<void>;
+  checkEmailDuplicate: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  checkNicknameDuplicate: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -38,8 +34,8 @@ const SignupInput = ({
 }: inputProps) => {
   return (
     <InputWrap>
-      <div className="label-input">
-        <label htmlFor="email">{text}</label>
+      <div className='label-input'>
+        <label htmlFor={name}>{text}</label>
         <InputDoubleCheck>
           {name === "email" ? (
             <InputButtonWrap>
@@ -174,8 +170,7 @@ const Input = styled.input`
   box-sizing: border-box;
   border-radius: 10px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   font-size: 12px;
   padding-left: 5px;
   transition: all ease-in-out 0.2s;

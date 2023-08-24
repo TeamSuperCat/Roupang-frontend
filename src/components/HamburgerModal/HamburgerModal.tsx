@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 interface HamburgerModalProps {
   setShowHamburgerModal: (show: boolean) => void;
   isLogin: boolean;
-  logoutHandler: boolean;
+  logoutHandler: any;
   handleCategorySelect: (category: string) => void;
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -17,12 +17,16 @@ import { AppDispatch } from "../../store/store";
 import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
 import { getCatenum } from "../../slice/ItemSlice";
 import HamburgerModal from "../HamburgerModal/HamburgerModal";
+import { login, logout } from "../../slice/userSlice";
+import axiosClient from "../../api/axios";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const [showHamburgerModal, setShowHamburgerModal] = useState(false);
-  // const isLogin = useAppSelector((state) => state.user.isLogin);
-  const isLogin = !!localStorage.getItem("accessToken");
+  const isLogin = useAppSelector((state) => state.user.isLogin);
+  const cartLength = useAppSelector((state) =>
+    state.cart.items ? state.cart.items.length : 0
+  );
 
   const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();

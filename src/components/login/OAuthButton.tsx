@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 import { SiNaver } from "react-icons/si";
 import axios from "axios";
-import axiosClient from "../../api/axios";
 
 type ButtonProps = {
   loginType: {

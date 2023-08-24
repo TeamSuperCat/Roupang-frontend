@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../hooks/useDispatch";
 import {
   removeItem,
@@ -9,12 +10,16 @@ import {
   decrementQuantity,
   selectAllItems,
   deselectAllItems,
+  getCartItems,
+  clearselectedItems,
+  moveOrder,
 } from "../../slice/cartSlice";
 
 export const useCartDispatch = () => {
   const dispatch = useAppDispatch();
   const items = useAppSelector((state) => state.cart.items);
   const selectedItems = useAppSelector((state) => state.cart.selectedItems);
+  const navigate = useNavigate();
 
   const handleSelectAll = (isChecked: boolean) => {
     if (isChecked) {
@@ -30,6 +35,14 @@ export const useCartDispatch = () => {
     } else {
       dispatch(selectItem(itemToSelect));
     }
+  };
+
+  const selectClear = () => {
+    dispatch(clearselectedItems());
+  };
+
+  const getCartlisting = () => {
+    dispatch(getCartItems());
   };
 
   const handleDelete = (id: number) => {
@@ -58,6 +71,11 @@ export const useCartDispatch = () => {
     }
   };
 
+  const goOrder = () => {
+    dispatch(moveOrder());
+    navigate("/order");
+  };
+
   return {
     items,
     selectedItems,
@@ -68,5 +86,8 @@ export const useCartDispatch = () => {
     handleDeleteSelected,
     plusQuantity,
     minusQuantity,
+    getCartlisting,
+    selectClear,
+    goOrder,
   };
 };

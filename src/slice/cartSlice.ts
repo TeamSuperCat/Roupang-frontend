@@ -1,15 +1,32 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import axiosClient from "../api/axios";
+
+export const getCartItems = createAsyncThunk<CartItem[], void>(
+  "item/getCartItems",
+  async () => {
+    const response = await axiosClient.get<CartItem[]>(`/cart`);
+    return response.data;
+  }
+);
 
 declare interface CartState {
   items: CartItem[];
   selectedItems: CartItem[];
-  order: CartItem[];
+  order: OrderItem[];
+  isLoading: boolean;
+}
+
+interface OrderItem {
+  amount: number;
+  optionDetail: string;
+  productIdx: number;
 }
 
 const initialState: CartState = {
-  items: [],
+  items: [], //장바구니에 보여질화면
   selectedItems: [],
-  order: [],
+  order: [], //결제화면에 보여줄 아이템들
+  isLoading: false,
 };
 
 const cartSlice = createSlice({
@@ -76,9 +93,31 @@ const cartSlice = createSlice({
       );
       state.selectedItems = [];
     },
+    clearselectedItems: (state) => {
+      state.selectedItems = [];
+    },
+    moveOrder: (state) => {
+      state.order = state.selectedItems.map((item) => ({
+        amount: item.amount,
+        optionDetail: item.optionDetail,
+        productIdx: item.productIdx,
+      }));
+    },
   },
   extraReducers: (builder) => {
-    builder;
+    builder
+      .addCase(getCartItems.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        state.items = action.payload;
+        console.log(action.payload);
+        state.isLoading = false;
+      })
+      .addCase(getCartItems.rejected, (state, action) => {
+        console.log(action.error, "실패");
+        state.isLoading = false;
+      });
   },
 });
 
@@ -92,6 +131,8 @@ export const {
   decrementQuantity,
   removeAll,
   removeSelected,
+  clearselectedItems,
+  moveOrder,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

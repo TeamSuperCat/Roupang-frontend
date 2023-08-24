@@ -71,10 +71,9 @@ export default ProductCard;
 
 const CardWrapper = styled.li`
   display: grid;
-  width: 95%;
-  height: 95%;
+  width: 100%;
+  height: 100%;
   grid-template-rows: 3fr 1fr;
-  margin: 14px 14px 14px 0;
   font-family: "Jost", sans-serif;
   min-height: 250px;
   cursor: pointer;
@@ -132,6 +131,9 @@ const PriceText = styled.span`
   font-weight: 500;
   line-height: 1;
   margin-right: 10px;
+  @media (max-width: 640px) {
+    font-size: 15px;
+  }
 
   &:nth-child(1) {
     color: #31caae;
@@ -143,6 +145,9 @@ const PriceText = styled.span`
     color: #cccccc;
     font-weight: 400;
     line-height: 1.1;
+    @media (max-width: 640px) {
+      font-size: 13px;
+    }
   }
   &:nth-child(3) {
     color: #555555;

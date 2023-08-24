@@ -53,13 +53,13 @@ const Mypage = () => {
   const renderPage = () => {
     switch (currentPage) {
       case "menuProfile":
-        return <MenuProfile data={data} setData={setData} />;
+        return <MenuProfile data={data} setData={setData} getUserInfo={getUserInfo} />;
       case "menuCart":
         return <MenuCart items={items} />;
       case "menuRegisterSeller":
         return <MenuRegisterSeller setIsSeller={setIsSeller} />;
       case "menuSellerProducts":
-        return <MenuSellerProducts getCartItems={getCartItems} />;
+        return <MenuSellerProducts />;
       default:
         return <MenuProfile data={data} setData={setData} />;
     }
@@ -107,11 +107,11 @@ const Mypage = () => {
       .then((res) => {
         console.log(res);
         if (res) {
+          setData(res.data);
           if (res.data.seller) {
             setIsSeller(true);
           }
         }
-        // setData(res);
       })
       .catch((err) => {
         console.log(err);

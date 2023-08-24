@@ -61,7 +61,7 @@ function CategoryCarousel({ data, category }: CategoryCarouselProps) {
         ))}
         <ShowMore onClick={() => handleCategorySelect(category)} />
       </SlickSlider>
-      Slider{" "}
+      {/* Slider{" "} */}
     </CarouselWrapper>
   );
 }
@@ -71,22 +71,81 @@ export default CategoryCarousel;
 const SlickSlider = styled(Slider)`
   .slick-track {
     margin: 0;
+    margin-bottom: 40px;
+    margin-left: -20px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    @media (max-width: 640px) {
+      gap: 14px;
+      margin-left: -14px;
+    }
+  }
+  .slick-slide > div {
+    @media (max-width: 830px) {
+      width: 180px;
+    }
+    @media (max-width: 640px) {
+      width: 140px;
+    }
+  }
+  .slick-slide,
+  .slick-active,
+  .slick-current {
+    @media (max-width: 830px) {
+      width: 180px !important;
+    }
+    @media (max-width: 640px) {
+      width: 140px !important;
+    }
+    & > div > li {
+      @media (max-width: 950px) {
+        grid-template-rows: 2fr 1fr;
+        min-height: 200px;
+      }
+      & > div > div > a > span {
+        @media (max-width: 640px) {
+          font-size: 14px;
+        }
+      }
+      & > div > div:last-child > span {
+        margin-right: 6px;
+        &:nth-child(1) {
+          @media (max-width: 640px) {
+            font-size: 14px;
+          }
+        }
+        &:nth-child(2) {
+          @media (max-width: 640px) {
+            font-size: 11px;
+          }
+        }
+        &:nth-child(3) {
+          @media (max-width: 640px) {
+            font-size: 12px;
+          }
+        }
+      }
+    }
   }
 `;
 
 const CarouselWrapper = styled.div`
-  width: 98vw;
-  max-width: 1210px;
-  min-height: 400px;
-  padding-right: 40px;
+  /* width: 98vw;
+  max-width: 1210px; */
+  width: 100%;
+  /* min-height: 400px; */
+  /* padding-right: 40px; */
   display: flex;
   flex-direction: column;
 `;
 
 const CategoryH1 = styled.h1`
-  font-size: 1.4rem;
+  font-size: 20px;
   font-weight: bold;
-  padding-left: 10px;
   font-family: "Jost", sans-serif;
-  letter-spacing: -2.5px;
+  padding-bottom: 15px;
+  @media (max-width: 640px) {
+    font-size: 16px;
+  }
 `;

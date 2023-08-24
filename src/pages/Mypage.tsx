@@ -60,8 +60,9 @@ const Mypage = () => {
   const postCart = async () => {
     await axiosClient
       .post("/cart", {
-        amount: 3,
-        productIdx: 1,
+        amount: 2,
+        productIdx: 2,
+        optionDetail: ["사이즈: s"],
       })
       .then((res) => {
         console.log(res);
@@ -98,7 +99,9 @@ const Mypage = () => {
       .then((res) => {
         console.log(res);
         if (res) {
-          setIsSeller(true);
+          if (res.data.seller) {
+            setIsSeller(true);
+          }
         }
         // setData(res);
       })
@@ -187,6 +190,7 @@ const Mypage = () => {
       <button onClick={signupSeller}>SignupSeller</button>
       <button onClick={getProducts}>getProducts</button>
       <button onClick={postCart}>postCart</button>
+      <button onClick={getCartItems}>getCartItems</button>
       <Heading>This is MYpage.</Heading>
       <Container>
         <MypageDiv>

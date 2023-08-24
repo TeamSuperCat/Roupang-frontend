@@ -1,8 +1,12 @@
 import { LoadingWrapper } from "./stLoading";
 
-const Loading = () => {
+interface Props {
+  size?: number | string;
+}
+
+const Loading = ({ size }: Props) => {
   return (
-    <LoadingWrapper>
+    <LoadingWrapper size={size}>
       <h1>
         <span>r</span>
         <span>o</span>

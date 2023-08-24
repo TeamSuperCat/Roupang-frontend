@@ -8,6 +8,9 @@ import Kakaopaymenticon from "../../assets/test/payment_icon_yellow_medium.png";
 import kakaoPaymentfunction from "../../api/KakaoPayment";
 import loadingImage from "../../assets/test/loading.gif";
 import Option from "./Option";
+import { immediatPayment } from "../../slice/cartSlice";
+
+import { useDispatch } from "react-redux";
 
 const responseProductData = {
   product_name: "  귀멸의칼날 도공마을편 무이치로 미츠리 오니잡는 귀살대 악!!",
@@ -19,9 +22,9 @@ const responseProductData = {
   product_img: image,
   sales_end_date: "2023-08-15",
 };
-
 ///컴포넌트시작
 const DetailDescription = () => {
+  const dispatch = useDispatch();
   const { productid } = useParams();
   const navigate = useNavigate();
 
@@ -71,7 +74,6 @@ const DetailDescription = () => {
   };
 
   const enterKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    // console.log(event);
     if (event.key === "Enter") {
       const inputValue = (event.target as HTMLInputElement).value;
       setIsAmountInputbox((prev) => !prev);
@@ -113,7 +115,6 @@ const DetailDescription = () => {
           return;
         }
       }
-      console.log("장바구니에 담을수있겠어요");
     } else {
       alert("옵션을 선택해주세요");
       return;
@@ -131,16 +132,13 @@ const DetailDescription = () => {
       )
       .then((res) => {
         alert("장바구니 완료 쇼핑을 계쏙 하쎄용");
-        console.log(res);
-        console.log("응잘되");
       })
       .catch((error) => {
-        console.log(error);
-        console.log("응안돼");
+        alert("에러입니다!");
       });
   };
   //구매하기
-  const buyButton = () => {
+  const buyButton = async () => {
     const optionName = Object.keys(option);
     let 보낼객체형태임 = "";
     //선택된옵션갯수 === 실제옵션갯수
@@ -159,26 +157,13 @@ const DetailDescription = () => {
       return;
     }
 
-    console.log("보낼객체형태임", 보낼객체형태임);
-    console.log("보낼객체형태임", typeof 보낼객체형태임);
-
-    axiosClient
-      .post("/order", [
-        {
-          amount: productAmount,
-          optionDetail: 보낼객체형태임,
-          productIdx: product_id,
-        },
-      ])
-      .then((res) => {
-        console.log(res);
-        console.log("응잘되");
-        navigate("/order");
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log("응안돼");
-      });
+    let payload = {
+      amount: productAmount,
+      optionDetail: 보낼객체형태임,
+      productIdx: product_id,
+    };
+    await dispatch(immediatPayment(payload));
+    navigate("/order");
   };
 
   //선택한 옵션으로 중복되지않게 옵션을만듬

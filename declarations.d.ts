@@ -11,6 +11,14 @@ declare interface ItemData {
   product_name: string;
   sales_end_date: string;
   stock: number;
+  id?: any;
+}
+
+declare global {
+  interface Window {
+    daum?: any;
+    IMP: Iamport;
+  }
 }
 
 declare interface CartItem {
@@ -28,3 +36,5 @@ declare interface CartItem {
   productStock: number;
   sellerIdx: number;
 }
+
+export {};

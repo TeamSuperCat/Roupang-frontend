@@ -1,18 +1,49 @@
 import { styled } from "styled-components";
+import useOrder from "../../hooks/useOrder";
+import daumPostCode from "../../api/requestPostCode";
 
 function ShipInfo() {
+  const {
+    zipCodeState: { zipCode, handleZipCode, insertZipcode },
+    addressState: { address, updateAddress },
+    phoneState: { phone, updatePhone },
+    emailState: { email, updateEmail },
+    formState: { form, handleTo },
+  } = useOrder();
+
+  const handleAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateAddress({ ...address, [e.target.name]: e.target.value });
+  };
+
+  const handlePhone = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    if (e.target.name === "forward" || e.target.name === "backward") {
+      if (!isNaN(Number(e.target.value)) || e.target.value === "") {
+        updatePhone({ ...phone, [e.target.name]: e.target.value });
+      }
+    }
+  };
+
+  const handleEmail = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    updateEmail({ ...email, [e.target.name]: e.target.value });
+    console.log(email);
+  };
+
   return (
     <ShipInfoWrap>
-      <InputWrap>
+      {/* <InputWrap>
         <InputGroup>
-          <input type="radio" id="member" name="shipment" checked />
+          <InputChecked type="radio" id="member" name="shipment" />
           <label htmlFor="member">회원 정보와 동일</label>
         </InputGroup>
         <InputGroup>
           <input type="radio" id="new" name="shipment" />
           <label htmlFor="new">새로운 배송지</label>
         </InputGroup>
-      </InputWrap>
+      </InputWrap> */}
       <ReceiverWrap>
         <colgroup>
           <Col1 />
@@ -22,7 +53,7 @@ function ShipInfo() {
           <tr>
             <th scope="row">받는사람</th>
             <td>
-              <input type="text" />
+              <input type="text" value={form.To} onChange={handleTo} />
             </td>
           </tr>
           <tr>
@@ -30,16 +61,38 @@ function ShipInfo() {
             <td>
               <ul>
                 <li>
-                  <input type="text" readOnly placeholder="우편번호" />
-                  <button>주소검색</button>
+                  <input
+                    id="zipcode"
+                    type="text"
+                    readOnly
+                    placeholder="우편번호"
+                    value={zipCode}
+                    onChange={handleZipCode}
+                  />
+                  <button
+                    onClick={() => daumPostCode(insertZipcode, updateAddress)}
+                  >
+                    주소검색
+                  </button>
                 </li>
                 <li>
-                  <input type="text" readOnly placeholder="기본주소" />
+                  <input
+                    id="base_addr"
+                    type="text"
+                    name="base"
+                    readOnly
+                    placeholder="기본주소"
+                    value={address.base}
+                    onChange={handleAddress}
+                  />
                 </li>
                 <li>
                   <input
                     type="text"
+                    name="rest"
                     placeholder="나머지 주소(선택 입력 가능)"
+                    value={address.rest}
+                    onChange={handleAddress}
                   />
                 </li>
               </ul>
@@ -49,7 +102,7 @@ function ShipInfo() {
             <th scope="row">휴대전화</th>
             <td>
               <div className="phone">
-                <select id="rphone2_1" name="rphone2_[]">
+                <select id="prefix" name="prefix" onChange={handlePhone}>
                   <option value="010">010</option>
                   <option value="011">011</option>
                   <option value="016">016</option>
@@ -58,18 +111,44 @@ function ShipInfo() {
                   <option value="019">019</option>
                 </select>
                 -
-                <input type="text" maxLength={4} />
+                <input
+                  type="text"
+                  name="forward"
+                  maxLength={4}
+                  value={phone.forward}
+                  onChange={handlePhone}
+                />
                 -
-                <input type="text" maxLength={4} />
+                <input
+                  type="text"
+                  name="backward"
+                  maxLength={4}
+                  value={phone.backward}
+                  onChange={handlePhone}
+                />
               </div>
             </td>
           </tr>
           <tr>
             <th scope="row">이메일</th>
             <td className="email_wrap">
-              <input type="text" id="email" className="email" />@
+              <input
+                type="text"
+                id="email"
+                className="email"
+                name="forward"
+                value={email.forward}
+                onChange={handleEmail}
+              />
+              @
               <span className="email_select">
-                <select id="email" className="email_select">
+                <select
+                  id="email"
+                  className="email_select"
+                  name="backward"
+                  value={email.backward}
+                  onChange={handleEmail}
+                >
                   <option value="" defaultValue="-이메일 선택-">
                     -이메일 선택-
                   </option>
@@ -82,7 +161,7 @@ function ShipInfo() {
                   <option value="korea.com">korea.com</option>
                   <option value="dreamwiz.com">dreamwiz.com</option>
                   <option value="gmail.com">gmail.com</option>
-                  <option value="etc">직접입력</option>
+                  {/* <option value="etc">직접입력</option> */}
                 </select>
                 <span>
                   <input
@@ -148,6 +227,8 @@ const InputGroup = styled.div`
     cursor: pointer;
   }
 `;
+
+const InputChecked = styled.input.attrs({ defaultChecked: true })``;
 
 const ReceiverWrap = styled.table`
   box-sizing: border-box;

@@ -4,10 +4,6 @@ import SellerRegisterProduct from "./SellerRegisterProduct";
 import axiosClient from "../../api/axios";
 import { useEffect, useState } from "react";
 
-interface MenuSellerProductsProps {
-  getCartItems: () => Promise<void>;
-}
-
 interface Product {
   description: string;
   price: number;
@@ -15,7 +11,7 @@ interface Product {
   product_name: string;
 }
 
-const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
+const MenuSellerProducts = () => {
   const [sellerProducts, setSellerProducts] = useState<Product[]>([]);
   const getSellerProducts = async () => {
     await axiosClient
@@ -37,7 +33,7 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
 
   return (
     <Container>
-      <SellerRegisterProduct getCartItems={getCartItems} />
+      <SellerRegisterProduct />
       <SellerProductsList sellerProducts={sellerProducts} />
     </Container>
   );

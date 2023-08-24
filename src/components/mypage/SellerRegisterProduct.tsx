@@ -27,11 +27,7 @@ type Category = {
   categoryName: string;
 };
 
-interface MenuSellerProductsProps {
-  getCartItems: () => Promise<void>;
-}
-
-const SellerRegisterProduct = ({ getCartItems }: MenuSellerProductsProps) => {
+const SellerRegisterProduct = () => {
   const [productImgUrls, setProductImgUrls] = useState<string[]>([]);
   const { ref: productImgRef, onChange: productImgOnChange } = useGetUrl(setProductImgUrls);
 

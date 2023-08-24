@@ -5,16 +5,23 @@ import { styled } from "styled-components";
 import useGetUrl from "../../hooks/useGetUrls";
 
 interface Product {
-  produtcName: string;
+  categoryIdx: number;
   description: string;
-  // categoryIdx: number;
-  price: number;
-  stock: number;
-  productImg: string | File;
   descriptionImg: string | File;
+  existsOption: boolean;
+  options: Option[] | [];
+  price: number;
+  productImg: string | File;
+  productName: string;
   salesEndDate: string;
-  // options:string[],
+  stock: number;
 }
+
+type Option = {
+  [key: string]: string | undefined;
+  optionDetailNames: string;
+  optionTypeName: string;
+};
 
 type Category = {
   categoryIdx: number;
@@ -36,16 +43,25 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [product, setProduct] = useState<Product>({
-    produtcName: "",
+    categoryIdx: 0,
+    productName: "",
     description: "",
-    // categoryIdx: 0,
-    price: 0,
-    stock: 0,
     productImg: "default_profile.png",
     descriptionImg: "default_profile.png",
+    price: 0,
+    stock: 0,
     salesEndDate: "",
-    // options:string[],
+    existsOption: false,
+    options: [],
   });
+  const [option, setOption] = useState<Option>({} as Option);
+
+  const addOption = () => {
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      ["options"]: [...prevProduct.options, option],
+    }));
+  };
 
   const handleInputChange = (
     event: ChangeEvent<
@@ -53,10 +69,19 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
     >
   ) => {
     const { name, value } = event.target;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
+    console.log(name, value);
+
+    if (name === "optionDetailNames" || name === "optionTypeName") {
+      if (name === undefined || value === undefined) return;
+      setOption((prevOption) => ({ ...prevOption, [name]: value }));
+      console.log(option);
+    } else {
+      addOption();
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        [name]: value,
+      }));
+    }
   };
 
   const handleMainImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -108,6 +133,8 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
         descriptionImg: descriptionImgUrls[0],
       }));
       console.log(product);
+
+      // await setProduct((prev) => ({ ...prev, categoryIdx: s }));
 
       await axiosClient
         .post("/seller/products/register", product)
@@ -195,13 +222,13 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
         <FormItem>
           <label htmlFor="category">상품분류</label>
           <select
-            name="category"
-            id="category"
-            // value={product.category}
+            name="categoryIdx"
+            id="categoryIdx"
+            // value={product.categoryIdx}
             onChange={handleInputChange}
           >
             {categories.map((category) => (
-              <option key={category.categoryName} value={category.categoryName}>
+              <option key={category.categoryName} value={category.categoryIdx}>
                 {category.categoryName}
               </option>
             ))}
@@ -222,7 +249,7 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
             type="text"
             id="name"
             name="produtcName"
-            value={product.produtcName}
+            value={product.productName}
             onChange={handleInputChange}
             //   onBlur={nameInputBlurHandler}
           />
@@ -286,6 +313,26 @@ const MenuSellerProducts = ({ getCartItems }: MenuSellerProductsProps) => {
             value={product.salesEndDate}
             onChange={handleInputChange}
           />
+        </FormItem>
+        <FormItem>
+          <label htmlFor="options">상품 옵션</label>
+          <input
+            type="text"
+            id="optionDetailNames"
+            name="optionDetailNames"
+            placeholder="옵션 종류"
+            value={option.optionDetailNames}
+            onChange={handleInputChange}
+          />
+          <input
+            type="text"
+            id="optionTypeName"
+            name="optionTypeName"
+            placeholder="옵션 값"
+            value={option.optionTypeName}
+            onChange={handleInputChange}
+          />
+          <button onClick={addOption}>옵션 추가</button>
         </FormItem>
         {/* <FormItem>
           <label htmlFor="product-options">물품 옵션</label>

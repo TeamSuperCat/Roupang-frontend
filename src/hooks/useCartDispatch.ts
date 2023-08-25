@@ -15,6 +15,8 @@ import {
   moveOrder,
   selectedOrder,
   clearOrder,
+  AlldeleteCart,
+  selectdeleteCart,
 } from "../slice/cartSlice";
 
 export const useCartDispatch = () => {
@@ -32,7 +34,6 @@ export const useCartDispatch = () => {
       dispatch(deselectAllItems());
     }
   };
-
   //해당 상품을 선택하거나 선택 취소합니다.
   const handleItemSelect = (itemToSelect: CartItem) => {
     if (selectedItems.some((item) => item.id === itemToSelect.id)) {
@@ -41,6 +42,8 @@ export const useCartDispatch = () => {
       dispatch(selectItem(itemToSelect));
     }
   };
+
+  console.log(selectedItems);
   //선택된 값들을 초기화해줍니다. 장바구니에 처음 진입할때만 사용됩니다.
   const selectClear = () => {
     dispatch(clearselectedItems());
@@ -50,11 +53,13 @@ export const useCartDispatch = () => {
     dispatch(getCartItems());
   };
   //단일 상품을 삭제합니다.
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number, productIdx: number) => {
     dispatch(removeItem(id));
+    dispatch(selectdeleteCart(productIdx));
   };
   //장바구니의 상품들을 전체 삭제합니다.
   const handleDeleteAll = () => {
+    dispatch(AlldeleteCart());
     dispatch(removeAll());
   };
   //장바구니에서 선택된 상품들만 삭제합니다.

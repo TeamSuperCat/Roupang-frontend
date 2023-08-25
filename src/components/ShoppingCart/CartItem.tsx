@@ -1,11 +1,9 @@
-import React from "react";
-
 type CartItemProps = {
   item: CartItem;
   handleItemSelect: (item: CartItem) => void;
   plusQuantity: (id: number) => void;
   minusQuantity: (id: number) => void;
-  handleDelete: (id: number) => void;
+  handleDelete: (id: number, productIdx: number) => void;
   selectedItems: CartItem[];
   formatCurrency: (price: number) => string;
   SelectgoOrder: (id: number) => void;
@@ -21,6 +19,7 @@ const CartItem: React.FC<CartItemProps> = ({
   selectedItems,
   SelectgoOrder,
 }) => {
+  console.log(item.productIdx);
   return (
     <tr key={item.id}>
       <td>
@@ -54,7 +53,7 @@ const CartItem: React.FC<CartItemProps> = ({
       <td className="cart_item_btnbox">
         <div onClick={() => SelectgoOrder(item.id)}>주문하기</div>
         <div>위시리스트</div>
-        <div onClick={() => handleDelete(item.id)}>
+        <div onClick={() => handleDelete(item.id, item.productIdx)}>
           삭제
           <img src="/img/delete.svg" alt="삭제" />
         </div>

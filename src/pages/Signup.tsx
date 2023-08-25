@@ -189,6 +189,7 @@ const Signup = () => {
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("정보가 틀려서 로그인 실패", data);
+    alert("회원가입 양식에 맞게 다시 작성해주세요");
     if (
       isUniqueEmail &&
       isValidEmail &&

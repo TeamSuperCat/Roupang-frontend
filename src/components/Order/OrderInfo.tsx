@@ -25,14 +25,14 @@ function OrderInfo({ total }: Props) {
           <InfoPrice>{totalLocale}원</InfoPrice>
         </InfoWrap>
         <InfoWrap>
-          <InfoTitle>포인트사용</InfoTitle>
+          <InfoTitle>사용 포인트</InfoTitle>
           <InfoPrice style={{ color: "red" }}>
-            {total > point ? message : `-${point.toLocaleString()}원`}
+            {total > point ? message : `-${totalLocale}원`}
           </InfoPrice>
         </InfoWrap>
         <InfoWrap>
           <InfoTitle>사용후 포인트잔액</InfoTitle>
-          <InfoPrice>0원</InfoPrice>
+          <InfoPrice>{(point - total).toLocaleString()}원</InfoPrice>
         </InfoWrap>
       </PriceInfoWrap>
       <AmountWrap>

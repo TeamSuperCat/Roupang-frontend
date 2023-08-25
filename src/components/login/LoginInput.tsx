@@ -47,7 +47,9 @@ const LoginInput = () => {
     if (password.trim() === "") {
       setPasswordError("비밀번호를 입력해주세요.");
     } else if (!isValidPassword(password)) {
-      setPasswordError("비밀번호는 8-20자리의 영문자와 숫자를 포함해야 합니다.");
+      setPasswordError(
+        "비밀번호는 8-20자리의 영문자와 숫자를 포함해야 합니다."
+      );
     } else {
       setPasswordError("");
     }
@@ -127,6 +129,7 @@ const LoginInput = () => {
       // }
     } else {
       console.log("유효성 검사 실패");
+      alert("아이디와 패스워드를 입력해주세요.");
     }
   };
 
@@ -134,12 +137,17 @@ const LoginInput = () => {
     // 4. xml 에 적용
     <Container>
       <InputWrap>
-        <Input type='email' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleEmailBlur} />
+        <Input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onBlur={handleEmailBlur}
+        />
         {emailError && <ErrorText>{emailError}</ErrorText>}
       </InputWrap>
       <InputWrap>
         <Input
-          type='password'
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           onBlur={handlePasswordBlur}
@@ -147,7 +155,11 @@ const LoginInput = () => {
 
         {passwordError && <ErrorText>{passwordError}</ErrorText>}
       </InputWrap>
-      <CustomButton email={email} password={password} onLoginClick={handleLoginSubmit} />
+      <CustomButton
+        email={email}
+        password={password}
+        onLoginClick={handleLoginSubmit}
+      />
     </Container>
 
     // <Container className={nameInputClasses}>
@@ -174,7 +186,8 @@ const InputWrap = styled.div`
 `;
 
 const Input = styled.input`
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 4px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 4px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   color: #222;
   font-weight: 600;
   width: 460px;

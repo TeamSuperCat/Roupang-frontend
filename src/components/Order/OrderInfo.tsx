@@ -32,7 +32,9 @@ function OrderInfo({ total }: Props) {
         </InfoWrap>
         <InfoWrap>
           <InfoTitle>사용후 포인트잔액</InfoTitle>
-          <InfoPrice>{(point - total).toLocaleString()}원</InfoPrice>
+          <InfoPrice>
+            {total > point ? message : (point - total).toLocaleString()}원
+          </InfoPrice>
         </InfoWrap>
       </PriceInfoWrap>
       <AmountWrap>

@@ -52,9 +52,11 @@ function Order() {
     zipCodeState: { zipCode },
   } = useOrder();
   const [total, setTotal] = useState(0);
+  const [loadingState, setLoadingState] = useState(false);
 
   // 결제 버튼 눌렀을때 /order/payment에 formdata 보내줌
   const requestPayment = () => {
+    setLoadingState(true);
     const paidItems = products.map(({ amount, singleOrderNum }) => ({
       amount,
       singleOrderNum,
@@ -77,6 +79,7 @@ function Order() {
       .then((res) => {
         console.log(res);
         alert("결제가 완료되었습니다.");
+        setLoadingState(false);
         routeTo("/mypage");
       });
     // 성공 실패에 따라 행동정의 필요
@@ -103,7 +106,7 @@ function Order() {
 
   return (
     <OrderLayout>
-      {isLoading && <LoadingNoBack />}
+      {(isLoading || loadingState) && <LoadingNoBack />}
       <OrderHeader>
         <OrderNav>
           <NavBtn onClick={() => routeTo(-1)}>
@@ -143,7 +146,12 @@ function Order() {
         </OrderAccordion> */}
       </FormWrap>
       <BtnWrap>
-        <PurchaseBtn disabled={total > point} onClick={() => requestPayment()}>
+        <PurchaseBtn
+          disabled={total > point}
+          onClick={() => {
+            requestPayment();
+          }}
+        >
           {total.toLocaleString()}원 결제하기
         </PurchaseBtn>
         <span>

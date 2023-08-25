@@ -21,7 +21,7 @@ export const HamburgerModalWrapper = styled.div`
     height: 100%;
     position: relative;
     background-color: #fff;
-    padding: 80px 30px 45px;
+    padding: 80px 30px 60px;
     box-sizing: border-box;
     overflow-y: auto;
     animation: fadeRight 0.5s ease-in-out;

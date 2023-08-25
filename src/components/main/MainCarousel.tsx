@@ -56,13 +56,66 @@ const Test = styled.div`
   margin-bottom: 60px;
   .swiper-pagination {
     text-align: right;
+    & span:last-child {
+      margin-right: 17px;
+    }
   }
 `;
 const CarouselImgDiv = styled.div`
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  background-color: #ffeca7;
+  width: 100%;
+  @media (max-width: 1300px) {
+    height: 234.27px;
+  }
+  @media (max-width: 840px) {
+    height: 254.27px;
+  }
+  @media (max-width: 680px) {
+    height: 214.27px;
+  }
   img {
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
+    height: 214.27px; // 이미지 원본 높이값에 고정
+    @media (max-width: 1300px) {
+      height: 75%;
+      transform: scale(1.2);
+    }
+    @media (max-width: 1150px) {
+      height: 62.5%;
+      transform: scale(1.35);
+    }
+    @media (max-width: 950px) {
+      height: 61.5%;
+      transform: scale(1.4);
+    }
+    @media (max-width: 840px) {
+      height: 48%;
+      transform: scale(1.5);
+    }
+    @media (max-width: 750px) {
+      height: 46%;
+      /* transform: scale(1.6); */
+    }
+    @media (max-width: 680px) {
+      width: 500%;
+      height: 92%;
+      transform: scale(2);
+      transform: translateX(-15.8%);
+    }
+    @media (max-width: 415px) {
+      transform: translateX(-15%);
+    }
+    @media (max-width: 376px) {
+      transform: translateX(-15.8%);
+    }
+    @media (max-width: 281px) {
+      transform: translateX(-18.98%);
+      height: 85%;
+    }
   }
 `;
 
@@ -90,17 +143,17 @@ const CarouselImgDiv = styled.div`
 const StyledSwiper = styled(Swiper)`
   .swiper-button-prev {
     &::after {
-      content: "<"; /* 변경할 아이콘 또는 텍스트 추가 */
+      /* content: "<"; 변경할 아이콘 또는 텍스트 추가 */
       font-size: 35px; /* 아이콘 크기 조정 */
-      color: #000000; /* 아이콘 색상 조정 */
+      color: rgba(51, 51, 51, 0.5); /* 아이콘 색상 조정 */
     }
   }
 
   .swiper-button-next {
     &::after {
-      content: ">"; /* 변경할 아이콘 또는 텍스트 추가 */
+      /* content: ">"; 변경할 아이콘 또는 텍스트 추가 */
       font-size: 35px; /* 아이콘 크기 조정 */
-      color: #000000; /* 아이콘 색상 조정 */
+      color: rgba(51, 51, 51, 0.5); /* 아이콘 색상 조정 */
     }
   }
 `;

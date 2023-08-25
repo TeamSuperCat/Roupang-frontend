@@ -131,8 +131,22 @@ const PriceText = styled.span`
   font-weight: 500;
   line-height: 1;
   margin-right: 10px;
+  @media (max-width: 1150px) {
+    font-size: 16px;
+  }
+  @media (max-width: 910px) {
+    font-size: 15px;
+  }
   @media (max-width: 640px) {
     font-size: 15px;
+  }
+  &:last-child {
+    @media (max-width: 1150px) {
+      font-size: 14px;
+    }
+    @media (max-width: 910px) {
+      font-size: 13px;
+    }
   }
 
   &:nth-child(1) {
@@ -145,8 +159,11 @@ const PriceText = styled.span`
     color: #cccccc;
     font-weight: 400;
     line-height: 1.1;
-    @media (max-width: 640px) {
+    @media (max-width: 1150px) {
       font-size: 13px;
+    }
+    @media (max-width: 910px) {
+      font-size: 12px;
     }
   }
   &:nth-child(3) {

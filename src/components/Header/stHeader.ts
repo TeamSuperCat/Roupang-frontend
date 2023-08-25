@@ -318,6 +318,9 @@ export const HeaderMiddlebox = styled.div`
     .header_clockbox {
       cursor: pointer;
       position: relative;
+      @media (max-width: 281px) {
+        display: none;
+      }
       &:hover .header_clock_ex {
         display: block;
         @media (max-width: 550px) {

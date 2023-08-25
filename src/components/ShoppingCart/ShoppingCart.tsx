@@ -17,7 +17,6 @@ const ShoppingCart = () => {
     handleDeleteSelected,
     plusQuantity,
     minusQuantity,
-    getCartlisting,
     selectClear,
     goOrder,
     SelectgoOrder,
@@ -43,8 +42,9 @@ const ShoppingCart = () => {
   //selectClear()이 함수는 이전에 장바구니에서 선택했었던 값들을 초기화해줍니다
   useEffect(() => {
     selectClear();
-    getCartlisting();
   }, []);
+
+  console.log("제발");
 
   return (
     <>

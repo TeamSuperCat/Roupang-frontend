@@ -22,7 +22,7 @@ export const rootReducer = combineReducers({
 const persistConfig = {
   key: "reduxData",
   storage,
-  whitelist: ["cart", "item", "main"],
+  whitelist: ["item", "main"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

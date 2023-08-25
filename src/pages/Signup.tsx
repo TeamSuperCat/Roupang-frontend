@@ -164,6 +164,8 @@ const Signup = () => {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
+    console.log(data);
+    console.log(data.nickname);
     await axiosClient
       .post<Data>("/member/check", {
         nickname: data.nickname,

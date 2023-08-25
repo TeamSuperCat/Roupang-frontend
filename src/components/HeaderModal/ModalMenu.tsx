@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import { BsThreeDotsVertical, BsBell, BsClock, BsStar } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { AiOutlineHeart } from "react-icons/ai";
-import MenuBtn from "./MenuBtn";
+import MenuBtn from "../MainModal/MenuBtn";
 import useHandleModal from "../../hooks/useHandleModal";
 
 interface Props {

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import LoginInput from "../components/login/LoginInput";
 import { styled } from "styled-components";
-import OAuthButton from "../components/login/OAuthButton";
+// import OAuthButton from "../components/login/OAuthButton";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../hooks/useDispatch";
 
@@ -20,11 +20,11 @@ import { useAppSelector } from "../hooks/useDispatch";
 //   },
 // ];
 
-const buttonItems = [
-  { title: "로그인", logo: "", color: "", isOAuth: false },
-  { title: "카카오 로그인", logo: "kakao", color: "#fee500", isOAuth: true },
-  // { title: "네이버 로그인", logo: "naver", color: "#03c75a", isOAuth: true },
-];
+// const buttonItems = [
+//   { title: "로그인", logo: "", color: "", isOAuth: false },
+//   { title: "카카오 로그인", logo: "kakao", color: "#fee500", isOAuth: true },
+//   // { title: "네이버 로그인", logo: "naver", color: "#03c75a", isOAuth: true },
+// ];
 
 // interface Data {
 //   [key: string]: string;
@@ -153,15 +153,15 @@ const Login = () => {
       </Form>
 
       <LinkWrap>
-        <Link to='/signup'>회원가입하기</Link>
+        <Link to="/signup">회원가입하기</Link>
         {/* <Link to="/findpassword">비밀번호찾기</Link> */}
       </LinkWrap>
 
-      {buttonItems
+      {/* {buttonItems
         .filter((item) => item.isOAuth)
         .map((item) => (
           <OAuthButton key={item.title} loginType={item} />
-        ))}
+        ))} */}
     </Container>
   );
 };

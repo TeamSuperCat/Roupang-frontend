@@ -13,7 +13,6 @@ import { useQuery } from "@tanstack/react-query";
 import useOrder from "../hooks/useOrder";
 import { useCartDispatch } from "../hooks/useCartDispatch";
 import { OrderItem } from "../slice/cartSlice";
-import Loading from "../components/Loading/Loading";
 import { useEffect, useState } from "react";
 import { ProductsType } from "../slice/orderSlice";
 import LoadingNoBack from "../components/Loading/LoadingNoBack";
@@ -37,47 +36,74 @@ const requestOrderInfo = async (orderList: OrderItem[]) => {
 function Order() {
   const { routeTo } = useRouter();
   const { ordered } = useCartDispatch();
-  const { data, isLoading, isFetching } = useQuery(
+  const { data, isLoading } = useQuery(
     ["order"],
-    () => requestOrderInfo(ordered)
+    () => requestOrderInfo(ordered),
     // { staleTime: Infinity }
+    { cacheTime: 0 }
   );
   const {
-    formState: { form },
-    addressState: { updateAddress },
-    phoneState: { updatePhone },
-    emailState: { updateEmail },
+    formState: { form, updateForm },
+    addressState: { address, updateAddress },
+    phoneState: { phone, updatePhone },
+    emailState: { email, updateEmail },
     pointState: { point, updatePoint },
     productsState: { products, updateProducts },
+    zipCodeState: { zipCode },
   } = useOrder();
   const [total, setTotal] = useState(0);
 
   // 결제 버튼 눌렀을때 /order/payment에 formdata 보내줌
   const requestPayment = () => {
-    axiosClient.post("/order/payment");
+    const paidItems = products.map(({ amount, singleOrderNum }) => ({
+      amount,
+      singleOrderNum,
+    }));
+    updateForm({
+      address: `${zipCode} ${address.base} ${address.rest}`,
+      phone: `${phone.prefix}-${phone.forward}-${phone.backward}`,
+      email: `${email.forward}@${email.backward}`,
+    });
+    axiosClient
+      .post("/order/payment", {
+        cartItems: paidItems,
+        deliveryAddress: {
+          address: form.address,
+          recipient: form.To,
+          recipientEmail: form.email,
+          recipientPhone: form.phone,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        alert("결제가 완료되었습니다.");
+        routeTo("/mypage");
+      });
     // 성공 실패에 따라 행동정의 필요
-  };
-
-  const handleClick = () => {
-    console.log("클릭");
   };
 
   useEffect(() => {
     if (!data) return;
+    setTotal(products.reduce((a, c) => a + c.allPrice, 0));
+    updateProducts(data.purchaseItemResponseList);
     const eforward = data.email.split("@")[0];
     const pforward = data.phoneNumber.substring(3, 7);
     const pbackward = data.phoneNumber.substring(7);
-    updateProducts(data.purchaseItemResponseList);
     updateEmail({ forward: eforward });
     updatePhone({ forward: pforward, backward: pbackward });
     updateAddress({ rest: data.address });
     updatePoint(data.userPoint);
-    setTotal(products.reduce((a, c) => a + c.allPrice, 0));
-  }, [data]);
+  }, [data, total, products]);
+
+  useEffect(() => {
+    return () => {
+      // clearPayment();
+    };
+  }, []);
 
   return (
     <OrderLayout>
-      {(isLoading || isFetching) && <LoadingNoBack />}
+      {isLoading && <LoadingNoBack />}
       <OrderHeader>
         <OrderNav>
           <NavBtn onClick={() => routeTo(-1)}>
@@ -117,7 +143,7 @@ function Order() {
         </OrderAccordion> */}
       </FormWrap>
       <BtnWrap>
-        <PurchaseBtn disabled={total > point} onClick={handleClick}>
+        <PurchaseBtn disabled={total > point} onClick={() => requestPayment()}>
           {total.toLocaleString()}원 결제하기
         </PurchaseBtn>
         <span>

@@ -14,6 +14,7 @@ import {
   clearselectedItems,
   moveOrder,
   selectedOrder,
+  clearOrder,
 } from "../slice/cartSlice";
 
 export const useCartDispatch = () => {
@@ -85,6 +86,10 @@ export const useCartDispatch = () => {
     navigate("/order");
   };
 
+  const clearPayment = () => {
+    dispatch(clearOrder());
+  };
+
   return {
     items,
     selectedItems,
@@ -100,5 +105,6 @@ export const useCartDispatch = () => {
     goOrder,
     SelectgoOrder,
     ordered,
+    clearPayment,
   };
 };

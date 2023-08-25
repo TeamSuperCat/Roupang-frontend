@@ -14,10 +14,10 @@ export interface PhoneType extends EmailType {
 }
 
 export interface FormDataType {
-  To: string;
-  address: string;
-  phone: string;
-  email: string;
+  To?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
 }
 
 export interface ProductsType {

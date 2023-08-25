@@ -15,9 +15,7 @@ function ShipInfo() {
     updateAddress({ ...address, [e.target.name]: e.target.value });
   };
 
-  const handlePhone = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handlePhone = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (e.target.name === "forward" || e.target.name === "backward") {
       if (!isNaN(Number(e.target.value)) || e.target.value === "") {
         updatePhone({ ...phone, [e.target.name]: e.target.value });
@@ -25,9 +23,7 @@ function ShipInfo() {
     }
   };
 
-  const handleEmail = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleEmail = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     updateEmail({ ...email, [e.target.name]: e.target.value });
     console.log(email);
   };
@@ -51,46 +47,42 @@ function ShipInfo() {
         </colgroup>
         <tbody>
           <tr>
-            <th scope="row">받는사람</th>
+            <th scope='row'>받는사람</th>
             <td>
-              <input type="text" value={form.To} onChange={handleTo} />
+              <input type='text' value={form.To} onChange={handleTo} />
             </td>
           </tr>
           <tr>
-            <th scope="row">주소</th>
+            <th scope='row'>주소</th>
             <td>
               <ul>
                 <li>
                   <input
-                    id="zipcode"
-                    type="text"
+                    id='zipcode'
+                    type='text'
                     readOnly
-                    placeholder="우편번호"
+                    placeholder='우편번호'
                     value={zipCode}
                     onChange={handleZipCode}
                   />
-                  <button
-                    onClick={() => daumPostCode(insertZipcode, updateAddress)}
-                  >
-                    주소검색
-                  </button>
+                  <button onClick={() => daumPostCode(insertZipcode, updateAddress)}>주소검색</button>
                 </li>
                 <li>
                   <input
-                    id="base_addr"
-                    type="text"
-                    name="base"
+                    id='base_addr'
+                    type='text'
+                    name='base'
                     readOnly
-                    placeholder="기본주소"
+                    placeholder='기본주소'
                     value={address.base}
                     onChange={handleAddress}
                   />
                 </li>
                 <li>
                   <input
-                    type="text"
-                    name="rest"
-                    placeholder="나머지 주소(선택 입력 가능)"
+                    type='text'
+                    name='rest'
+                    placeholder='나머지 주소(선택 입력 가능)'
                     value={address.rest}
                     onChange={handleAddress}
                   />
@@ -99,77 +91,60 @@ function ShipInfo() {
             </td>
           </tr>
           <tr>
-            <th scope="row">휴대전화</th>
+            <th scope='row'>휴대전화</th>
             <td>
-              <div className="phone">
-                <select id="prefix" name="prefix" onChange={handlePhone}>
-                  <option value="010">010</option>
-                  <option value="011">011</option>
-                  <option value="016">016</option>
-                  <option value="017">017</option>
-                  <option value="018">018</option>
-                  <option value="019">019</option>
+              <div className='phone'>
+                <select id='prefix' name='prefix' onChange={handlePhone}>
+                  <option value='010'>010</option>
+                  <option value='011'>011</option>
+                  <option value='016'>016</option>
+                  <option value='017'>017</option>
+                  <option value='018'>018</option>
+                  <option value='019'>019</option>
                 </select>
                 -
-                <input
-                  type="text"
-                  name="forward"
-                  maxLength={4}
-                  value={phone.forward}
-                  onChange={handlePhone}
-                />
+                <input type='text' name='forward' maxLength={4} value={phone.forward} onChange={handlePhone} />
                 -
-                <input
-                  type="text"
-                  name="backward"
-                  maxLength={4}
-                  value={phone.backward}
-                  onChange={handlePhone}
-                />
+                <input type='text' name='backward' maxLength={4} value={phone.backward} onChange={handlePhone} />
               </div>
             </td>
           </tr>
           <tr>
-            <th scope="row">이메일</th>
-            <td className="email_wrap">
+            <th scope='row'>이메일</th>
+            <td className='email_wrap'>
               <input
-                type="text"
-                id="email"
-                className="email"
-                name="forward"
+                type='text'
+                id='email'
+                className='email'
+                name='forward'
                 value={email.forward}
                 onChange={handleEmail}
               />
               @
-              <span className="email_select">
+              <span className='email_select'>
                 <select
-                  id="email"
-                  className="email_select"
-                  name="backward"
+                  id='email'
+                  className='email_select'
+                  name='backward'
                   value={email.backward}
                   onChange={handleEmail}
                 >
-                  <option value="" defaultValue="-이메일 선택-">
+                  <option value='' defaultValue='-이메일 선택-'>
                     -이메일 선택-
                   </option>
-                  <option value="naver.com">naver.com</option>
-                  <option value="daum.net">daum.net</option>
-                  <option value="nate.com">nate.com</option>
-                  <option value="hotmail.com">hotmail.com</option>
-                  <option value="yahoo.com">yahoo.com</option>
-                  <option value="empas.com">empas.com</option>
-                  <option value="korea.com">korea.com</option>
-                  <option value="dreamwiz.com">dreamwiz.com</option>
-                  <option value="gmail.com">gmail.com</option>
+                  <option value='naver.com'>naver.com</option>
+                  <option value='daum.net'>daum.net</option>
+                  <option value='nate.com'>nate.com</option>
+                  <option value='hotmail.com'>hotmail.com</option>
+                  <option value='yahoo.com'>yahoo.com</option>
+                  <option value='empas.com'>empas.com</option>
+                  <option value='korea.com'>korea.com</option>
+                  <option value='dreamwiz.com'>dreamwiz.com</option>
+                  <option value='gmail.com'>gmail.com</option>
                   {/* <option value="etc">직접입력</option> */}
                 </select>
                 <span>
-                  <input
-                    id="email"
-                    name="email"
-                    placeholder="직접입력"
-                    type="text"
-                  />
+                  <input id='email' name='email' placeholder='직접입력' type='text' />
                 </span>
               </span>
             </td>
@@ -188,47 +163,47 @@ const ShipInfoWrap = styled.div`
   margin-left: 12px;
 `;
 
-const InputWrap = styled.div`
-  display: flex;
-  width: 100%;
-`;
+// const InputWrap = styled.div`
+//   display: flex;
+//   width: 100%;
+// `;
 
-const InputGroup = styled.div`
-  display: flex;
-  align-items: center;
-  height: 50px;
-  margin-bottom: 15px;
+// const InputGroup = styled.div`
+//   display: flex;
+//   align-items: center;
+//   height: 50px;
+//   margin-bottom: 15px;
 
-  & input {
-    vertical-align: middle;
-    appearance: none;
-    border: max(2px, 0.2em) solid gray;
-    border-radius: 50%;
-    width: 1.6em;
-    height: 1.6em;
-    margin-right: 6px;
-    cursor: pointer;
+//   & input {
+//     vertical-align: middle;
+//     appearance: none;
+//     border: max(2px, 0.2em) solid gray;
+//     border-radius: 50%;
+//     width: 1.6em;
+//     height: 1.6em;
+//     margin-right: 6px;
+//     cursor: pointer;
 
-    &:checked {
-      border: 0.4em solid var(--primary-color);
-    }
-  }
+//     &:checked {
+//       border: 0.4em solid var(--primary-color);
+//     }
+//   }
 
-  & label {
-    display: flex;
-    align-items: center;
-    width: 132px;
-    /* height: 29px; */
-    line-height: 50px;
-    vertical-align: middle;
-    transform: translateY(2px);
-    font-size: 16px;
-    letter-spacing: -1px;
-    cursor: pointer;
-  }
-`;
+//   & label {
+//     display: flex;
+//     align-items: center;
+//     width: 132px;
+//     /* height: 29px; */
+//     line-height: 50px;
+//     vertical-align: middle;
+//     transform: translateY(2px);
+//     font-size: 16px;
+//     letter-spacing: -1px;
+//     cursor: pointer;
+//   }
+// `;
 
-const InputChecked = styled.input.attrs({ defaultChecked: true })``;
+// const InputChecked = styled.input.attrs({ defaultChecked: true })``;
 
 const ReceiverWrap = styled.table`
   box-sizing: border-box;

@@ -1,14 +1,16 @@
 import { styled } from "styled-components";
-import { RiCloseFill } from "react-icons/ri";
+// import { RiCloseFill } from "react-icons/ri";
 
-function OrderProductList({
-  allPrice,
-  amount,
-  description,
-  productImg,
-  productName,
-  option,
-}) {
+interface OrderProductListProps {
+  allPrice: any;
+  amount: any;
+  description: any;
+  productImg: any;
+  productName: any;
+  option: any;
+}
+
+function OrderProductList({ allPrice, amount, description, productImg, productName, option }: OrderProductListProps) {
   //TODO: 물품삭제 버튼에 클릭시 장바구니에서 삭제 및 주문에서 삭제
   //TODO: 아이템 타이틀 이미지 누르면 해당 상품 상세페이지로
 

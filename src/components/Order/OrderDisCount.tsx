@@ -10,6 +10,7 @@ function OrderDisCount() {
   const {
     pointState: { point, updatePoint },
   } = useOrder();
+  console.log(updatePoint);
   const [displayPoint, setDisplayPoint] = useState(0);
 
   const handleDisplay = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,11 +24,7 @@ function OrderDisCount() {
         <InputInner>
           <InputText>결제 포인트</InputText>
           <InputRight>
-            <PointInput
-              type="number"
-              value={displayPoint}
-              onChange={handleDisplay}
-            />
+            <PointInput type='number' value={displayPoint} onChange={handleDisplay} />
             <InputBtn>전액 사용</InputBtn>
           </InputRight>
         </InputInner>

@@ -19,6 +19,7 @@ const HamburgerModal: React.FC<HamburgerModalProps> = ({
   handleCategorySelect,
 }) => {
   const [isLoading, setIsloading] = useState(false);
+  console.log(setIsloading);
 
   const navigate = useNavigate();
 
@@ -31,21 +32,13 @@ const HamburgerModal: React.FC<HamburgerModalProps> = ({
       {isLoading ? (
         <Loading />
       ) : (
-        <div
-          className="hamburgermodal_box"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <img
-            className="closeBtn"
-            src="/img/close.svg"
-            alt="close"
-            onClick={handlecloseModal}
-          />
-          <div className="hamburger_info">
+        <div className='hamburgermodal_box' onClick={(e) => e.stopPropagation()}>
+          <img className='closeBtn' src='/img/close.svg' alt='close' onClick={handlecloseModal} />
+          <div className='hamburger_info'>
             <h3>마이쇼핑</h3>
             <article>
               <HamburgerModalMenu>
-                <ul className="header_category">
+                <ul className='header_category'>
                   <li onClick={() => handleCategorySelect("1")}>카테고리</li>
                   <li onClick={() => handleCategorySelect("2")}>목욕</li>
                   <li onClick={() => handleCategorySelect("3")}>배변/위생</li>
@@ -56,7 +49,7 @@ const HamburgerModal: React.FC<HamburgerModalProps> = ({
                 </ul>
               </HamburgerModalMenu>
               <HamburgerModalMenu>
-                <div className="header_carousel">
+                <div className='header_carousel'>
                   <Swiper
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={30}
@@ -67,71 +60,60 @@ const HamburgerModal: React.FC<HamburgerModalProps> = ({
                     pagination={{ clickable: true }}
                   >
                     <SwiperSlide>
-                      <img src="/img/header1.jpg" alt="header1" />
+                      <img src='/img/header1.jpg' alt='header1' />
                     </SwiperSlide>
                     <SwiperSlide>
-                      <img src="/img/header2.jpg" alt="header2" />
+                      <img src='/img/header2.jpg' alt='header2' />
                     </SwiperSlide>
                     <SwiperSlide>
-                      <img src="/img/header3.jpg" alt="header3" />
+                      <img src='/img/header3.jpg' alt='header3' />
                     </SwiperSlide>
                     <SwiperSlide>
-                      <img src="/img/header4.png" alt="header4" />
+                      <img src='/img/header4.png' alt='header4' />
                     </SwiperSlide>
                     ...
                   </Swiper>
                 </div>
               </HamburgerModalMenu>
               <HamburgerModalMenu>
-                <div className="header_mymenu_info">
+                <div className='header_mymenu_info'>
                   {isLogin ? (
                     <>
-                      <div className="header_logout_info">
-                        <div className="header_logout" onClick={logoutHandler}>
+                      <div className='header_logout_info'>
+                        <div className='header_logout' onClick={logoutHandler}>
                           로그아웃
                         </div>
                       </div>
                     </>
                   ) : (
                     <>
-                      <div className="header_login_info">
-                        <div
-                          className="header_login"
-                          onClick={() => navigate("/login")}
-                        >
+                      <div className='header_login_info'>
+                        <div className='header_login' onClick={() => navigate("/login")}>
                           로그인
                         </div>
-                        <div
-                          className="header_join"
-                          onClick={() => navigate("/signup")}
-                        >
+                        <div className='header_join' onClick={() => navigate("/signup")}>
                           회원가입
                         </div>
                       </div>
                     </>
                   )}
 
-                  <div
-                    className="header_mypage_info"
-                    onClick={() => navigate("/mypage")}
-                  >
-                    <div className="header_mypage">마이페이지</div>
-                    <div className="header_mypage">나의글</div>
-                    <div className="header_mypage">좋아요</div>
-                    <div className="header_mypage">관심상품</div>
+                  <div className='header_mypage_info' onClick={() => navigate("/mypage")}>
+                    <div className='header_mypage'>마이페이지</div>
+                    <div className='header_mypage'>나의글</div>
+                    <div className='header_mypage'>좋아요</div>
+                    <div className='header_mypage'>관심상품</div>
                   </div>
-                  <div className="header_board_info ">
-                    <div className="header_board">공지사항</div>
-                    <div className="header_board">리뷰</div>
-                    <div className="header_board">Q & A</div>
-                    <div className="header_board"></div>
+                  <div className='header_board_info '>
+                    <div className='header_board'>공지사항</div>
+                    <div className='header_board'>리뷰</div>
+                    <div className='header_board'>Q & A</div>
+                    <div className='header_board'></div>
                   </div>
                 </div>
-                <div className="header_support_info">
-                  <div className="header_support">고객센터</div>
-                  <div className="header_support call_center">
-                    012-3456-7890
-                  </div>
+                <div className='header_support_info'>
+                  <div className='header_support'>고객센터</div>
+                  <div className='header_support call_center'>012-3456-7890</div>
                 </div>
               </HamburgerModalMenu>
             </article>

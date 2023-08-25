@@ -41,9 +41,7 @@ const DetailDescription = () => {
   });
   const [option, setOption] = useState<Record<string, string>>({});
   const { getCartlisting } = useCartDispatch();
-  const cartLength = useAppSelector((state) =>
-    state.cart.items ? state.cart.items.length : 0
-  );
+  const cartLength = useAppSelector((state) => (state.cart.items ? state.cart.items.length : 0));
 
   const product_id: string | undefined = productid;
 
@@ -111,8 +109,7 @@ const DetailDescription = () => {
     if (optionName.length === data.options.length) {
       for (let i = 0; i < optionName.length; i++) {
         //옵션을 선택을안하면 "" 빈칸이 찍힙니다
-        보낼객체형태임 =
-          보낼객체형태임 + `${optionName[i]}:${option[optionName[i]]}` + ",";
+        보낼객체형태임 = 보낼객체형태임 + `${optionName[i]}:${option[optionName[i]]}` + ",";
         if (option[optionName[i]] === "") {
           alert("옵션을 선택해주세요");
           return;
@@ -134,10 +131,12 @@ const DetailDescription = () => {
         }
       )
       .then((res) => {
+        console.log(res);
         alert("장바구니 완료 쇼핑을 계쏙 하쎄용");
         dispatch(cartHeaderview(cartLength + 1));
       })
       .catch((error) => {
+        console.log(error);
         alert("에러입니다!");
       });
     getCartlisting();
@@ -150,8 +149,7 @@ const DetailDescription = () => {
     if (optionName.length === data.options.length) {
       for (let i = 0; i < optionName.length; i++) {
         //옵션을 선택을안하면 "" 빈칸이 찍힙니다
-        보낼객체형태임 =
-          보낼객체형태임 + `${optionName[i]}:${option[optionName[i]]}` + ",";
+        보낼객체형태임 = 보낼객체형태임 + `${optionName[i]}:${option[optionName[i]]}` + ",";
         if (option[optionName[i]] === "") {
           alert("옵션을 선택해주세요");
           return;
@@ -162,7 +160,7 @@ const DetailDescription = () => {
       return;
     }
 
-    let payload = {
+    const payload = {
       amount: productAmount,
       optionDetail: 보낼객체형태임,
       productIdx: product_id,
@@ -172,10 +170,7 @@ const DetailDescription = () => {
   };
 
   //선택한 옵션으로 중복되지않게 옵션을만듬
-  const finalSelectionOptions = (
-    optiondata: string | null,
-    optionType: string | null
-  ) => {
+  const finalSelectionOptions = (optiondata: string | null, optionType: string | null) => {
     if (optionType !== null && optiondata !== null) {
       setOption({ ...option, [optionType]: optiondata });
     }
@@ -188,22 +183,18 @@ const DetailDescription = () => {
       <Container>
         {isLoading ? (
           <ImageBox>
-            <ProductImage src={loadingImage} alt="dd" />
+            <ProductImage src={loadingImage} alt='dd' />
           </ImageBox>
         ) : (
           <ImageBox>
-            <ProductImage src={data.product_img} alt="dd" />
+            <ProductImage src={data.product_img} alt='dd' />
           </ImageBox>
         )}
 
         <DescriptionBox>
           <ProductTitleDiv>
-            <DivFlex className="설명제목">
-              {isLoading ? (
-                <ProductTitle></ProductTitle>
-              ) : (
-                <ProductTitle>{data.product_name}</ProductTitle>
-              )}
+            <DivFlex className='설명제목'>
+              {isLoading ? <ProductTitle></ProductTitle> : <ProductTitle>{data.product_name}</ProductTitle>}
 
               <DivFlex>
                 <HartIcon>❤️</HartIcon>
@@ -221,8 +212,7 @@ const DetailDescription = () => {
               <span style={{ marginLeft: "1rem" }}>소비자가</span>
             </div>
             <div>
-              {isLoading ? "" : data.price} 원
-              <span style={{ marginLeft: "1rem" }}>루팡가</span>
+              {isLoading ? "" : data.price} 원<span style={{ marginLeft: "1rem" }}>루팡가</span>
             </div>
             <div></div>
             <HoverContainer>
@@ -242,11 +232,7 @@ const DetailDescription = () => {
           {/* 옵션 선택구간 */}
           {data.options ? (
             data.options.map((item: any, index: number) => (
-              <Option
-                key={index}
-                option={item}
-                finalSelectionOptions={finalSelectionOptions}
-              />
+              <Option key={index} option={item} finalSelectionOptions={finalSelectionOptions} />
             ))
           ) : (
             <></>
@@ -260,10 +246,10 @@ const DetailDescription = () => {
                 <DivFlex>
                   <MinusButton onClick={productAmountDown}>-</MinusButton>
                   <AmountInputbox
-                    type="number"
+                    type='number'
                     onKeyDown={enterKeydown}
                     onBlur={amountInputboxBlur}
-                    placeholder="수량을 입력해주세요"
+                    placeholder='수량을 입력해주세요'
                     autoFocus
                   />
                   <PlusButton onClick={productAmountUp}>+</PlusButton>
@@ -275,9 +261,7 @@ const DetailDescription = () => {
                 <Amount>수량</Amount>
                 <DivFlex>
                   <MinusButton onClick={productAmountDown}>-</MinusButton>
-                  <ProductAmount onClick={enterAmount}>
-                    {productAmount}
-                  </ProductAmount>
+                  <ProductAmount onClick={enterAmount}>{productAmount}</ProductAmount>
                   <PlusButton onClick={productAmountUp}>+</PlusButton>
                 </DivFlex>
                 <Amount>재고 : {data.stock}</Amount>
@@ -306,13 +290,9 @@ const DetailDescription = () => {
             <div>
               <img
                 src={Kakaopaymenticon}
-                alt=""
+                alt=''
                 onClick={() =>
-                  kakaoPaymentfunction(
-                    responseProductData.product_name,
-                    productAmount,
-                    responseProductData.price
-                  )
+                  kakaoPaymentfunction(responseProductData.product_name, productAmount, responseProductData.price)
                 }
               />
             </div>
@@ -321,7 +301,7 @@ const DetailDescription = () => {
       </Container>
 
       <DetailDescriptionBox $isMoreView={isMoreView}>
-        <DescriptionImage src={data.description_img} alt="" />
+        <DescriptionImage src={data.description_img} alt='' />
       </DetailDescriptionBox>
       <MoreViewButtonBox>
         {isMoreView ? (

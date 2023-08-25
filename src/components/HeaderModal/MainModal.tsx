@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import ModalMenu from "./ModalMenu";
 import useToggleModal from "../../hooks/useHandleModal";
-import MenuBtn from "./MenuBtn";
+import MenuBtn from "../MainModal/MenuBtn";
 import { RxCross2 } from "react-icons/rx";
-import ModalHeader from "./ModalHeader";
+import ModalHeader from "../MainModal/ModalHeader";
 import MyShop from "../MainModal/ModalCard/UserStatus/MyShop";
 import { useEffect, useState } from "react";
 import Recent from "../MainModal/ModalCard/Recent/Recent";

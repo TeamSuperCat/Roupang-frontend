@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_SERVER;
+const BASE_URL = "/api";
 const token: string | null = localStorage.getItem("accessToken");
 
 // if (token) {
@@ -13,7 +13,7 @@ const axiosClient: AxiosInstance = axios.create({
 
 axiosClient.interceptors.response.use((response) => {
   if (response.headers["authorization"]) {
-    const accessToken = response.headers["authorization"];
+    const accessToken = response.headers["authorization"]; // <----- 로그인 할때 토큰 저장
     localStorage.setItem("accessToken", accessToken);
   }
   return response.data;
@@ -25,7 +25,7 @@ axiosClient.interceptors.request.use((config) => {
   } else {
     config.headers["Content-Type"] = "application/json; charset=utf-8";
     if (token) {
-      config.headers["Authorization"] = `${token}`;
+      config.headers["Authorization"] = `${token}`; // <------ 헤더에 토큰 여기서 뭐 더 해야할거 있나요?
     }
   }
   return config;
